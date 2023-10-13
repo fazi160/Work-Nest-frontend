@@ -1,0 +1,104 @@
+/* Made with love by Mutiullah Samim */
+/* @import url('https://fonts.googleapis.com/css?family=Numans'); */
+
+body {
+  background-image: url('../../assets/login.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  font-family: 'Numans', sans-serif;
+}
+
+.container {
+  height: 100%;
+  align-content: center;
+}
+
+.card {
+  height: 370px;
+  margin-top: 25vh;
+  margin-bottom: auto;
+  width: 400px;
+  background-color: #fff !important;
+  color: white;
+}
+
+.card-header h3 {
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+.card-body .form-group input {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 3px;
+  color: white;
+  padding: 12px;
+}
+
+.social_icon span {
+  font-size: 60px;
+  margin-left: 10px;
+  color: #FFC312;
+}
+
+.social_icon span:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.social_icon {
+  position: absolute;
+  right: 20px;
+  top: -45px;
+}
+
+.input-group-prepend span {
+  width: 50px;
+  background-color: #FFC312;
+  color: black;
+  border: 0 !important;
+}
+
+input:focus {
+  outline: 0 0 0 0 !important;
+  box-shadow: 0 0 0 0 !important;
+}
+
+.remember {
+  color: white;
+}
+
+.remember input {
+  width: 20px;
+  height: 20px;
+  margin-left: 15px;
+  margin-right: 5px;
+}
+
+.login_btn {
+  margin-left: 100px;
+  align-items: center;
+  color: black;
+  background-color: #ffffff;
+  width: 100px;
+}
+
+.login_btn:hover {
+  color: black;
+  background-color: rgb(0, 0, 0);
+}
+
+.links {
+  color: rgb(0, 0, 0);
+  margin-top: 15px;
+}
+
+.links a {
+  margin-left: 4px;
+}
+
+/* Additional styles for the "Sign Up" and "Forgot your password?" links */
+.links a:hover {
+  text-decoration: underline;
+}
