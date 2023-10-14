@@ -4,6 +4,8 @@ import { Outlet } from "react-router-dom"
 // import Company_HomePage from "../pages/Company/CompanyHomePage"
 // import AdminHomePage from "../pages/Admin/AdminHomePage"
 import AdminHomePage from "../pages/Admin/AdminHomePage"
+import CustomerLoginPage from "../pages/Customer/CustomerLoginPage"
+import UserLoginPage from "../pages/User/UserLoginPage"
 // import UnknownHomePage from "../pages/UnknownUser/UnknownHomePage"
 
 function PrivateRoutes() {
@@ -26,9 +28,14 @@ function PrivateRoutes() {
         const decode = jwt_decode(token)
         if (decode.user_type === 'admin' ){
             return <AdminHomePage/>
-
-
-        } else{
+        }
+        else if(decode.user_type === 'customer'){
+            return <CustomerLoginPage/>
+        }
+        else if(decode.user_type === 'user'){
+            return <UserLoginPage/>
+        }
+        else{
             console.log(decode.user_type)
             return <Outlet/>
         }
@@ -38,3 +45,5 @@ function PrivateRoutes() {
 
 
 export default PrivateRoutes
+
+// ('user','customer', 'Admin')

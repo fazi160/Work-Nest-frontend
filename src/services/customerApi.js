@@ -1,6 +1,6 @@
 import { loginAxiosInstant } from "../utils/axiosUtils";
 // ---------------------------------------Post Methoda-------------------------------//
-const AdminSignin = (values) => {
+const customerSignin = (values) => {
   return loginAxiosInstant
     .post("token/", values, { withCredentials: true })
     .catch((error) => {
@@ -11,5 +11,5 @@ const AdminSignin = (values) => {
 
 
 export {
-  AdminSignin
+  customerSignin
 }

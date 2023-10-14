@@ -5,73 +5,73 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import backgroundImage from '../../../assets/login.jpg';
+function CustomerLogin() {
 
-function AdminLogin() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState({ email: '', password: '' });
-
-  const emailInputRef = useRef(null);
-  const passInputRef = useRef(null);
-
-  // Validations
-  const Validation = () => {
-    if (user.email.trim() === '') {
-      toast.error('Email should not be empty');
-      return false;
-    } else if (!isValidEmail(user.email.trim())) {
-      setUser({ email: '' });
-      emailInputRef.current.focus();
-      toast.warn('Enter a valid email');
-      return false;
-    } else if (user.password.trim() === '') {
-      passInputRef.current.focus();
-      toast.error('Password should not be empty');
-      return false;
+    const navigate = useNavigate();
+    const [user, setUser] = useState({ email: '', password: '' });
+  
+    const emailInputRef = useRef(null);
+    const passInputRef = useRef(null);
+  
+    // Validations
+    const Validation = () => {
+      if (user.email.trim() === '') {
+        toast.error('Email should not be empty');
+        return false;
+      } else if (!isValidEmail(user.email.trim())) {
+        setUser({ email: '' });
+        emailInputRef.current.focus();
+        toast.warn('Enter a valid email');
+        return false;
+      } else if (user.password.trim() === '') {
+        passInputRef.current.focus();
+        toast.error('Password should not be empty');
+        return false;
+      }
+      return true;
+    };
+  
+    function isValidEmail(email) {
+      const Regex = /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/;
+      return Regex.test(email);
     }
-    return true;
-  };
-
-  function isValidEmail(email) {
-    const Regex = /^[a-zA-Z0-9._-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return Regex.test(email);
-  }
-
-  // After form submission
-  const FormHandlerLogin = async (e) => {
-    e.preventDefault();
-    if (Validation()) {
-      AdminSignin(user)
-        .then((res) => {
-          if (res.status === 200) {
-            const token = JSON.stringify(res.data);
-            localStorage.setItem("token", token);
-            toast.success('Login successful');
-            navigate('/admin/');
-          } else {
-            toast.error('Invalid login credentials');
-          }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          toast.error('Login failed');
-        });
-    }
-  };
-
-  const backgroundStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    minHeight: '100vh',
-  };
-
+  
+    // After form submission
+    const FormHandlerLogin = async (e) => {
+      e.preventDefault();
+      if (Validation()) {
+        AdminSignin(user)
+          .then((res) => {
+            if (res.status === 200) {
+              const token = JSON.stringify(res.data);
+              localStorage.setItem("token", token);
+              toast.success('Login successful');
+              navigate('/customer/');
+            } else {
+              toast.error('Invalid login credentials');
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            toast.error('Login failed');
+          });
+      }
+    };
+  
+    const backgroundStyle = {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh',
+    };
+  
   return (
     <div className="container-fluid" style={backgroundStyle}>
       <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
         <div className="col-md-5">
           <div className="card h-1100">
             <div className="card-header">
-              <h3 className="text-center">Admin Login</h3>
+              <h3 className="text-center">Customer Login</h3>
             </div>
             <div className="card-body">
               <ToastContainer />
@@ -108,7 +108,9 @@ function AdminLogin() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default AdminLogin;
+export default CustomerLogin
+
+
