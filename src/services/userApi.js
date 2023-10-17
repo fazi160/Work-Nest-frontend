@@ -8,8 +8,40 @@ const userSignin = (values) => {
     });
 };
 
+// User Google signup and signIn
+const UserGoogleSignup = (value) => {
 
+  const values = {
+    email: value.email,
+    password: value.id,
+
+  };
+
+  return loginAxiosInstant
+    .post("googleauth/", values, {
+      withCredentials: true,
+    })
+    .catch((error) => {
+
+      throw error;
+    });
+};
+
+
+
+
+// User Token refresh
+const TokenRefresh = (value) => {
+  return userAxiosInstant
+    .post("token/refresh/", value, {
+      withCredentials: true,
+    })
+    .catch((error) => error.response);
+};
 
 export {
-  userSignin
+  userSignin,
+  UserGoogleSignup,
+
+  TokenRefresh,
 }
