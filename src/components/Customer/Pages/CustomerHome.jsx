@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function CustomerHome() {
   const navigate = useNavigate(); // Use 'navigate' instead of 'Navigate'

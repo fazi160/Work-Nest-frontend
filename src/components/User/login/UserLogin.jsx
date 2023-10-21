@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import backgroundImage from "../../../assets/login.jpg";
@@ -45,7 +45,7 @@ function UserLogin() {
       userSignin(user)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res);
+
             const token = JSON.stringify(res.data);
             localStorage.setItem("token", token);
             toast.success("Login successful");
@@ -55,7 +55,7 @@ function UserLogin() {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+
           toast.error("Login failed");
         });
     }
@@ -75,7 +75,7 @@ function UserLogin() {
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => {
       setgUser(codeResponse)
-      console.log(gUser, "jdsjkjasdjjbdskk")
+
     },
     onError: (error) => console.log("Login Failed:", error)
   });
@@ -105,12 +105,12 @@ function UserLogin() {
             localStorage.setItem("token", token)
             navigate('/user/')
           } else{
-            console.log("error",token,decoded)
+            toast.error("This is not User it's:",decoded.user_type)
           }
         }
         setgUser([])
       } catch (error) {
-        console.log(error)
+
         if (error.response && error.response.data) {
           toast.error(error.response.data.detail)
         } else {
@@ -125,7 +125,22 @@ function UserLogin() {
     }},[guser]);
     
 
-  
+    // google signIn button design
+    const customGoogleLoginButton = (
+      <button
+        type="button"
+        className="btn  custom-google-button btn-light"
+        onClick={handleGoogleLogin}
+      >
+        <img
+         src={userImage}
+         alt="Google logo" 
+         className="google-logo img-fluid"
+         width="22"
+         height="22"  />
+        <span className="button-text ms-2">Continue with Google</span>
+      </button>
+    );
   
   return (
     <div className="container-fluid" style={backgroundStyle}>
@@ -138,6 +153,9 @@ function UserLogin() {
             <div className="card-body">
               <ToastContainer />
               <form onSubmit={FormHandlerLogin}>
+                <div className="mb-3 text-center">
+                  <p>Please enter your email and password</p>
+                </div>
                 <div className="form-group">
                   <input
                     ref={emailInputRef}
@@ -166,25 +184,28 @@ function UserLogin() {
                     Sign In
                   </button>
                 </div>
+                <div className="text-end mt-3">
+                  <a href="#">Forgot password?</a>
+                </div>
               </form>
               <div className="text-center my-3">
                 <p>Or</p>
               </div>
-              <button
-                className="btn btn-white"
-                style={{ color: "black" }}
-                onClick={handleGoogleLogin}
-              >
-                <img src={userImage} alt="Google logo" className="ml-2 rounded-full h-8" />
-                <span className="flex-1 text-center font-bold">
-                  Continue with Google
-                </span>
-              </button>
+              <div className="text-center">
+                {customGoogleLoginButton}
+              </div>
+              <div className="text-center mt-3">
+                <p>
+                  Don't have an account?{" "}
+                  <Link to="/user/signup">Sign up</Link> {/* Create a Link to the signup path */}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
   );
 }
 

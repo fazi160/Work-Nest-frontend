@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AdminSignin } from "../../../services/adminApi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -65,50 +65,65 @@ function CustomerLogin() {
       minHeight: '100vh',
     };
   
-  return (
-    <div className="container-fluid" style={backgroundStyle}>
-      <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="col-md-5">
-          <div className="card h-1100">
-            <div className="card-header">
-              <h3 className="text-center">Customer Login</h3>
-            </div>
-            <div className="card-body">
-              <ToastContainer />
-              <form onSubmit={FormHandlerLogin}>
-                <div className="form-group">
-                  <input
-                    ref={emailInputRef}
-                    type="email"
-                    value={user.email}
-                    id="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Email"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
+    return (
+      <div className="container-fluid" style={backgroundStyle}>
+        <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+          <div className="col-md-4">
+            <div className="card h-100">
+              <div className="card-header">
+                <h3 className="text-center">Customer Login</h3>
+              </div>
+              <div className="card-body">
+                <ToastContainer />
+                <form onSubmit={FormHandlerLogin}>
+                  <div className="mb-3 text-center">
+                    <p>Please enter your email and password</p>
+                  </div>
+                  <div className="form-group">
+                    <input
+                      ref={emailInputRef}
+                      type="email"
+                      value={user.email}
+                      id="email"
+                      name="email"
+                      className="form-control"
+                      placeholder="Email"
+                      onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group my-4">
+                    <input
+                      ref={passInputRef}
+                      type="password"
+                      id="password"
+                      name="password"
+                      className="form-control"
+                      placeholder="Password"
+                      onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                    />
+                  </div>
+                  <div className="text-center">
+                    <button type="submit" className="btn btn-dark col-md-4">
+                      Sign In
+                    </button>
+                  </div>
+                  <div className="text-end mt-3">
+                    <Link to="#">Forgot password?</Link>
+                  </div>
+                </form>
+
+                <div className="text-center mt-3">
+                  <p>
+                    Don't have an account?{" "}
+                    <Link to="/customer/signup">Sign up</Link>
+                  </p>
                 </div>
-                <div className="form-group my-4">
-                  <input
-                    ref={passInputRef}
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="text-center">
-                  <button type="submit" className="btn btn-dark col-md-4">Sign In</button>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  )
+    );
 }
 
 export default CustomerLogin

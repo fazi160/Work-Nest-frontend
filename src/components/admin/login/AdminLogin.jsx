@@ -68,15 +68,17 @@ function AdminLogin() {
   return (
     <div className="container-fluid" style={backgroundStyle}>
       <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="col-md-5">
-          <div className="card h-1100">
+        <div className="col-md-4"> {/* Increase the card width */}
+          <div className="card h-100">
             <div className="card-header">
               <h3 className="text-center">Admin Login</h3>
+              <p className="text-center">Enter your email and password</p> {/* Add the headline */}
             </div>
             <div className="card-body">
               <ToastContainer />
               <form onSubmit={FormHandlerLogin}>
                 <div className="form-group">
+                  <h4>Email</h4> {/* Add headline for email input */}
                   <input
                     ref={emailInputRef}
                     type="email"
@@ -89,6 +91,7 @@ function AdminLogin() {
                   />
                 </div>
                 <div className="form-group my-4">
+                  <h4>Password</h4> {/* Add headline for password input */}
                   <input
                     ref={passInputRef}
                     type="password"
@@ -100,7 +103,7 @@ function AdminLogin() {
                   />
                 </div>
                 <div className="text-center">
-                  <button type="submit" className="btn btn-dark col-md-4">Sign In</button>
+                  <button type="submit" className="btn btn-dark col-md-6">Sign In</button> {/* Adjust button width */}
                 </div>
               </form>
             </div>
