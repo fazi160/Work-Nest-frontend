@@ -7,14 +7,12 @@ import axios from 'axios';
 function UserSignup() {
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: '', password: '', confirmPassword: '' });
-  const [submitting, setSubmitting] = useState(false); // Track if the form is submitting
+  const [submitting, setSubmitting] = useState(false);
 
-  // Refs for input fields
   const emailInputRef = useRef(null);
   const passInputRef = useRef(null);
   const confirmPassInputRef = useRef(null);
 
-  // Validation for email and password
   const Validation = () => {
     if (user.email.trim() === '') {
       toast.error('Email field cannot be empty');
@@ -43,10 +41,10 @@ function UserSignup() {
 
   const FormHandlerSignup = async (e) => {
     e.preventDefault();
-    if (submitting) return; // Prevent multiple submissions
+    if (submitting) return;
 
     if (Validation()) {
-      setSubmitting(true); // Set to submitting state
+      setSubmitting(true);
 
       try {
         const response = await axios.post(
@@ -60,11 +58,10 @@ function UserSignup() {
           confirmPassword: '',
         });
 
-        // Display success message
         toast.success('Please check your email to confirm.');
         navigate('/user/login/');
       } catch (error) {
-        setSubmitting(false); // Reset to non-submitting state
+        setSubmitting(false);
         if (error.response && error.response.data) {
           toast.error('Signup Failed');
         }
@@ -80,69 +77,70 @@ function UserSignup() {
   };
 
   return (
-    <div className="container-fluid" style={backgroundStyle}>
-      <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="col-md-4">
-          <div className="card">
-            <div className="card-header">
-              <h3 className="text-center">User Signup</h3>
+    <div className="bg-cover bg-center min-h-screen" style={backgroundStyle}>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-96">
+          <div className="bg-white shadow-md rounded p-8">
+            <div className="mb-4">
+              <h3 className="text-center text-2xl font-semibold">User Signup</h3>
             </div>
-            <div className="card-body">
-              <ToastContainer />
-              <form onSubmit={FormHandlerSignup}>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    ref={emailInputRef}
-                    type="email"
-                    value={user.email}
-                    id="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Email"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    ref={passInputRef}
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">
-                    Confirm Password
-                  </label>
-                  <input
-                    ref={confirmPassInputRef}
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    className="form-control"
-                    placeholder="Confirm Password"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="text-center">
-                  <button type="submit" className="btn btn-dark" disabled={submitting}>
-                    {submitting ? 'Signing Up...' : 'Sign Up'}
-                  </button>
-                </div>
-                <p className="text-center mt-3">
-                  Already have an account? <Link to="/user/login">Sign In</Link>
-                </p>
-              </form>
-            </div>
+            <ToastContainer />
+            <form onSubmit={FormHandlerSignup}>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
+                <input
+                  ref={emailInputRef}
+                  type="email"
+                  value={user.email}
+                  id="email"
+                  name="email"
+                  className="w-full py-2 px-3 border rounded"
+                  placeholder="Email"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
+                <input
+                  ref={passInputRef}
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="w-full py-2 px-3 border rounded"
+                  placeholder="Password"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="confirmPassword" className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  ref={confirmPassInputRef}
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="w-full py-2 px-3 border rounded"
+                  placeholder="Confirm Password"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="text-center">
+                <button type="submit" className="bg-black text-white py-2 px-4 w-1/2 rounded">
+                  {submitting ? 'Signing Up...' : 'Sign Up'}
+                </button>
+              </div>
+              <p className="text-center mt-3">
+                Already have an account?{' '}
+                <Link to="/user/login" className="text-blue-500">
+                  Sign In
+                </Link>
+              </p>
+            </form>
           </div>
         </div>
       </div>

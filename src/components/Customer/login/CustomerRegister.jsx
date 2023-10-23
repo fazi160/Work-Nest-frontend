@@ -80,66 +80,67 @@ function CustomerRegister() {
   };
 
   return (
-    <div className="container-fluid" style={backgroundStyle}>
-      <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="col-md-4">
-          <div className="card shadow">
-            <div className="card-header">
-              <h3 className="text-center">Customer Signup</h3>
-            </div>
-            <div className="card-body">
-              <ToastContainer />
-              <form onSubmit={FormHandlerSignup}>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    ref={emailInputRef}
-                    type="email"
-                    value={user.email}
-                    id="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Email"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    ref={passInputRef}
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">
-                    Confirm Password
-                  </label>
-                  <input
-                    ref={confirmPassInputRef}
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    className="form-control"
-                    placeholder="Confirm Password"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="text-center">
-                  <button type="submit" className="btn btn-dark" disabled={submitting}>
-                    {submitting ? 'Signing Up...' : 'Sign Up'}
-                  </button>
-                </div>
-              </form>
-            </div>
+    <div className="bg-cover bg-center min-h-screen" style={backgroundStyle}>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-96">
+          <div className="bg-white shadow-md rounded p-8">
+            <h3 className="text-center text-2xl mb-4">Customer Signup</h3>
+            <ToastContainer />
+            <form onSubmit={FormHandlerSignup}>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  ref={emailInputRef}
+                  type="email"
+                  value={user.email}
+                  id="email"
+                  name="email"
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                  placeholder="Email"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <input
+                  ref={passInputRef}
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                  placeholder="Password"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <input
+                  ref={confirmPassInputRef}
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                  placeholder="Confirm Password"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="text-center">
+              <button
+                type="submit"
+                className="bg-black text-white py-2 px-4 w-full rounded focus:outline-none hover:bg-gray-800"
+                disabled={submitting}
+              >
+                {submitting ? 'Signing Up...' : 'Sign Up'}
+              </button>
+
+              </div>
+            </form>
           </div>
         </div>
       </div>

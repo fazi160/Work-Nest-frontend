@@ -2,8 +2,8 @@ import React from 'react'
 
 function Notification() {
   return (
-    <div>
-      Notficaion page
+    <div style={{marginLeft:"15rem"}}>
+      Notification page SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
     </div>
   )
 }

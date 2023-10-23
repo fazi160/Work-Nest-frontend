@@ -1,10 +1,11 @@
 import React from 'react'
-import Dashboard from '../../components/admin/pages/dashboard'
+
+import AdminLandingPage from '../../components/admin/pages/AdminLandingPage'
 
 function AdminHomePage() {
   return (
     <div>
-      <Dashboard/>
+      <AdminLandingPage/>
     </div>
   )
 }

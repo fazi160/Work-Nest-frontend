@@ -66,47 +66,45 @@ function AdminLogin() {
   };
 
   return (
-    <div className="container-fluid" style={backgroundStyle}>
-      <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="col-md-4"> {/* Increase the card width */}
-          <div className="card h-100">
-            <div className="card-header">
-              <h3 className="text-center">Admin Login</h3>
+    <div className="container mx-auto" style={backgroundStyle}>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-96"> {/* Adjust the card width */}
+          <div className="bg-white shadow-md rounded p-8">
+            <div className="mb-4">
+              <h3 className="text-center text-2xl">Admin Login</h3>
               <p className="text-center">Enter your email and password</p> {/* Add the headline */}
             </div>
-            <div className="card-body">
-              <ToastContainer />
-              <form onSubmit={FormHandlerLogin}>
-                <div className="form-group">
-                  <h4>Email</h4> {/* Add headline for email input */}
-                  <input
-                    ref={emailInputRef}
-                    type="email"
-                    value={user.email}
-                    id="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Email"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="form-group my-4">
-                  <h4>Password</h4> {/* Add headline for password input */}
-                  <input
-                    ref={passInputRef}
-                    type="password"
-                    id="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
-                  />
-                </div>
-                <div className="text-center">
-                  <button type="submit" className="btn btn-dark col-md-6">Sign In</button> {/* Adjust button width */}
-                </div>
-              </form>
-            </div>
+            <ToastContainer />
+            <form onSubmit={FormHandlerLogin}>
+              <div className="mb-4">
+                <h4>Email</h4> {/* Add headline for email input */}
+                <input
+                  ref={emailInputRef}
+                  type="email"
+                  value={user.email}
+                  id="email"
+                  name="email"
+                  className="w-full py-2 px-3 border rounded"
+                  placeholder="Email"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="mb-6">
+                <h4>Password</h4> {/* Add headline for password input */}
+                <input
+                  ref={passInputRef}
+                  type="password"
+                  id="password"
+                  name="password"
+                  className="w-full py-2 px-3 border rounded"
+                  placeholder="Password"
+                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                />
+              </div>
+              <div className="text-center">
+                <button type="submit" className="bg-black text-white py-2 px-4 w-1/2">Sign In</button> {/* Adjust button width */}
+              </div>
+            </form>
           </div>
         </div>
       </div>

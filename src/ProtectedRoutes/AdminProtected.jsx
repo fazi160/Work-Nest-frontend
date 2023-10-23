@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 import { Outlet } from "react-router-dom";
 // import company home page 
 // import user home page
-import Dashboard from "../components/admin/pages/dashboard";
+// import Dashboard from "../components/admin/pages/dashboard";
 import UserHomePage from "../pages/User/UserHomePage";
 import CustomerHomePage from "../pages/Customer/CustomerHomePage";
 
