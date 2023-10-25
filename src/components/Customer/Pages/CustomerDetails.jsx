@@ -9,20 +9,26 @@ function CustomerDetails() {
   const [editedContact, setEditedContact] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
 
+  const token = localStorage.getItem('token');
+  const decode = jwtDecode(token);
+  const userId = decode.user_id;
+  console.log(decode);
+
   useEffect(() => {
-    Axios.get('http://127.0.0.1:8000/auth/customerdetails/1/')
+    const apiUrl = `http://127.0.0.1:8000/auth/customerdetails/?user=${userId}`;
+    Axios.get(apiUrl)
       .then((response) => {
-        setCustomerData(response.data);
-        setEditedContact(response.data.contact);
-        setEditedDescription(response.data.description);
+        console.log(response);
+        const filteredData = response.data.find((item) => item.user === userId);
+        setCustomerData(filteredData);
+        setEditedContact(filteredData.contact);
+        setEditedDescription(filteredData.description);
       })
       .catch((error) => {
         console.error('Error fetching customer data:', error);
       });
-  }, []);
-
-  const token = localStorage.getItem('token');
-  const decode = jwtDecode(token);
+  }, [userId]);
+  console.log(customerData);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -34,7 +40,7 @@ function CustomerDetails() {
       description: editedDescription,
     };
 
-    Axios.patch('http://127.0.0.1:8000/auth/customerdetails/1/', data)
+    Axios.patch(`http://127.0.0.1:8000/auth/customerdetails/${customerData.id}/`, data)
       .then((response) => {
         setCustomerData(response.data);
         setIsEditing(false);
