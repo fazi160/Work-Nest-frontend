@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from '../../admin&Customer/Navbar';
@@ -14,16 +14,24 @@ import CustomerDetails from './CustomerDetails';
 
 function CustomerHome() {
   
-  const [pages,setPages] =useState("Dashboard")
-  const handlePageSelection = (page) => {
-    console.log(page, "on the main page");
-    setPages(page)
-  }
+  const [pages,setPages] =useState(localStorage.getItem('currentPage') || 'Dashboard')
+  
+  const navigate = useNavigate();
 
-  const token = localStorage.getItem('token')
-  console.log(token);
-  const decode = jwtDecode(token)
-  console.log(decode.user_type, "user type show");
+  const handlePageSelection = (page) => {
+    setPages(page);
+    localStorage.setItem('currentPage', page); // Store the selected page in local storage
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/');
+    } else {
+      const decode = jwtDecode(token);
+      console.log(decode.user_type, "user type show");
+    }
+  }, [navigate]);
 
   return (
     <>

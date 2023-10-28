@@ -18,8 +18,8 @@ function CustomerDetails() {
     const apiUrl = `http://127.0.0.1:8000/auth/customerdetails/?user=${userId}`;
     Axios.get(apiUrl)
       .then((response) => {
-        console.log(response);
-        const filteredData = response.data.find((item) => item.user === userId);
+        console.log(response, "response is here");
+        const filteredData = response.data.results.find((item) => item.user === userId);
         setCustomerData(filteredData);
         setEditedContact(filteredData.contact);
         setEditedDescription(filteredData.description);

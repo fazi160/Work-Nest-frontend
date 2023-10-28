@@ -42,7 +42,7 @@ function SideNavbar({ onPageSelect }) {
                 {decode.user_type === 'customer' && (
                     <>
                         <ListItem text="Co-Working Space" icon={<ListIcon style={{ fontSize: 32 }} />} onItemClick={() => handleItemClick('Co-Working Space')} />
-                        <ListItem text="Conference Hall" icon={<ListIcon style={{ fontSize: 32 }} />} onItemClick={() => handleItemClick('Conference Hall')} />
+                        <ListItem text="Conference Hall" icon={<ListIcon style={{ fontSize: 32 }} />} onItemClick={() => handleItemClick('Conference Hall')} /> 
                         <ListItem text="User Info" icon={<PersonIcon style={{ fontSize: 32 }} />} onItemClick={() => handleItemClick('User Info')} />
                     </>
                 )}

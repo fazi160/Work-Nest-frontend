@@ -1,0 +1,311 @@
+ {
+    "cities": {
+      "Thiruvananthapuram": [
+        {
+          "City": "Thiruvananthapuram"
+        },
+        {
+          "City": "Neyyattinkara"
+        },
+        {
+          "City": "Nedumangad"
+        },
+        {
+          "City": "Varkala"
+        },
+        {
+          "City": "Attingal"
+        }
+      ],
+      "Kozhikode": [
+        {
+          "City": "Kozhikode"
+        },
+        {
+          "City": "Vatakara"
+        },
+        {
+          "City": "Koyilandy"
+        },
+        {
+          "City": "Feroke"
+        },
+        {
+          "City": "Payyoli"
+        },
+        {
+          "City": "Koduvally"
+        },
+        {
+          "City": "Mukkam"
+        },
+        {
+          "City": "Ramanattukara"
+        }
+      ],
+      "Ernakulam": [
+        {
+          "City": "Kochi"
+        },
+        {
+          "City": "Thrippunithura"
+        },
+        {
+          "City": "Kalamassery"
+        },
+        {
+          "City": "Thrikkakkara"
+        },
+        {
+          "City": "Maradu"
+        },
+        {
+          "City": "Kothamangalam"
+        },
+        {
+          "City": "Angamaly"
+        },
+        {
+          "City": "North Paravur"
+        },
+        {
+          "City": "Muvattupuzha"
+        },
+        {
+          "City": "Perumbavoor"
+        },
+        {
+          "City": "Piravom"
+        },
+        {
+          "City": "Eloor"
+        },
+        {
+          "City": "Aluva"
+        },
+        {
+          "City": "Koothattukulam"
+        }
+      ],
+      "Kollam": [
+        {
+          "City": "Kollam"
+        },
+        {
+          "City": "Punalur"
+        },
+        {
+          "City": "Paravur"
+        },
+        {
+          "City": "Kottarakara"
+        },
+        {
+          "City": "Karunagappalli"
+        }
+      ],
+      "Thrissur": [
+        {
+          "City": "Thrissur"
+        },
+        {
+          "City": "Kodungallur"
+        },
+        {
+          "City": "Guruvayur"
+        },
+        {
+          "City": "Wadakkancherry"
+        },
+        {
+          "City": "Kunnamkulam"
+        },
+        {
+          "City": "Chalakudy"
+        },
+        {
+          "City": "Chavakkad"
+        },
+        {
+          "City": "Irinjalakuda"
+        }
+      ],
+      "Kannur": [
+        {
+          "City": "Kannur"
+        },
+        {
+          "City": "Thalassery"
+        },
+        {
+          "City": "Payyanur"
+        },
+        {
+          "City": "Panoor"
+        },
+        {
+          "City": "Mattanur"
+        },
+        {
+          "City": "Taliparamba"
+        },
+        {
+          "City": "Iritty"
+        },
+        {
+          "City": "Sreekandapuram"
+        },
+        {
+          "City": "Kuthuparamba"
+        },
+        {
+          "City": "Anthoor"
+        }
+      ],
+      "Alappuzha": [
+        {
+          "City": "Alappuzha"
+        },
+        {
+          "City": "Kayamkulam"
+        },
+        {
+          "City": "Cherthala"
+        },
+        {
+          "City": "Haripad"
+        },
+        {
+          "City": "Mavelikkara"
+        },
+        {
+          "City": "Chengannur"
+        }
+      ],
+      "Kottayam": [
+        {
+          "City": "Kottayam"
+        },
+        {
+          "City": "Changanassery"
+        },
+        {
+          "City": "Erattupetta"
+        },
+        {
+          "City": "Ettumanoor"
+        },
+        {
+          "City": "Vaikom"
+        },
+        {
+          "City": "Pala"
+        }
+      ],
+      "Palakkad": [
+        {
+          "City": "Palakkad"
+        },
+        {
+          "City": "Ottappalam"
+        },
+        {
+          "City": "Shornur"
+        },
+        {
+          "City": "Cherpulassery"
+        },
+        {
+          "City": "Mannarkkad"
+        },
+        {
+          "City": "Chittur-Thathamangalam"
+        },
+        {
+          "City": "Pattambi"
+        }
+      ],
+      "Malappuram": [
+        {
+          "City": "Manjeri"
+        },
+        {
+          "City": "Ponnani"
+        },
+        {
+          "City": "Parappanangadi"
+        },
+        {
+          "City": "Tanur"
+        },
+        {
+          "City": "Malappuram"
+        },
+        {
+          "City": "Kondotty"
+        },
+        {
+          "City": "Tirurangadi"
+        },
+        {
+          "City": "Tirur"
+        },
+        {
+          "City": "Perinthalmanna"
+        },
+        {
+          "City": "Nilambur"
+        },
+        {
+          "City": "Kottakkal"
+        },
+        {
+          "City": "Valanchery"
+        }
+      ],
+      "Kasaragod": [
+        {
+          "City": "Kanhangad"
+        },
+        {
+          "City": "Kasaragod"
+        },
+        {
+          "City": "Nileshwaram"
+        }
+      ],
+      "Pathanamthitta": [
+        {
+          "City": "Tiruvalla"
+        },
+        {
+          "City": "Pandalam"
+        },
+        {
+          "City": "Pathanamthitta"
+        },
+        {
+          "City": "Adoor"
+        }
+      ],
+      "Idukki": [
+        {
+          "City": "Thodupuzha"
+        },
+        {
+          "City": "Kattappana"
+        }
+      ],
+      "Wayanad": [
+        {
+          "City": "Mananthavady"
+        },
+        {
+          "City": "Sultan Bathery"
+        },
+        {
+          "City": "Kalpetta"
+        }
+      ]
+    }
+  }
