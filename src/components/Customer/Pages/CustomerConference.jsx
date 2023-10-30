@@ -3,9 +3,6 @@ import Modal from "react-modal";
 import Axios from "axios";
 import jwtDecode from "jwt-decode";
 import citiesData from "./locations.json";
-// import { Button } from "@material-tailwind/react";
-// import AddIcon from "@mui/icons-material/Add";
-Modal.setAppElement("#root");
 import {
   Button,
   TextField,
@@ -15,6 +12,9 @@ import {
   MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import axios from "axios";
+
+Modal.setAppElement("#root");
 
 function CustomerConference() {
   const token = localStorage.getItem("token");
@@ -27,13 +27,17 @@ function CustomerConference() {
   const [editConferenceHall, setEditConferenceHall] = useState(null);
 
   const [formData, setFormData] = useState({
+    id: null,
     name: "",
     description: "",
     price: null,
     Capacity: null,
     is_available: false,
     image: null,
-    location: {}, // This should be an object
+    location: {
+      district: "",
+      city: "",
+    },
     customer: userId,
   });
 
@@ -41,9 +45,24 @@ function CustomerConference() {
   const [selectedCity, setSelectedCity] = useState("");
   const [districtCities, setDistrictCities] = useState([]);
 
+  const [imageURL, setImageURL] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file, "the image file");
+    if (file) {
+      setFormData({ ...formData, image: file });
+    }
+  };
+
+  useEffect(() => {
+    if (editConferenceHall && editConferenceHall.image) {
+      setImageURL(editConferenceHall.image);
+    }
+  }, [editConferenceHall]);
+
   const districtOptions = Object.keys(citiesData.cities);
 
-  // Update district and city in formData when they change
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
@@ -54,12 +73,33 @@ function CustomerConference() {
     }));
   }, [selectedDistrict, selectedCity]);
 
-  // Fetch conference hall data
+  function cleanLocation(data) {
+    return data.map((item) => {
+      let cleanedLocation;
+      try {
+        const location = JSON.parse(item.location.replace(/\\"/g, '"'));
+        cleanedLocation = {
+          district: location.district || "",
+          city: location.city || "",
+        };
+        console.log("Parsed Location:", cleanedLocation);
+      } catch (error) {
+        console.error("Location Parsing Error:", error);
+        cleanedLocation = { district: "", city: "" };
+      }
+      return {
+        ...item,
+        location: cleanedLocation,
+      };
+    });
+  }
+
   useEffect(() => {
     const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/`;
     Axios.get(apiUrl)
       .then((response) => {
-        setConferenceData(response.data.results);
+        const modifiedData = cleanLocation(response.data.results);
+        setConferenceData(modifiedData);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -79,7 +119,6 @@ function CustomerConference() {
     const selectedCity = event.target.value;
     setSelectedCity(selectedCity);
 
-    // Update the location in the formData state
     setFormData({
       ...formData,
       location: {
@@ -89,7 +128,6 @@ function CustomerConference() {
     });
   };
 
-  // Handle the creation of a new conference hall
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -138,64 +176,113 @@ function CustomerConference() {
     }
   };
 
-  // Handle the update of an existing conference hall
-  const handleEdit = (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("price", formData.price);
-    formDataToSend.append("Capacity", formData.Capacity);
-    formDataToSend.append("is_available", formData.is_available);
-    formDataToSend.append("location", JSON.stringify(formData.location));
+    try {
+      const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/${formData.id}/`;
 
-    if (formData.image) {
-      formDataToSend.append("image", formData.image);
-    }
+      // Fetch the old data, including the image URL
+      const oldData = await axios.get(apiUrl);
 
-    const editApiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/${formData.id}/`;
+      // Extract the image URL from the old data
+      const imageUrl = oldData.data.image;
+      console.log(imageUrl, "before");
 
-    Axios.patch(editApiUrl, formDataToSend)
-      .then((response) => {
-        if (response.status === 200) {
-          const updatedData = conferenceData.map((hall) =>
-            hall.id === editConferenceHall.id ? response.data : hall
-          );
-          setConferenceData(updatedData);
-          setEditModalOpen(false);
-        } else {
-          console.error("Edit operation was not successful:", response);
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating the conference hall:", error);
+      const oldImage = extractFileNameFromURL(imageUrl);
+
+      // Construct a new File object with the old image name and the "image/jpeg" type
+      const finalImage = new File([oldImage], "image.jpeg", {
+        type: "image/jpeg",
       });
-  };
+      console.log(finalImage, "final url");
+      console.log(formData.location, "location");
+      const spaceData = {
+        name: formData.name,
+        description: formData.description,
+        price: formData.price,
+        Capacity: formData.Capacity,
+        is_available: formData.is_available,
+        location: formData.location,
+        customer: userId,
+      };
 
-  // Handle the deletion of a conference hall
-  const handleDelete = (conferenceHallId) => {
-    Axios.delete(
-      `http://127.0.0.1:8000/space/conference-halls/${userId}/${conferenceHallId}/`
-    )
-      .then(() => {
-        const updatedData = conferenceData.filter(
-          (hall) => hall.id !== conferenceHallId
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", spaceData.name);
+      formDataToSend.append("description", spaceData.description);
+      formDataToSend.append("price", spaceData.price);
+      formDataToSend.append("Capacity", spaceData.Capacity);
+      formDataToSend.append("is_available", spaceData.is_available);
+      formDataToSend.append("customer", spaceData.customer);
+      formDataToSend.append("location", JSON.stringify(spaceData.location));
+
+      // Check if a new image is selected, if not, use the old image URL
+      if (formData.image instanceof File) {
+        formDataToSend.append("image", formData.image);
+      } else {
+        // If there's no new image selected, use the new File object
+        // formDataToSend.append("image", finalImage);
+      }
+
+      let stat = spaceData;
+
+      if (formData.image) {
+        stat = formDataToSend;
+      }
+
+      
+      const response = await axios.patch(apiUrl, stat, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        const updatedData = conferenceData.map((hall) =>
+          hall.id === formData.id ? response.data : hall
         );
         setConferenceData(updatedData);
-      })
-      .catch((error) => {
-        console.error("Error deleting the conference hall:", error);
-      });
+        setEditModalOpen(false);
+      } else {
+        console.error("Edit operation was not successful:", response);
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error("Request failed with status code", error.response.status);
+        console.error("Response data:", error.response.data);
+      } else {
+        console.error("Error updating the conference hall:", error);
+      }
+    }
   };
 
-  // Handle image change
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData((prevData) => ({ ...prevData, image: file }));
+  const handleDelete = async (id) => {
+    try {
+      const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/${id}/`;
+      const response = await Axios.delete(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 204) {
+        const updatedData = conferenceData.filter((hall) => hall.id !== id);
+        setConferenceData(updatedData);
+      } else {
+        console.error("Delete operation was not successful:", response);
+      }
+    } catch (error) {
+      console.error("Error deleting the conference hall:", error);
+    }
+  };
+
+  const extractFileNameFromURL = (url) => {
+    return url.split("/").pop();
   };
 
   console.log(conferenceData);
+
   return (
     <div className="p-4" style={{ marginLeft: "15rem" }}>
       <div style={{ marginLeft: "62rem" }}>
@@ -211,69 +298,67 @@ function CustomerConference() {
       <br />
 
       {conferenceData.map((hall) => (
-  <div
-    key={hall.id}
-    className="flex rounded-lg bg-white shadow-md p-2 mb-4"
-  >
-<img
-  className="h-48 w-48 rounded-l-lg object-cover"
-  src={hall.image}
-  alt={hall.name}
-/>
+        <div
+          key={hall.id}
+          className="flex rounded-lg bg-white shadow-md p-2 mb-4"
+        >
+          <img
+            className="h-48 w-48 rounded-l-lg object-cover"
+            src={hall.image}
+            alt={hall.name}
+          />
 
-    <div className="flex flex-col justify-start p-2">
-      <h5 className="text-lg font-medium text-black dark:text-black">
-        {hall.name}
-      </h5>
-      <table className="w-full">
-        <tr>
-          <td className="pr-2">Capacity:</td>
-          <td>{hall.Capacity}</td>
-        </tr>
-        <tr>
-          <td className="pr-2">Customer:</td>
-          <td>{hall.customer}</td>
-        </tr>
-        <tr>
-          <td className="pr-2">Description:</td>
-          <td>{hall.description}</td>
-        </tr>
-        <tr>
-          <td className="pr-2">Price:</td>
-          <td>₹{hall.price}</td>
-        </tr>
-        <tr>
-          <td className="pr-2">Location:</td>
-          <td>
-            {JSON.parse(hall.location).district}, {JSON.parse(hall.location).city}
-          </td>
-        </tr>
-        <tr>
-          <td className="pr-2">Availability:</td>
-          <td>{hall.is_available ? "Available" : "Not Available"}</td>
-        </tr>
-      </table>
-      <div className="flex gap-2 mt-2">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            setEditConferenceHall(hall);
-            setFormData(hall);
-            setEditModalOpen(true);
-          }}
-        >
-          Edit
-        </button>
-        <button
-          className="bg-red-500 hover-bg-red-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => handleDelete(hall.id)}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-))}
+          <div className="flex flex-col justify-start p-2">
+            <h5 className="text-lg font-medium text-black dark:text-black">
+              {hall.name}
+            </h5>
+            <table className="w-full">
+              <tr>
+                <td className="pr-2">Capacity:</td>
+                <td>{hall.Capacity}</td>
+              </tr>
+              <tr>
+                <td className="pr-2">Customer:</td>
+                <td>{hall.customer}</td>
+              </tr>
+              <tr>
+                <td className="pr-2">Description:</td>
+                <td>{hall.description}</td>
+              </tr>
+              <tr>
+                <td className="pr-2">Price:</td>
+                <td>₹{hall.price}</td>
+              </tr>
+              <tr>
+                <td className="pr-2">Location:</td>
+                {hall.location.district},{hall.location.city}
+              </tr>
+              <tr>
+                <td className="pr-2">Availability:</td>
+                <td>{hall.is_available ? "Available" : "Not Available"}</td>
+              </tr>
+            </table>
+            <div className="flex gap-2 mt-2">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => {
+                  setEditConferenceHall(hall);
+                  setFormData(hall);
+                  setEditModalOpen(true);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="bg-red-500 hover-bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => handleDelete(hall.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
 
       <Modal
         isOpen={isNewModalOpen}
@@ -376,6 +461,11 @@ function CustomerConference() {
         isOpen={isEditModalOpen}
         onRequestClose={() => setEditModalOpen(false)}
         style={{
+          content: {
+            width: "400px", // Adjust the width
+            height: "500px", // Adjust the height
+            margin: "auto", // Center the modal horizontally
+          },
           overlay: {
             zIndex: 1001,
           },
@@ -429,25 +519,35 @@ function CustomerConference() {
             }
             label="Is Available"
           />
-          <input
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-          {formData.image && (
-            <div>
-              <img
-                src={
-                  typeof formData.image === "string"
-                    ? formData.image
-                    : URL.createObjectURL(formData.image)
-                }
-                alt="Current Image"
-                style={{ maxWidth: "100%", maxHeight: "200px" }}
-              />
-            </div>
-          )}
+
+          <div className="form-field">
+            <label>Image:</label>
+            <input type="file" name="image" onChange={handleImageChange} />
+            {formData.image ? (
+              <div className="form-field">
+                <label>Current Image:</label>
+                <img
+                  src={
+                    typeof formData.image === "string"
+                      ? formData.image // Use the URL directly if it's a string (e.g., the existing image URL)
+                      : URL.createObjectURL(formData.image) // Create an object URL if it's a Blob or File
+                  }
+                  alt="Current Image"
+                  style={{ maxWidth: "100%", maxHeight: "200px" }}
+                />
+              </div>
+            ) : (
+              <div className="form-field">
+                <label>Current Image:</label>
+                <img
+                  src={imageURL}
+                  alt="Current Image"
+                  style={{ maxWidth: "100%", maxHeight: "200px" }}
+                />
+              </div>
+            )}
+          </div>
+
           <Select
             value={selectedDistrict}
             onChange={handleDistrictChange}
