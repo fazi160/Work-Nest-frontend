@@ -17,10 +17,10 @@ function SideNavbar({ onPageSelect }) {
     }
     const decode = jwtDecode(token);
 
-    console.log(decode.user_type, "user type show");
+    // console.log(decode.user_type, "user type show");
 
     const handleItemClick = (text) => {
-        console.log(text, 'from side Nav');
+        // console.log(text, 'from side Nav');
         onPageSelect(text); // Notify the parent component about the selected page
     };
 

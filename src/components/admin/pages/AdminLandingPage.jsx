@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import jwtDecode from "jwt-decode";
 import CustomerList from './CustomerList';
 import Notification from '../../admin&Customer/Notification';
 import SalesReport from '../../admin&Customer/SalesReport';
@@ -29,6 +29,7 @@ function AdminLandingPage() {
       console.log(decode.user_type, "user type show");
     }
   }, [navigate]);
+  
   return (
     
     <div>

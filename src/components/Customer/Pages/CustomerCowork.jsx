@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
+import TablePagination from "@mui/material/TablePagination";
 
 Modal.setAppElement("#root");
 
@@ -46,6 +47,9 @@ function CustomerCowork() {
   const [districtCities, setDistrictCities] = useState([]);
 
   const [imageURL, setImageURL] = useState(null);
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -134,20 +138,21 @@ function CustomerCowork() {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-
+  
     try {
       const apiUrl = `http://127.0.0.1:8000/space/cowork-spaces/${userId}/`;
-
+  
+      // Parse slots and price as integers
       const spaceData = {
         name: formData.name,
         description: formData.description,
-        price: formData.price,
-        slots: formData.slots,
+        price: formData.price, 
+        slots: formData.slots, 
         is_available: formData.is_available,
         location: formData.location,
         customer: userId,
       };
-
+  
       const formDataToSend = new FormData();
       formDataToSend.append("name", spaceData.name);
       formDataToSend.append("description", spaceData.description);
@@ -156,22 +161,35 @@ function CustomerCowork() {
       formDataToSend.append("is_available", spaceData.is_available);
       formDataToSend.append("customer", spaceData.customer);
       formDataToSend.append("location", JSON.stringify(spaceData.location));
-
+  
+      console.log(formData);
       if (formData.image) {
         formDataToSend.append("image", formData.image);
       }
-
+  
       const response = await Axios.post(apiUrl, formDataToSend, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
-
+      // console.log(response, "response from the server");
       if (response.status === 201) {
         const data = response.data;
         setCoworkData((prevData) => [...prevData, data]);
         setNewModalOpen(false);
+        const spaceData = {
+          name: "",
+          description: "",
+          price: null,
+          slots: null,
+          is_available: false,
+          location: {
+            district: "",
+            city: "",
+          },
+          customer: userId,
+        };
       } else {
         console.error("Failed to create a new space");
       }
@@ -179,6 +197,7 @@ function CustomerCowork() {
       console.error("Error creating a new space:", error);
     }
   };
+  
 
 
   const handleEdit = async (e) => {
@@ -283,25 +302,43 @@ function CustomerCowork() {
     return url.split("/").pop();
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const displayedCoworkData = coworkData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   console.log(coworkData);
 
-  // let data = coworkData.location.replace(/\\/g,"")
-  // console.log(data);
+
 return (
   <div className="p-4" style={{ marginLeft: "15rem" }}>
-    <div style={{ marginLeft: "62rem" }}>
-      <Button
-        className="bg-black"
-        onClick={() => setNewModalOpen(true)}
-        style={{ width: "15rem" }}
-      >
-        <AddIcon style={{ fontSize: 32 }} />
-        Create Coworking Space
-      </Button>
-    </div>
+     <div class="flex items-center">
+        <div class="text-3xl font-bold mt-4">CoWorking Spaces</div>
+        <div class="ml-auto">
+          <button class="bg-black text-white flex items-center py-2 px-4 rounded-lg shadow-lg hover:bg-gray-900 hover:shadow-xl transition duration-300 ease-in-out"
+          onClick={() => setNewModalOpen(true)}>
+            <AddIcon
+              style={{ fontSize: 32 }}
+              
+            />
+            <span class="ml-2 text-xl font-semibold">
+              Create CoWorking Space
+            </span>
+          </button>
+        </div>
+      </div>
     <br />
 
-    {coworkData.map((space) => (
+    {displayedCoworkData.map((space) => (
       <div
         key={space.id}
         className="flex rounded-lg bg-white shadow-md p-2 mb-4"
@@ -331,7 +368,7 @@ return (
             </tr>
             <tr>
               <td className="pr-2">Location:</td>
-              {/* {space.location} */}
+              
               {space.location.district}, {space.location.city}
             </tr>
             <tr>
@@ -339,6 +376,8 @@ return (
               <td>{space.is_available ? "Available" : "Not Available"}</td>
             </tr>
           </table>
+
+
           <div className="flex gap-2 mt-2">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -361,10 +400,31 @@ return (
       </div>
     ))}
 
-    <Modal
-      isOpen={isNewModalOpen}
-      onRequestClose={() => setNewModalOpen(false)}
-    >
+<TablePagination
+        component="div"
+        count={coworkData.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+
+<Modal
+  isOpen={isNewModalOpen}
+  onRequestClose={() => setNewModalOpen(false)}
+  style={{
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 1001,
+    },
+    content: {
+      width: '400px', // Adjust the width
+      height: '500px', // Adjust the height
+      margin: 'auto', // Center the modal horizontally
+      marginTop: '100px', // Adjust the top margin to clear the constant navbar
+    },
+  }}
+>
       <h2>Create Coworking Space</h2>
       <form>
         <TextField
@@ -391,6 +451,7 @@ return (
           onChange={(e) =>
             setFormData({ ...formData, price: e.target.value })
           }
+          type="number"
         />
         <TextField
           label="Slots"
@@ -400,6 +461,7 @@ return (
           onChange={(e) =>
             setFormData({ ...formData, slots: e.target.value })
           }
+          type="number"
         />
         <FormControlLabel
           control={

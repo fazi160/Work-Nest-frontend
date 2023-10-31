@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
+import TablePagination from "@mui/material/TablePagination";
+
 
 Modal.setAppElement("#root");
 
@@ -47,6 +49,10 @@ function CustomerConference() {
 
   const [imageURL, setImageURL] = useState(null);
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10); // You can set your desired number of rows per page
+
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file, "the image file");
@@ -54,6 +60,7 @@ function CustomerConference() {
       setFormData({ ...formData, image: file });
     }
   };
+
 
   useEffect(() => {
     if (editConferenceHall && editConferenceHall.image) {
@@ -168,6 +175,17 @@ function CustomerConference() {
         const data = response.data;
         setConferenceData((prevData) => [...prevData, data]);
         setNewModalOpen(false);
+        // Clear the form fields by resetting formData to an empty object
+        setFormData({
+          name: "",
+          description: "",
+          price: "",
+          Capacity: "",
+          is_available: false,
+          location: { district: "", city: "" },
+          customer: userId,
+        });
+        // conferenceData
       } else {
         console.error("Failed to create a new space");
       }
@@ -230,7 +248,6 @@ function CustomerConference() {
         stat = formDataToSend;
       }
 
-      
       const response = await axios.patch(apiUrl, stat, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -281,23 +298,43 @@ function CustomerConference() {
     return url.split("/").pop();
   };
 
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const displayedConferenceData = conferenceData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+  
   console.log(conferenceData);
 
   return (
     <div className="p-4" style={{ marginLeft: "15rem" }}>
-      <div style={{ marginLeft: "62rem" }}>
-        <Button
-          className="bg-black"
-          onClick={() => setNewModalOpen(true)}
-          style={{ width: "15rem" }}
-        >
-          <AddIcon style={{ fontSize: 32 }} />
-          Create Conference Hall
-        </Button>
+      <div class="flex items-center">
+        <div class="text-3xl font-bold mt-4">Conference Halls</div>
+        <div class="ml-auto">
+          <button
+            class="bg-black text-white flex items-center py-2 px-4 rounded-lg shadow-lg hover:bg-gray-900 hover:shadow-xl transition duration-300 ease-in-out"
+            onClick={() => setNewModalOpen(true)}
+          >
+            <AddIcon style={{ fontSize: 32 }} />
+            <span class="ml-2 text-xl font-semibold">
+              Create Conference Hall
+            </span>
+          </button>
+        </div>
       </div>
+
       <br />
 
-      {conferenceData.map((hall) => (
+      {displayedConferenceData.map((hall) => (
         <div
           key={hall.id}
           className="flex rounded-lg bg-white shadow-md p-2 mb-4"
@@ -310,6 +347,7 @@ function CustomerConference() {
 
           <div className="flex flex-col justify-start p-2">
             <h5 className="text-lg font-medium text-black dark:text-black">
+           
               {hall.name}
             </h5>
             <table className="w-full">
@@ -360,11 +398,33 @@ function CustomerConference() {
         </div>
       ))}
 
+<TablePagination
+        component="div"
+        count={conferenceData.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+
+
       <Modal
         isOpen={isNewModalOpen}
         onRequestClose={() => setNewModalOpen(false)}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1001,
+          },
+          content: {
+            width: "400px", // Adjust the width
+            height: "500px", // Adjust the height
+            margin: "auto", // Center the modal horizontally
+            marginTop: "100px", // Adjust the top margin to clear the constant navbar
+          },
+        }}
       >
-        <h2>Create Conference Hall</h2>
+        <h2 class="text-2xl font-semibold mb-4">Create Conference Hall</h2>
         <form>
           <TextField
             label="Name"
@@ -390,6 +450,7 @@ function CustomerConference() {
             onChange={(e) =>
               setFormData({ ...formData, price: e.target.value })
             }
+            type="number"
           />
           <TextField
             label="Capacity"
@@ -399,6 +460,7 @@ function CustomerConference() {
             onChange={(e) =>
               setFormData({ ...formData, Capacity: e.target.value })
             }
+            type="number"
           />
           <FormControlLabel
             control={
@@ -461,13 +523,15 @@ function CustomerConference() {
         isOpen={isEditModalOpen}
         onRequestClose={() => setEditModalOpen(false)}
         style={{
-          content: {
-            width: "400px", // Adjust the width
-            height: "500px", // Adjust the height
-            margin: "auto", // Center the modal horizontally
-          },
           overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
             zIndex: 1001,
+          },
+          content: {
+            width: "400px",
+            height: "auto", // Adjusted to make it dynamic
+            margin: "auto",
+            top: "100px", // Adjusted for the top margin
           },
         }}
       >
@@ -495,17 +559,25 @@ function CustomerConference() {
             fullWidth
             value={formData.price}
             onChange={(e) =>
-              setFormData({ ...formData, price: e.target.value })
+              setFormData({
+                ...formData,
+                price: e.target.value.replace(/\D/g, ""), // Accept only digits
+              })
             }
+            type="number"
           />
           <TextField
             label="Capacity"
             variant="outlined"
             fullWidth
-            value={formData.Capacity}
+            value={formData.capacity}
             onChange={(e) =>
-              setFormData({ ...formData, Capacity: e.target.value })
+              setFormData({
+                ...formData,
+                capacity: e.target.value.replace(/\D/g, ""), // Accept only digits
+              })
             }
+            type="number"
           />
           <FormControlLabel
             control={
@@ -519,7 +591,6 @@ function CustomerConference() {
             }
             label="Is Available"
           />
-
           <div className="form-field">
             <label>Image:</label>
             <input type="file" name="image" onChange={handleImageChange} />
@@ -529,8 +600,8 @@ function CustomerConference() {
                 <img
                   src={
                     typeof formData.image === "string"
-                      ? formData.image // Use the URL directly if it's a string (e.g., the existing image URL)
-                      : URL.createObjectURL(formData.image) // Create an object URL if it's a Blob or File
+                      ? formData.image
+                      : URL.createObjectURL(formData.image)
                   }
                   alt="Current Image"
                   style={{ maxWidth: "100%", maxHeight: "200px" }}
@@ -547,7 +618,6 @@ function CustomerConference() {
               </div>
             )}
           </div>
-
           <Select
             value={selectedDistrict}
             onChange={handleDistrictChange}

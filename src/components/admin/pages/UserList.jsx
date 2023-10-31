@@ -10,11 +10,18 @@ function UserList() {
     useEffect(() => {
       // Define your Django API endpoint
       const apiUrl = 'http://127.0.0.1:8000/auth/userlist/';
-  
+    
       // Fetch user data from your Django API using Axios
       axios.get(apiUrl)
         .then(response => {
-          setUserList(response.data);
+          const responseData = response.data;
+    
+          if (responseData.results && Array.isArray(responseData.results)) {
+            setUserList(responseData.results);
+          } else {
+            console.error('Invalid API response:', responseData);
+          }
+    
           setLoading(false);
         })
         .catch(error => {
