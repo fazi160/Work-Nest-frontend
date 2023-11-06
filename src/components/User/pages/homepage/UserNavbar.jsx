@@ -2,6 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Container, Link } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import UserChat from '../UserChat';
 
 const Navbar = styled(AppBar)(({ theme }) => ({
   backgroundColor: 'black',
@@ -40,10 +41,14 @@ function UserNavbar() {
     const token = localStorage.getItem('token');
     if (token) {
       return <Link component="button" onClick={handleLogout}>Logout</Link>;
+      
+      
     } else {
       return <Link href="/user/login">Login</Link>;
     }
   };
+
+  
 
   return (
     <Navbar position="static">
@@ -59,7 +64,7 @@ function UserNavbar() {
               <Link href="/about">About</Link>
             </MenuItem>
             <MenuItem>
-              <Link href="/services">Services</Link>
+              <Link href="/user/chat">Chat</Link>
             </MenuItem>
             <MenuItem>{loginOrLogoutHandle()}</MenuItem>
           </Menu>

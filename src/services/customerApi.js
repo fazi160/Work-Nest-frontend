@@ -9,7 +9,15 @@ const customerSignin = (values) => {
 };
 
 
+const UsersListing = (id,search) =>{
+  return CompanyAxiosInstant.get(`userslisting/${id}/?search=${search}`,{
+    withCredentials:true
+  }).catch((error) => {
+    throw error;
+  });
+}
+
 
 export {
-  customerSignin
+  customerSignin, UsersListing
 }

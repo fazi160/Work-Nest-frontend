@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import UserNavbar from "./homepage/UserNavbar";
-
+// import Chat from "../../admin&Customer/Chat";
+import UserChat from "./UserChat";
 import banner1 from "../../../assets/banners/banner1.jpg";
 import banner2 from "../../../assets/banners/banner2.jpg";
 import banner3 from "../../../assets/banners/banner3.jpg";
@@ -23,7 +24,7 @@ const companyInfoStyles = "text-center py-5";
 
 function UserHome() {
   const [currentBanner, setCurrentBanner] = useState(1);
-
+  const [showChat, setShowChat] = useState(false);
   useEffect(() => {
     // Automatically switch banners every 3 seconds
     const interval = setInterval(() => {
@@ -32,7 +33,10 @@ function UserHome() {
 
     return () => clearInterval(interval); // Clear the interval on component unmount
   }, []);
-
+    // Function to toggle the chat visibility
+    const toggleChat = () => {
+      setShowChat(!showChat);
+    };
   return (
     <>
       <UserNavbar />
@@ -64,8 +68,8 @@ function UserHome() {
           experience with Work Nest.
         </p>
         <br />
-        <button className="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
-          Contact Us
+        <button className="bg-gray-200 hover-bg-gray-300 text-black font-bold py-2 px-4 rounded" onClick={toggleChat}>
+          Open Chat
         </button>
       </div>
       <br />

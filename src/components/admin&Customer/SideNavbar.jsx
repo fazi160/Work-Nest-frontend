@@ -26,6 +26,7 @@ function SideNavbar({ onPageSelect }) {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('currentPage')
         if (decode.user_type === 'customer') {
             navigate('/customer/login');
         } else if (decode.user_type === 'admin') {

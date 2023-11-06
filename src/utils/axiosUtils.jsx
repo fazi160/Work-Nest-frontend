@@ -1,6 +1,6 @@
 import axios from "axios";
 // import {UserUrl, CompanyUrl, AdminUrl} from '../constants/constants'
-import {Auth_url} from '../constants/constants'
+import {Auth_url, User_url, Customer_url, Admin_url} from '../constants/constants'
 
 // setting for Request time out
 const createAxioxClient = (baseURL)=>{
@@ -26,5 +26,23 @@ loginAxiosInstant.interceptors.request.use(async (req) =>{
     return modifiedReq
 })
 
+const userAxiosInstant = createAxioxClient(User_url)
+userAxiosInstant.interceptors.request.use(async (req) =>{
+    const modifiedReq = attatToken(req, 'token')
+    return modifiedReq
+})
 
-export {loginAxiosInstant}
+const CustomerAxiosInstant = createAxioxClient(Customer_url)
+CustomerAxiosInstant.interceptors.request.use(async (req) =>{
+    const modifiedReq = attatToken(req, 'token')
+    return modifiedReq
+})
+
+
+const adminAxiosInstant = createAxioxClient(Admin_url)
+adminAxiosInstant.interceptors.request.use(async (req) =>{
+    const modifiedReq = attatToken(req, 'token')
+    return modifiedReq
+})
+
+export {loginAxiosInstant, userAxiosInstant, CustomerAxiosInstant, adminAxiosInstant}

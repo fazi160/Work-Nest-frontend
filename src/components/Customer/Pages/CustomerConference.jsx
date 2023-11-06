@@ -15,7 +15,6 @@ import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import TablePagination from "@mui/material/TablePagination";
 
-
 Modal.setAppElement("#root");
 
 function CustomerConference() {
@@ -52,7 +51,6 @@ function CustomerConference() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10); // You can set your desired number of rows per page
 
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file, "the image file");
@@ -60,7 +58,6 @@ function CustomerConference() {
       setFormData({ ...formData, image: file });
     }
   };
-
 
   useEffect(() => {
     if (editConferenceHall && editConferenceHall.image) {
@@ -298,11 +295,10 @@ function CustomerConference() {
     return url.split("/").pop();
   };
 
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -312,7 +308,7 @@ function CustomerConference() {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
-  
+
   console.log(conferenceData);
 
   return (
@@ -347,7 +343,6 @@ function CustomerConference() {
 
           <div className="flex flex-col justify-start p-2">
             <h5 className="text-lg font-medium text-black dark:text-black">
-           
               {hall.name}
             </h5>
             <table className="w-full">
@@ -398,7 +393,7 @@ function CustomerConference() {
         </div>
       ))}
 
-<TablePagination
+      <TablePagination
         component="div"
         count={conferenceData.length}
         page={page}
@@ -406,7 +401,6 @@ function CustomerConference() {
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-
 
       <Modal
         isOpen={isNewModalOpen}
@@ -570,7 +564,7 @@ function CustomerConference() {
             label="Capacity"
             variant="outlined"
             fullWidth
-            value={formData.capacity}
+            value={formData.Capacity}
             onChange={(e) =>
               setFormData({
                 ...formData,

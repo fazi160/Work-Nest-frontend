@@ -5,6 +5,7 @@ import UserProtected from '../ProtectedRoutes/UserProtected'
 import UserHomePage from '../pages/User/UserHomePage'
 import UserLoginPage from '../pages/User/UserLoginPage'
 import UserSignupPage from '../pages/User/UserSignupPage'
+import UserChatPage from '../pages/User/UserChatPage'
 
 function UserRoutes() {
   return (
@@ -17,6 +18,7 @@ function UserRoutes() {
 
         <Route element={<UserProtected/>}>
             <Route path='/' element={<UserHomePage/>}/>
+            <Route path='/chat' element={<UserChatPage/>}/>
 
         </Route>
       </Routes>

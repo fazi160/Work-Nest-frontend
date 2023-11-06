@@ -6,7 +6,7 @@ import CustomerCowork from './CustomerCowork';
 import CustomerConference from './CustomerConference';
 import SalesReport from '../../admin&Customer/SalesReport';
 import Notification from '../../admin&Customer/Notification';
-import Chat from '../../admin&Customer/Chat';
+import Chat from './Chat';
 import jwtDecode from 'jwt-decode';
 import SideNavbar from '../../admin&Customer/SideNavbar';
 import CustomerDetails from './CustomerDetails';
