@@ -12,13 +12,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import Fab from "@material-ui/core/Fab";
 import SendIcon from "@mui/icons-material/Send";
-import VideoCallIcon from "@mui/icons-material/VideoCall"; // Import the VideoCall icon
-import { useNavigate } from "react-router-dom";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { userAxiosInstant } from "../../../utils/axiosUtils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { wsApiUrl } from "../../../constants/constants";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   chatSection: {
@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Chat() {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const [senderdetails, setSenderDetails] = useState({});
   const [recipientdetails, setRecipientDetails] = useState({});
@@ -71,6 +72,46 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const messageRef = useRef();
   const lastMessageRef = useRef();
+
+  const handleVideoCallClick = () => {
+    console.log("Recipient Details:", recipientdetails);
+    console.log("Sender Details:", senderdetails);
+
+    if (recipientdetails && senderdetails) {
+      const data = [senderdetails, recipientdetails];
+
+      if (data[1]) {
+        console.log("Navigating to /customer/videocall with data:", data);
+        const messageData = {
+          message: `http://localhost:5173/user/videocall?roomId=${senderdetails.id}&receiverId=${recipientdetails.id}`,
+          senderUsername: senderdetails.email,
+          receiverUsername: recipientdetails.email,
+        };
+
+        clientstate.send(JSON.stringify(messageData));
+
+        navigate("/customer/videocall", { state: { data: data } });
+      } else {
+        console.error("Data is empty. Unable to initiate video call.");
+      }
+    } else {
+      console.error("Recipient details or sender details are missing.");
+    }
+  };
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        console.log("Tab is visible, reconnect WebSocket if needed");
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const onButtonClicked = () => {
     clientstate.send(
@@ -149,6 +190,29 @@ function Chat() {
     });
   }, []);
 
+  const renderButtonIfLink = (message) => {
+    const linkRegex = /http?:\/\/[^\s]+/g; // Regular expression to match URLs
+  
+    // Check if the message contains a link
+    const hasLink = linkRegex.test(message);
+  
+    if (hasLink) {
+      return (
+        <button
+          onClick={() => {
+            // Handle button click action (e.g., navigate to the link)
+            window.open(message, '_blank');
+          }}
+        >
+          Open Link
+        </button>
+      );
+    }
+  
+    return null; // Return null if there is no link
+  };
+  
+
   return (
     <div style={{ marginLeft: "15rem" }}>
       <div>
@@ -211,6 +275,7 @@ function Chat() {
                     color="primary"
                     aria-label="video-call"
                     className={classes.videoCallButton}
+                    onClick={handleVideoCallClick}
                   >
                     <VideoCallIcon />
                   </Fab>
@@ -226,20 +291,28 @@ function Chat() {
                 >
                   <Grid container>
                     <Grid item xs={12}>
-                      <ListItemText
-                        align={
-                          senderdetails.email === message.sender_email ||
-                          recipientdetails.email !== message.sender_email
-                            ? "right"
-                            : "left"
-                        }
-                        primary={message.message}
-                      />
+                      {senderdetails.email === message.sender_email ||
+                      recipientdetails.email !== message.sender_email ? (
+                        // Render message aligned to the right for the sender
+                        <ListItemText
+                          align="right"
+                          primary={message.message}
+                          secondary={renderButtonIfLink(message.message)}
+                        />
+                      ) : (
+                        // Render message aligned to the left for the recipient
+                        <ListItemText
+                          align="left"
+                          primary={message.message}
+                          secondary={renderButtonIfLink(message.message)}
+                        />
+                      )}
                     </Grid>
                   </Grid>
                 </ListItem>
               ))}
             </List>
+
             <Divider />
             <Grid container style={{ padding: "20px" }}>
               <Grid item xs={11}>

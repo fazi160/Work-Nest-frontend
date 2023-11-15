@@ -45,7 +45,7 @@ function CustomerCowork() {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [districtCities, setDistrictCities] = useState([]);
-
+  const [editSuccess, setEditSuccess] = useState(0)
   const [imageURL, setImageURL] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -109,7 +109,7 @@ function CustomerCowork() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [userId]);
+  }, [userId,editSuccess]);
   
   
 
@@ -265,6 +265,7 @@ function CustomerCowork() {
         );
         setCoworkData(updatedData);
         setEditModalOpen(false);
+        setEditSuccess(1)
       } else {
         console.error("Edit operation was not successful:", response);
       }

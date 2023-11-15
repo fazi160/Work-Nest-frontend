@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Modal from "react-modal";
 import Axios from "axios";
 import jwtDecode from "jwt-decode";
@@ -10,6 +10,8 @@ import {
   FormControlLabel,
   Select,
   MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
@@ -21,12 +23,11 @@ function CustomerConference() {
   const token = localStorage.getItem("token");
   const decode = jwtDecode(token);
   const userId = decode.user_id;
-
   const [conferenceData, setConferenceData] = useState([]);
   const [isNewModalOpen, setNewModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [editConferenceHall, setEditConferenceHall] = useState(null);
-
+  const [editSuccess, setEditSuccess] = useState(0);
   const [formData, setFormData] = useState({
     id: null,
     name: "",
@@ -62,6 +63,12 @@ function CustomerConference() {
   useEffect(() => {
     if (editConferenceHall && editConferenceHall.image) {
       setImageURL(editConferenceHall.image);
+    }
+  }, [editConferenceHall]);
+  useEffect(() => {
+    if (editConferenceHall) {
+      setSelectedDistrict(editConferenceHall.location.district || "");
+      setSelectedCity(editConferenceHall.location.city || "");
     }
   }, [editConferenceHall]);
 
@@ -108,7 +115,7 @@ function CustomerConference() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [userId]);
+  }, [userId, editSuccess]);
 
   const handleDistrictChange = (event) => {
     const selectedDistrict = event.target.value;
@@ -258,6 +265,10 @@ function CustomerConference() {
         );
         setConferenceData(updatedData);
         setEditModalOpen(false);
+        // window.location.reload();
+        // render();
+        setEditSuccess(1);
+        // forceUpdate();
       } else {
         console.error("Edit operation was not successful:", response);
       }
@@ -612,23 +623,32 @@ function CustomerConference() {
               </div>
             )}
           </div>
-          <Select
-            value={selectedDistrict}
-            onChange={handleDistrictChange}
-            fullWidth
-          >
-            <MenuItem value="">
-              <em>Select District</em>
-            </MenuItem>
-            {districtOptions.map((district) => (
-              <MenuItem key={district} value={district}>
-                {district}
+          <FormControl fullWidth>
+            <InputLabel id="district-label">Select District</InputLabel>
+            <Select
+              labelId="district-label"
+              id="district-select"
+              value={selectedDistrict}
+              onChange={handleDistrictChange}
+              fullWidth
+            >
+              <MenuItem value="">
+                <em>Select District</em>
               </MenuItem>
-            ))}
-          </Select>
+              {districtOptions.map((district) => (
+                <MenuItem key={district} value={district}>
+                  {district}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           {selectedDistrict && (
-            <div>
+            <FormControl fullWidth>
+              <InputLabel id="city-label">Select City</InputLabel>
               <Select
+                labelId="city-label"
+                id="city-select"
                 value={selectedCity}
                 onChange={handleCityChange}
                 fullWidth
@@ -642,8 +662,9 @@ function CustomerConference() {
                   </MenuItem>
                 ))}
               </Select>
-            </div>
+            </FormControl>
           )}
+
           <Button variant="contained" color="primary" onClick={handleEdit}>
             Update
           </Button>

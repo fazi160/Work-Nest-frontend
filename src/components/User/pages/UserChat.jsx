@@ -17,6 +17,7 @@ import jwtDecode from "jwt-decode";
 import { userAxiosInstant } from "../../../utils/axiosUtils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { wsApiUrl } from "../../../constants/constants";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   chatSection: {
@@ -62,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UserChat() {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [senderdetails, setSenderDetails] = useState({});
@@ -70,6 +72,35 @@ function UserChat() {
   const [messages, setMessages] = useState([]);
   const messageRef = useRef();
   const lastMessageRef = useRef();
+
+  const handleVideoCallClick = () => {
+    console.log("Recipient Details:", recipientdetails);
+    console.log("Sender Details:", senderdetails);
+
+    if (recipientdetails && senderdetails) {
+      console.log("it's working");
+      const data = [senderdetails, recipientdetails];
+      console.log(data);
+
+      if (data[1]) {
+        console.log("Navigating to /customer/videocall with data:", data);
+
+        const messageData = {
+          message: `http://localhost:5173/user/videocall?roomId=${senderdetails.id}&receiverId=${recipientdetails.id}`,
+          senderUsername: senderdetails.email,
+          receiverUsername: recipientdetails.email,
+        };
+
+        clientstate.send(JSON.stringify(messageData));
+
+        navigate("/user/videocall", { state: { data: data } });
+      } else {
+        console.error("Data is empty. Unable to initiate video call.");
+      }
+    } else {
+      console.error("Recipient details or sender details are missing.");
+    }
+  };
 
   const onButtonClicked = () => {
     clientstate.send(
@@ -84,8 +115,6 @@ function UserChat() {
   };
 
   const setUpChat = () => {
- 
-  
     userAxiosInstant
       .get(
         `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
@@ -136,6 +165,7 @@ function UserChat() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const decode = jwtDecode(token);
+    console.log(decode);
     setSenderDetails({ id: decode.user_id, email: decode.email });
     const apiUrl = "http://127.0.0.1:8000/chat/customerlist/";
     axios.get(apiUrl).then((response) => {
@@ -148,7 +178,30 @@ function UserChat() {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-  console.log(messages);
+
+  const renderButtonIfLink = (message) => {
+    const linkRegex = /https?:\/\/[^\s]+/g; // Regular expression to match URLs
+
+    // Check if the message contains a link
+    const hasLink = linkRegex.test(message);
+
+    if (hasLink) {
+      return (
+        <button
+          type="button"
+          className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          onClick={() => {
+            // Handle button click action (e.g., navigate to the link)
+            window.open(message, "_blank");
+          }}
+        >
+          Open Link
+        </button>
+      );
+    }
+
+    return null; // Return null if there is no link
+  };
 
   return (
     <div>
@@ -213,30 +266,50 @@ function UserChat() {
                   color="primary"
                   aria-label="video-call"
                   className={classes.videoCallButton}
+                  onClick={handleVideoCallClick}
                 >
                   <VideoCallIcon />
                 </Fab>
               </div>
             </Grid>
           </Grid>
+
           <List className={classes.messageArea}>
             {messages.map((message, index) => (
               <ListItem
                 key={index}
                 ref={index === messages.length - 1 ? lastMessageRef : null}
               >
-                <ListItemText
-                  align={
-                    senderdetails.email === message.sender_email ||
-                    recipientdetails.email !== message.sender_email
-                      ? "right"
-                      : "left"
-                  }
-                  primary={message.message}
-                />
+                <Grid container>
+                  <Grid item xs={12}>
+                    {senderdetails.email === message.sender_email ||
+                    recipientdetails.email !== message.sender_email ? (
+                      // Render message aligned to the right for the sender
+                      <ListItemText
+                        align="right"
+                        primary={
+                          renderButtonIfLink(message.message)
+                            ? renderButtonIfLink(message.message)
+                            : message.message
+                        }
+                      />
+                    ) : (
+                      // Render message aligned to the left for the recipient
+                      <ListItemText
+                        align="left"
+                        primary={
+                          renderButtonIfLink(message.message)
+                            ? renderButtonIfLink(message.message)
+                            : message.message
+                        }
+                      />
+                    )}
+                  </Grid>
+                </Grid>
               </ListItem>
             ))}
           </List>
+
           <Grid
             container
             className={classes.inputArea}
@@ -263,6 +336,13 @@ function UserChat() {
           </Grid>
         </Grid>
       </Grid>
+
+      {/* {showVideoCall && (
+        <ZegoVideoCall
+          recipientdetails={recipientdetails}
+          senderdetails={senderdetails}
+        />
+      )} */}
     </div>
   );
 }

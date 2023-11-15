@@ -27,7 +27,7 @@ function UserProtected() {
         }
     } else {
         // return <UnknownHomePage/>                                      use this once this page is created
-        console.log(decode, "the else case of Customer Protected if this was null it means no data there to decode")
+        console.log("the else case of Customer Protected if this was null it means no data there to decode")
    }
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import UserNavbar from "./homepage/UserNavbar";
 // import Chat from "../../admin&Customer/Chat";
-import UserChat from "./UserChat";
+
 import banner1 from "../../../assets/banners/banner1.jpg";
 import banner2 from "../../../assets/banners/banner2.jpg";
 import banner3 from "../../../assets/banners/banner3.jpg";
