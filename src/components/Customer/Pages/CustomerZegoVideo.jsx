@@ -40,6 +40,11 @@ function ZegoVideo() {
     receiverId = recipientdetails.id.toString();
   }
 
+  const handleClosingButtonClick = () => {
+    // Add logic to handle closing action, for example, navigating back to the chat page
+    navigate("/customer");
+  };
+
 
   const myMeeting = async (element) => {
     // generate Kit Token
@@ -80,7 +85,18 @@ function ZegoVideo() {
   };
 
   return (
+    <>
+    <div className="ml-3 mr-8 mt-4">
+      <button
+        className="bg-black text-white px-8 py-3 rounded"
+        onClick={handleClosingButtonClick}
+      >
+        <ArrowBackIcon/>
+      </button>
+    </div>
+
     <div ref={myMeeting} style={{ width: "100vw", height: "100vh" }}></div>
+  </>
   );
 }
 

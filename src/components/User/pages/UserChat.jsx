@@ -114,6 +114,16 @@ function UserChat() {
     scrollToLastMessage();
   };
 
+  const scrollToBottom = () => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+  
   const setUpChat = () => {
     userAxiosInstant
       .get(
@@ -195,7 +205,7 @@ function UserChat() {
             window.open(message, "_blank");
           }}
         >
-          Open Link
+          Video Call Link
         </button>
       );
     }
@@ -288,9 +298,13 @@ function UserChat() {
                       <ListItemText
                         align="right"
                         primary={
-                          renderButtonIfLink(message.message)
-                            ? renderButtonIfLink(message.message)
-                            : message.message
+                          renderButtonIfLink(message.message) ? (
+                            <span className="text-red-500 font-bold">
+                              Video Call Request Has Been Sended
+                            </span>
+                          ) : (
+                            message.message
+                          )
                         }
                       />
                     ) : (
@@ -336,13 +350,6 @@ function UserChat() {
           </Grid>
         </Grid>
       </Grid>
-
-      {/* {showVideoCall && (
-        <ZegoVideoCall
-          recipientdetails={recipientdetails}
-          senderdetails={senderdetails}
-        />
-      )} */}
     </div>
   );
 }

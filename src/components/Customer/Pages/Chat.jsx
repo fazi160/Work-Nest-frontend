@@ -125,6 +125,17 @@ function Chat() {
     scrollToLastMessage();
   };
 
+  const scrollToBottom = () => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  
   const setUpChat = () => {
     userAxiosInstant
       .get(
@@ -185,30 +196,32 @@ function Chat() {
     setSenderDetails({ id: decode.user_id, email: decode.email });
     const apiUrl = "http://127.0.0.1:8000/chat/userlist/";
     axios.get(apiUrl).then((Response) => {
-      // console.log(Response.data.results);
+      
       setCustomers(Response.data.results);
     });
   }, []);
 
   const renderButtonIfLink = (message) => {
-    const linkRegex = /http?:\/\/[^\s]+/g; // Regular expression to match URLs
-  
+    const linkRegex = /https?:\/\/[^\s]+/g; // Regular expression to match URLs
+
     // Check if the message contains a link
     const hasLink = linkRegex.test(message);
-  
+
     if (hasLink) {
       return (
         <button
+          type="button"
+          className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
           onClick={() => {
             // Handle button click action (e.g., navigate to the link)
-            window.open(message, '_blank');
+            window.open(message, "_blank");
           }}
         >
-          Open Link
+          Video Call Link
         </button>
       );
     }
-  
+
     return null; // Return null if there is no link
   };
   
@@ -284,34 +297,41 @@ function Chat() {
             </Grid>
 
             <List className={classes.messageArea}>
-              {messages.map((message, index) => (
-                <ListItem
-                  key={index}
-                  ref={index === messages.length - 1 ? lastMessageRef : null}
-                >
-                  <Grid container>
-                    <Grid item xs={12}>
-                      {senderdetails.email === message.sender_email ||
-                      recipientdetails.email !== message.sender_email ? (
-                        // Render message aligned to the right for the sender
-                        <ListItemText
-                          align="right"
-                          primary={message.message}
-                          secondary={renderButtonIfLink(message.message)}
-                        />
-                      ) : (
-                        // Render message aligned to the left for the recipient
-                        <ListItemText
-                          align="left"
-                          primary={message.message}
-                          secondary={renderButtonIfLink(message.message)}
-                        />
-                      )}
-                    </Grid>
+            {messages.map((message, index) => (
+              <ListItem
+                key={index}
+                ref={index === messages.length - 1 ? lastMessageRef : null}
+              >
+                <Grid container>
+                  <Grid item xs={12}>
+                    {senderdetails.email === message.sender_email ||
+                    recipientdetails.email !== message.sender_email ? (
+                      // Render message aligned to the right for the sender
+                      <ListItemText
+                        align="right"
+                        primary={
+                          renderButtonIfLink(message.message)
+                            ? renderButtonIfLink(message.message)
+                            : message.message
+                        }
+                      />
+                    ) : (
+                      // Render message aligned to the left for the recipient
+                      <ListItemText
+                        align="left"
+                        primary={
+                          renderButtonIfLink(message.message)
+                            ? renderButtonIfLink(message.message)
+                            : message.message
+                        }
+                      />
+                    )}
                   </Grid>
-                </ListItem>
-              ))}
-            </List>
+                </Grid>
+              </ListItem>
+            ))}
+          </List>
+
 
             <Divider />
             <Grid container style={{ padding: "20px" }}>

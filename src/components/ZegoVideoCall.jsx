@@ -2,10 +2,11 @@ import React from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { ZEGO_APP_ID, ZEGO_SERVER_SECRET } from "../constants/constants";
 import { useLocation, useNavigate } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import jwtDecode from "jwt-decode";
 
 function ZegoVideo() {
-  const navigates = useNavigate();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const decode = jwtDecode(token);
 
@@ -26,17 +27,20 @@ function ZegoVideo() {
     receiverId = queryParams.get("receiverId");
 
     if (decode.user_id.toString() != receiverId.toString()) {
-      setTimeout(()=>{
-        navigates("/user/chat");
-      }) 
-
+      setTimeout(() => {
+        navigate("/user/chat");
+      });
     }
   } else {
     roomId = senderdetails.id.toString();
     receiverId = recipientdetails.id.toString();
   }
 
-  console.log(receiverId);
+  const handleClosingButtonClick = () => {
+    // Add logic to handle closing action, for example, navigating back to the chat page
+    navigate("/user/chat");
+  };
+
   const myMeeting = async (element) => {
     // generate Kit Token
     const appID = ZEGO_APP_ID;
@@ -76,7 +80,18 @@ function ZegoVideo() {
   };
 
   return (
-    <div ref={myMeeting} style={{ width: "100vw", height: "100vh" }}></div>
+    <>
+      <div className="ml-3 mr-8 mt-4">
+        <button
+          className="bg-black text-white px-8 py-3 rounded"
+          onClick={handleClosingButtonClick}
+        >
+          <ArrowBackIcon/>
+        </button>
+      </div>
+
+      <div ref={myMeeting} style={{ width: "100vw", height: "100vh" }}></div>
+    </>
   );
 }
 

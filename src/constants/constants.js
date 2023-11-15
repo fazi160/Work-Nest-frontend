@@ -9,5 +9,5 @@ export const wsApiUrl = import.meta.env.VITE_Ws_URL;
 
 export const ZEGO_APP_ID = 2127053677;
 // export const ZEGO_APP_ID = import.meta.env.APP_ID;
-export const ZEGO_SERVER_SECRET =  "380e2da0a38331b1510e2a555a2a7b58";;
+export const ZEGO_SERVER_SECRET =  "380e2da0a38331b1510e2a555a2a7b58";
 // export const ZEGO_SERVER_SECRET =  import.meta.env.SERVER_SECRET;
