@@ -279,10 +279,10 @@ function Chat() {
                   <div className={classes.userAvatar}>
                     <Avatar
                       alt="User"
-                      src="https://material-ui.com/static/images/avatar/2.jpg"
+                      // src="https://material-ui.com/static/images/avatar/2.jpg"
                       className="m-2"
                     />
-                    <Typography variant="h6">Cindy Baker</Typography>
+                    <Typography variant="h6">{recipientdetails.email}</Typography>
                   </div>
                   <Fab
                     color="primary"
