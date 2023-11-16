@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import UserNavbar from "./homepage/UserNavbar";
-// import Chat from "../../admin&Customer/Chat";
+import { Link } from "react-router-dom";
 
 import banner1 from "../../../assets/banners/banner1.jpg";
 import banner2 from "../../../assets/banners/banner2.jpg";
@@ -74,22 +74,26 @@ function UserHome() {
       </div>
       <br />
       <p className="flex justify-center text-3xl font-bold">Conference Halls</p>
-      <SpaceView prop="conference" numNewest={0} />
+      <SpaceView prop="conference" numNewest={3} />
       <div className="flex justify-center">
-        <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
+        <Link to='/user/conferencehalls'>
+        <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded" >
           See more...
         </button>
+        </Link>
       </div>
       <br />
       <br />
       <p className="flex justify-center text-3xl font-bold">
         Co-Working Spaces
       </p>
-      <SpaceView prop="coWork" numNewest={0} />
+      <SpaceView prop="coWork" numNewest={3} />
       <div className="flex justify-center">
+      <Link to='/user/coworkspaces'>
         <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
           See more...
         </button>
+        </Link>
       </div>
       <br />
       <br />

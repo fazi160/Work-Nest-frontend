@@ -1,33 +1,34 @@
-import React from 'react'
-import PrivateRoutes from '../ProtectedRoutes/PrivteRoutes'
-import { Routes, Route } from 'react-router-dom'
-import UserProtected from '../ProtectedRoutes/UserProtected'
-import UserHomePage from '../pages/User/UserHomePage'
-import UserLoginPage from '../pages/User/UserLoginPage'
-import UserSignupPage from '../pages/User/UserSignupPage'
-import UserChatPage from '../pages/User/UserChatPage'
-import ZegoVideoCall from '../components/ZegoVideoCall'
-
+import React from "react";
+import PrivateRoutes from "../ProtectedRoutes/PrivteRoutes";
+import { Routes, Route } from "react-router-dom";
+import UserProtected from "../ProtectedRoutes/UserProtected";
+import UserHomePage from "../pages/User/UserHomePage";
+import UserLoginPage from "../pages/User/UserLoginPage";
+import UserSignupPage from "../pages/User/UserSignupPage";
+import UserChatPage from "../pages/User/UserChatPage";
+import ZegoVideoCall from "../components/ZegoVideoCall";
+import AllSpaces from "../components/User/pages/AllSpaces";
 
 function UserRoutes() {
   return (
     <div>
       <Routes>
-        
-        <Route element={<PrivateRoutes/>}>
-            <Route path='/signup' element={<UserSignupPage/>}/>
-            <Route path='/login' element={<UserLoginPage/>}/>
+        <Route path="/conferencehalls" element={<AllSpaces />} />
+        <Route path="/coworkspaces" element={<AllSpaces />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/signup" element={<UserSignupPage />} />
+          <Route path="/login" element={<UserLoginPage />} />
         </Route>
 
-        <Route element={<UserProtected/>}>
-            <Route path='/' element={<UserHomePage/>}/>
-            <Route path='/chat' element={<UserChatPage/>}/>
-            <Route path='/videocall' element={<ZegoVideoCall/>}/>
-
+        <Route element={<UserProtected />}>
+          <Route path="/" element={<UserHomePage />} />
+          <Route path="/chat" element={<UserChatPage />} />
+          <Route path="/videocall" element={<ZegoVideoCall />} />
         </Route>
+        {/* to show all the spaces */}
       </Routes>
     </div>
-  )
+  );
 }
 
-export default UserRoutes
+export default UserRoutes;

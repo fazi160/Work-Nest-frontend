@@ -86,7 +86,7 @@ function UserChat() {
         console.log("Navigating to /customer/videocall with data:", data);
 
         const messageData = {
-          message: `http://localhost:5173/user/videocall?roomId=${senderdetails.id}&receiverId=${recipientdetails.id}`,
+          message: `http://localhost:5173/customer/videocall?roomId=${senderdetails.id}&receiverId=${recipientdetails.id}`,
           senderUsername: senderdetails.email,
           receiverUsername: recipientdetails.email,
         };
@@ -218,14 +218,14 @@ function UserChat() {
       <Grid container component={Paper} className={classes.chatSection}>
         <Grid item xs={3} className={classes.borderRight500}>
           <List>
-            <ListItem button key="RemySharp">
+            <ListItem button>
               <ListItemIcon>
                 <Avatar
-                  alt="Remy Sharp"
-                  src="https://material-ui.com/static/images/avatar/1.jpg"
+                  // alt="Remy Sharp"
+                  // src="https://material-ui.com/static/images/avatar/1.jpg"
                 />
               </ListItemIcon>
-              <ListItemText primary="John Wick" />
+              <ListItemText primary={senderdetails.email} />
             </ListItem>
           </List>
           <Grid item xs={12} style={{ padding: "10px" }}>
@@ -265,7 +265,7 @@ function UserChat() {
                 <div className={classes.userAvatar}>
                   <Avatar
                     alt="User"
-                    src="https://material-ui.com/static/images/avatar/2.jpg"
+                    // src="https://material-ui.com/static/images/avatar/2.jpg"
                     className="m-2"
                   />
                   <Typography variant="h6" className={classes.userText}>

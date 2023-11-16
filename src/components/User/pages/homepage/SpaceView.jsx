@@ -13,7 +13,7 @@ function SpaceCard({ data, category }) {
     />
     <div className="w-96">
       <h2 className={`text-4xl font-semibold ${
-        category === "conference" ? "text-indigo-700" : "text-green-700"
+        category === "conference" ? "text-black" : "text-black"
       }`}>
         {data.name}
       </h2>
