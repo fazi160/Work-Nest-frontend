@@ -1,12 +1,12 @@
 import jwtDecode from 'jwt-decode'
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import CustomerHomePage from '../pages/Customer/CustomerHomePage'
 import AdminHomePage from '../pages/Admin/AdminHomePage'
 
 function UserProtected() {
     const token = localStorage.getItem('token')
-
+    const navigate = useNavigate()
     if (token) {
         const decode = jwtDecode(token)
         if (decode.user_type === 'user') {
@@ -23,11 +23,14 @@ function UserProtected() {
             return <AdminHomePage/>
         }else {
             // return <UnknownHomePage/>                                      use this once this page is created
+           
             console.log(decode, "the else case of Customer Protected")
+            navigate('user/login')
         }
     } else {
         // return <UnknownHomePage/>                                      use this once this page is created
         console.log("the else case of Customer Protected if this was null it means no data there to decode")
+        navigate('user/login')
    }
 }
 

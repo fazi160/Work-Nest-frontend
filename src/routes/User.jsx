@@ -15,6 +15,7 @@ function UserRoutes() {
       <Routes>
         <Route path="/conferencehalls" element={<AllSpaces />} />
         <Route path="/coworkspaces" element={<AllSpaces />} />
+
         <Route element={<PrivateRoutes />}>
           <Route path="/signup" element={<UserSignupPage />} />
           <Route path="/login" element={<UserLoginPage />} />
@@ -25,7 +26,7 @@ function UserRoutes() {
           <Route path="/chat" element={<UserChatPage />} />
           <Route path="/videocall" element={<ZegoVideoCall />} />
         </Route>
-        {/* to show all the spaces */}
+        
       </Routes>
     </div>
   );

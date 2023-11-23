@@ -8,6 +8,7 @@ import UserList from './UserList';
 import Navbar from '../../admin&Customer/Navbar';
 import SideNavbar from '../../admin&Customer/SideNavbar';
 import Dashboard from '../../admin&Customer/Dashboard';
+import PremiumAdmin from './PremiumAdmin';
 
 
 function AdminLandingPage() {
@@ -41,6 +42,7 @@ function AdminLandingPage() {
         {pages === 'Notification' && <Notification />}
         {pages === 'Sales Report' && <SalesReport />}
         {pages === 'User List' && <UserList />}
+        {pages === 'Premium' && <PremiumAdmin />}
       </div>
     </div>
   );

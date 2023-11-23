@@ -135,7 +135,6 @@ function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  
   const setUpChat = () => {
     userAxiosInstant
       .get(
@@ -196,7 +195,6 @@ function Chat() {
     setSenderDetails({ id: decode.user_id, email: decode.email });
     const apiUrl = "http://127.0.0.1:8000/chat/userlist/";
     axios.get(apiUrl).then((Response) => {
-      
       setCustomers(Response.data.results);
     });
   }, []);
@@ -224,7 +222,6 @@ function Chat() {
 
     return null; // Return null if there is no link
   };
-  
 
   return (
     <div style={{ marginLeft: "15rem" }}>
@@ -282,7 +279,9 @@ function Chat() {
                       // src="https://material-ui.com/static/images/avatar/2.jpg"
                       className="m-2"
                     />
-                    <Typography variant="h6">{recipientdetails.email}</Typography>
+                    <Typography variant="h6">
+                      {recipientdetails.email}
+                    </Typography>
                   </div>
                   <Fab
                     color="primary"
@@ -297,41 +296,40 @@ function Chat() {
             </Grid>
 
             <List className={classes.messageArea}>
-            {messages.map((message, index) => (
-              <ListItem
-                key={index}
-                ref={index === messages.length - 1 ? lastMessageRef : null}
-              >
-                <Grid container>
-                  <Grid item xs={12}>
-                    {senderdetails.email === message.sender_email ||
-                    recipientdetails.email !== message.sender_email ? (
-                      // Render message aligned to the right for the sender
-                      <ListItemText
-                        align="right"
-                        primary={
-                          renderButtonIfLink(message.message)
-                            ? renderButtonIfLink(message.message)
-                            : message.message
-                        }
-                      />
-                    ) : (
-                      // Render message aligned to the left for the recipient
-                      <ListItemText
-                        align="left"
-                        primary={
-                          renderButtonIfLink(message.message)
-                            ? renderButtonIfLink(message.message)
-                            : message.message
-                        }
-                      />
-                    )}
+              {messages.map((message, index) => (
+                <ListItem
+                  key={index}
+                  ref={index === messages.length - 1 ? lastMessageRef : null}
+                >
+                  <Grid container>
+                    <Grid item xs={12}>
+                      {senderdetails.email === message.sender_email ||
+                      recipientdetails.email !== message.sender_email ? (
+                        // Render message aligned to the right for the sender
+                        <ListItemText
+                          align="right"
+                          primary={
+                            renderButtonIfLink(message.message)
+                              ? renderButtonIfLink(message.message)
+                              : message.message
+                          }
+                        />
+                      ) : (
+                        // Render message aligned to the left for the recipient
+                        <ListItemText
+                          align="left"
+                          primary={
+                            renderButtonIfLink(message.message)
+                              ? renderButtonIfLink(message.message)
+                              : message.message
+                          }
+                        />
+                      )}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </ListItem>
-            ))}
-          </List>
-
+                </ListItem>
+              ))}
+            </List>
 
             <Divider />
             <Grid container style={{ padding: "20px" }}>

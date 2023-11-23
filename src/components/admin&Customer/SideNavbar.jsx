@@ -23,10 +23,7 @@ function SideNavbar({ onPageSelect }) {
   }
   const decode = jwtDecode(token);
 
- 
-
   const handleItemClick = (text) => {
-
     onPageSelect(text); // Notify the parent component about the selected page
   };
 
@@ -70,6 +67,11 @@ function SideNavbar({ onPageSelect }) {
               icon={<PersonIcon style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("User Info")}
             />
+            <ListItem
+              text="Chat"
+              icon={<ChatIcon style={{ fontSize: 32 }} />}
+              onItemClick={() => handleItemClick("Chat")}
+            />
           </>
         )}
         {decode.user_type === "admin" && (
@@ -84,6 +86,11 @@ function SideNavbar({ onPageSelect }) {
               icon={<Person style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("User List")}
             />
+            <ListItem
+              text="Premium"
+              icon={<Person style={{ fontSize: 32 }} />}
+              onItemClick={() => handleItemClick("Premium")}
+            />
           </>
         )}
         <ListItem
@@ -96,11 +103,7 @@ function SideNavbar({ onPageSelect }) {
           icon={<Notifications style={{ fontSize: 32 }} />}
           onItemClick={() => handleItemClick("Notification")}
         />
-        <ListItem
-          text="Chat"
-          icon={<ChatIcon style={{ fontSize: 32 }} />}
-          onItemClick={() => handleItemClick("Chat")}
-        />
+
         <ListItem
           text="Log Out"
           icon={<ExitToApp style={{ fontSize: 32 }} />}
@@ -112,23 +115,22 @@ function SideNavbar({ onPageSelect }) {
 }
 
 function ListItem({ text, icon, onItemClick }) {
-    const [isHovered, setIsHovered] = useState(false);
-  
-    return (
-      <button
-        className={`py-4 px-4 flex items-center focus:outline-none transition ${
-          isHovered ? "text-gray-500 cursor-pointer" : "text-white cursor-auto"
-        }`}
-        onClick={onItemClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        {icon}
-        <span className="pl-2">{text}</span>
-      </button>
-    );
-  }
-  
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <button
+      className={`py-4 px-4 flex items-center focus:outline-none transition ${
+        isHovered ? "text-gray-500 cursor-pointer" : "text-white cursor-auto"
+      }`}
+      onClick={onItemClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {icon}
+      <span className="pl-2">{text}</span>
+    </button>
+  );
+}
 
 SideNavbar.propTypes = {
   onPageSelect: PropTypes.func.isRequired, // 'func' prop type, required

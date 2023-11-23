@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Avatar from '@mui/material/Avatar';
-import SvgIcon from '@mui/material/SvgIcon';
-import Tooltip from '@mui/material/Tooltip';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import PeopleIcon from '@mui/icons-material/Group';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import { alpha } from '@mui/material/styles';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import Avatar from "@mui/material/Avatar";
+import SvgIcon from "@mui/material/SvgIcon";
+import Tooltip from "@mui/material/Tooltip";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import PeopleIcon from "@mui/icons-material/Group";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import { alpha } from "@mui/material/styles";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
 const isLargeScreen = () => {
   return window.innerWidth >= 1280;
 };
@@ -34,36 +34,37 @@ const Navbar = ({ onNavOpen }) => {
   const navigate = useNavigate();
   const handleLogout = () => {
     // Perform logout actions here
-    localStorage.removeItem('token');
-    navigate('/admin/login');
+    localStorage.removeItem("token");
+    navigate("/admin/login");
     handleMenuClose();
   };
 
   return (
     <AppBar
       sx={{
-        backdropFilter: 'blur(6px)',
-        backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
-        position: 'sticky',
+        backdropFilter: "blur(6px)",
+        backgroundColor: (theme) =>
+          alpha(theme.palette.background.default, 0.8),
+        position: "sticky",
         top: 0,
         zIndex: (theme) => theme.zIndex.appBar,
       }}
     >
       <Toolbar
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
           minHeight: TOP_NAV_HEIGHT,
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           {!lgUp && (
             <IconButton
               onClick={onNavOpen}
               sx={{
-                fontSize: 'small',
+                fontSize: "small",
               }}
             >
               <SvgIcon fontSize="small">
@@ -74,7 +75,7 @@ const Navbar = ({ onNavOpen }) => {
           <Tooltip title="Search">
             <IconButton
               sx={{
-                fontSize: 'small',
+                fontSize: "small",
               }}
             >
               <SvgIcon fontSize="small">
@@ -83,12 +84,12 @@ const Navbar = ({ onNavOpen }) => {
             </IconButton>
           </Tooltip>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <Tooltip title="Contacts">
             <IconButton
               onClick={handleAvatarClick}
               sx={{
-                fontSize: 'small',
+                fontSize: "small",
               }}
             >
               <SvgIcon fontSize="small">
@@ -100,7 +101,7 @@ const Navbar = ({ onNavOpen }) => {
             <IconButton
               onClick={handleAvatarClick}
               sx={{
-                fontSize: 'small',
+                fontSize: "small",
               }}
             >
               <Badge badgeContent={4} color="primary" variant="dot">
@@ -114,7 +115,7 @@ const Navbar = ({ onNavOpen }) => {
             src="/assets/avatars/avatar-anika-visser.png"
             onClick={handleAvatarClick}
             sx={{
-              cursor: 'pointer',
+              cursor: "pointer",
               height: 40,
               width: 40,
             }}
@@ -124,7 +125,7 @@ const Navbar = ({ onNavOpen }) => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
       </Toolbar>

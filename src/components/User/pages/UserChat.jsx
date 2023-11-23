@@ -123,7 +123,7 @@ function UserChat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-  
+
   const setUpChat = () => {
     userAxiosInstant
       .get(
