@@ -1,34 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import { Button, Typography, Paper, Container, Grid, TextField } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
+import jwtDecode from "jwt-decode";
+import {
+  Button,
+  Typography,
+  Paper,
+  Container,
+  Grid,
+  TextField,
+} from "@mui/material";
+
+import { useCustomerData } from "../../../context/ContextCustomer";
 
 function CustomerDetails() {
-  const [customerData, setCustomerData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedContact, setEditedContact] = useState('');
-  const [editedDescription, setEditedDescription] = useState('');
+  const [editedContact, setEditedContact] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
+  const [customerDetails, setCustomerDetails] = useState("");
+  const [customerDetailsPremium, setCustomerDetailsPremium] = useState("");
 
-  const token = localStorage.getItem('token');
+  const customerData = useCustomerData();
+  const token = localStorage.getItem("token");
   const decode = jwtDecode(token);
-  const userId = decode.user_id;
-  console.log(decode);
+  console.log(customerData);
 
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/auth/customerdetails/?user=${userId}`;
-    Axios.get(apiUrl)
-      .then((response) => {
-        console.log(response, "response is here");
-        const filteredData = response.data.results.find((item) => item.user === userId);
-        setCustomerData(filteredData);
-        setEditedContact(filteredData.contact);
-        setEditedDescription(filteredData.description);
-      })
-      .catch((error) => {
-        console.error('Error fetching customer data:', error);
-      });
-  }, [userId]);
-  console.log(customerData);
+    // Initialize state variables with customer data
+    if (customerData) {
+      setCustomerDetails(customerData.customer_data);
+      if (!customerData.premium_expired) {
+        setCustomerDetailsPremium(customerData.premium_customer_data);
+      } else {
+        setCustomerDetailsPremium("");
+      }
+      setEditedContact(customerData.customer_data.contact);
+      setEditedDescription(customerData.customer_data.description);
+    }
+  }, [customerData]);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -40,29 +48,62 @@ function CustomerDetails() {
       description: editedDescription,
     };
 
-    Axios.patch(`http://127.0.0.1:8000/auth/customerdetails/${customerData.id}/`, data)
+    Axios.patch(
+      `http://127.0.0.1:8000/auth/customerdetails/${customerDetails.id}/`,
+      data
+    )
       .then((response) => {
-        setCustomerData(response.data);
+        setCustomerDetails(response.data); // Update customerDetails state
         setIsEditing(false);
       })
       .catch((error) => {
-        console.error('Error saving data:', error);
+        console.error("Error saving data:", error);
       });
   };
 
   return (
-    <div style={{ marginLeft: '15rem' }}>
+    <div style={{ marginLeft: "15rem" }}>
       <Container maxWidth="lg">
-        <Typography variant="h4" component="h1" style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <Typography
+          variant="h4"
+          component="h1"
+          style={{
+            marginTop: "50px",
+            marginBottom: "20px",
+            fontWeight: "bold",
+            textAlign: "center", // Center align text
+          }}
+        >
           Customer Details
         </Typography>
-        {customerData ? (
-          <Paper elevation={3} style={{ padding: '20px' }}>
+
+        {customerDetails ? (
+          <Paper
+            elevation={3}
+            style={{
+              padding: "20px",
+              margin: "20px auto", // Center the card horizontally
+              borderRadius: "10px",
+              background: "#f4f4f4",
+              maxWidth: "1200px", // Optionally set a max width for the card
+              maxHeight:"600px",
+              textAlign: "center", // Center align text within the card
+            }}
+          >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Typography variant="h6" component="h2">Email: {decode.email}</Typography>
-                <Typography variant="body1">ID: {customerData.id}</Typography>
-                <Typography variant="body1">Company Name: {customerData.company_name}</Typography>
+              <Grid item xs={12} sm={6} style={{ margin: "0 auto" }}>
+                {" "}
+                {/* Center the grid item */}
+                <Typography
+                  variant="h6"
+                  component="h2"
+                  style={{ fontWeight: "bold" }}
+                >
+                  Email: {decode.email}
+                </Typography>
+                <Typography variant="body1" style={{ marginBottom: "10px" }}>
+                  Company Name: {customerDetails.company_name}
+                </Typography>
                 {isEditing ? (
                   <div>
                     <TextField
@@ -82,18 +123,26 @@ function CustomerDetails() {
                   </div>
                 ) : (
                   <div>
-                    <Typography variant="body1">Contact: {customerData.contact}</Typography>
-                    <Typography variant="body1">Description: {customerData.description}</Typography>
+                    <Typography variant="body1">
+                      Contact: {customerDetails.contact}
+                    </Typography>
+                    <Typography variant="body1">
+                      Description: {customerDetails.description}
+                    </Typography>
                   </div>
                 )}
               </Grid>
             </Grid>
+
             {isEditing ? (
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleSaveClick}
-                style={{ marginTop: '20px' }}
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#4caf50",
+                }}
               >
                 Save
               </Button>
@@ -102,7 +151,10 @@ function CustomerDetails() {
                 variant="contained"
                 color="primary"
                 onClick={handleEditClick}
-                style={{ marginTop: '20px' }}
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#2196f3",
+                }}
               >
                 Edit
               </Button>
@@ -110,6 +162,50 @@ function CustomerDetails() {
           </Paper>
         ) : (
           <p>Loading customer details...</p>
+        )}
+
+        {customerDetailsPremium ? (
+          <Paper
+            elevation={3}
+            style={{
+              padding: "20px",
+              marginTop: "20px",
+              borderRadius: "10px",
+              background: "#f4f4f4",
+            }}
+          >
+            <Typography
+              variant="h6"
+              component="h2"
+              style={{ fontWeight: "bold", textAlign: "center" }}
+            >
+              Premium Plan Details
+            </Typography>
+            <Typography variant="body1" style={{ textAlign: "center" }}>
+              Start Date: {customerDetailsPremium.start_date}
+            </Typography>
+            <Typography variant="body1" style={{ textAlign: "center" }}>
+              End Date: {customerDetailsPremium.exp_date}
+            </Typography>
+            <Typography variant="body1" style={{ textAlign: "center" }}>
+              Active: {customerDetailsPremium.is_active ? "Yes" : "No"}
+            </Typography>
+            <Typography variant="body1" style={{ textAlign: "center" }}>
+              Package Name: {customerDetailsPremium.package_details.name}
+            </Typography>
+
+            {customerDetailsPremium.exp_date <
+              new Date().toISOString().split("T")[0] && (
+              <Typography
+                variant="body1"
+                style={{ color: "red", textAlign: "center" }}
+              >
+                Premium plan has expired
+              </Typography>
+            )}
+          </Paper>
+        ) : (
+          <p>Loading premium details...</p>
         )}
       </Container>
     </div>

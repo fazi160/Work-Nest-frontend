@@ -12,10 +12,12 @@ import ChatIcon from "@mui/icons-material/Chat";
 import PersonIcon from "@mui/icons-material/Person";
 import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
-
+import { Icon } from "@iconify/react";
+import { useCustomerData } from "../../context/ContextCustomer";
 function SideNavbar({ onPageSelect }) {
+  const customerData = null
   const navigate = useNavigate();
-
+  
   const token = localStorage.getItem("token");
   if (!token) {
     navigate("/user/login");
@@ -26,7 +28,7 @@ function SideNavbar({ onPageSelect }) {
   const handleItemClick = (text) => {
     onPageSelect(text); // Notify the parent component about the selected page
   };
-
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("currentPage");
@@ -38,7 +40,10 @@ function SideNavbar({ onPageSelect }) {
       navigate("/user/");
     }
   };
-
+  
+  if(decode.user_type==="customer"){
+    const customerData = useCustomerData();
+  }
   return (
     <div
       className="fixed transition-all duration-500 w-60 bg-gray-800 text-white"
@@ -50,6 +55,16 @@ function SideNavbar({ onPageSelect }) {
           icon={<Home style={{ fontSize: 32 }} />}
           onItemClick={() => handleItemClick("Dashboard")}
         />
+
+        {decode.user_type === "customer" &&
+          customerData &&
+          customerData.premium_expired && (
+            <ListItem
+              text="Premium Plans"
+              icon={<Icon icon="mdi:crown" style={{ fontSize: 32 }} />}
+              onItemClick={() => handleItemClick("Premium Plans")}
+            />
+          )}
         {decode.user_type === "customer" && (
           <>
             <ListItem
@@ -72,6 +87,11 @@ function SideNavbar({ onPageSelect }) {
               icon={<ChatIcon style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("Chat")}
             />
+            {/* <ListItem
+              text="Premium Plans"
+              icon={<Icon icon="mdi:crown" style={{ fontSize: 32 }} />}
+              onItemClick={() => handleItemClick("Premium Plans")}
+            /> */}
           </>
         )}
         {decode.user_type === "admin" && (

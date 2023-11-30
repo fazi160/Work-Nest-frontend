@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 
 function Dashboard() {
+
   const [polarChartRendered, setPolarChartRendered] = useState(false);
 
   const barChartOptions = {

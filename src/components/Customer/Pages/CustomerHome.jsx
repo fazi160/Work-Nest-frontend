@@ -10,6 +10,7 @@ import Chat from './Chat';
 import jwtDecode from 'jwt-decode';
 import SideNavbar from '../../admin&Customer/SideNavbar';
 import CustomerDetails from './CustomerDetails';
+import PremiumSelect from './PremiumSelect';
 
 function CustomerHome() {
   
@@ -44,6 +45,7 @@ function CustomerHome() {
         {pages === 'Notification' && <Notification/>}
         {pages === 'Chat' && <Chat/>}
         {pages === 'User Info' && <CustomerDetails/>}
+        {pages === 'Premium Plans' && <PremiumSelect/>}
       </div>
 
     </>
