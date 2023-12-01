@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserNavbar from "./homepage/UserNavbar";
 // import SpaceView from "./homepage/SpaceView";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 // import {SpaceCard, SpaceView} from "./homepage/SpaceView";
 import { User_url } from "../../../constants/constants";
 import axios from "axios";
@@ -12,44 +12,41 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 function AllSpaces() {
-    const navigate = useNavigate();
-    const [type, setType] = useState("");
-    const [data, setData] = useState([]);
-    const [sortType, setSortType] = useState(3);
-  
-    useEffect(() => {
-      const currentUrl = window.location.href;
-  
-      if (currentUrl.includes("conferencehalls")) {
-        setType("conference");
-      } else if (currentUrl.includes("coworkspaces")) {
-        setType("cowork");
-      } else {
-        navigate("/user");
+  const navigate = useNavigate();
+  const [type, setType] = useState("");
+  const [data, setData] = useState([]);
+  const [sortType, setSortType] = useState(3);
+
+  useEffect(() => {
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes("conferencehalls")) {
+      setType("conference");
+    } else if (currentUrl.includes("coworkspaces")) {
+      setType("cowork");
+    } else {
+      navigate("/user");
+    }
+  }, []);
+
+  const typeInString = type.toString();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const apiUrl = `${User_url}/space/${typeInString}/`;
+
+      try {
+        const response = await axios.get(apiUrl);
+        setData(response.data.results);
+        console.log(response.data.results, "befookeofsdjfakj");
+        sortData(response.data.results); // Pass the updated data to sortData
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    }, []);
-  
-    const typeInString = type.toString();
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        const apiUrl = `${User_url}/space/${typeInString}/`;
-  
-        try {
-          const response = await axios.get(apiUrl);
-          setData(response.data.results);
-          console.log(response.data.results, "befookeofsdjfakj");
-          sortData(response.data.results); // Pass the updated data to sortData
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-  
-      fetchData();
-    }, [typeInString, sortType]);
-  
+    };
 
-
+    fetchData();
+  }, [typeInString, sortType]);
 
   const sortData = (updatedData) => {
     // Create a copy of the data to avoid mutating the original state
@@ -63,10 +60,14 @@ function AllSpaces() {
         sortedData.sort((a, b) => b.price - a.price);
         break;
       case 3: // Newest ↓
-        sortedData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        sortedData.sort(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
         break;
       case 4: // Newest ↑
-        sortedData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        sortedData.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
         break;
       case 5: // Hall size ↓
         sortedData.sort((a, b) => a.Capacity - b.Capacity);
@@ -75,7 +76,9 @@ function AllSpaces() {
         sortedData.sort((a, b) => b.Capacity - a.Capacity);
         break;
       default:
-        sortedData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        sortedData.sort(
+          (a, b) => new Date(a.created_at) - new Date(b.created_at)
+        );
         break;
     }
 
@@ -87,14 +90,14 @@ function AllSpaces() {
     // sortData(); // Call the sortData function when the dropdown value changes
   };
 
-
   useEffect(() => {
     // Call sortData whenever sortType changes
     sortData(data);
-  }, [sortType,data]);
+  }, [sortType, data]);
 
-  console.log(data, "fasddddfsdfsafdafdafdaf");
-  console.log(sortType);
+  const bookNow = (space) => {
+    navigate('/user/spacedetails', {state:{space:space, type:type}})
+  };
 
   return (
     <div>
@@ -106,7 +109,7 @@ function AllSpaces() {
         </h1>
       </div>
 
-        {/* dropdown */}
+      {/* dropdown */}
       <div className="flex justify-end mr-5">
         <FormControl className="w-48">
           <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
@@ -129,13 +132,13 @@ function AllSpaces() {
             }}
           >
             {[
-                <MenuItem key={1} value={1}>
+              <MenuItem key={1} value={1}>
                 Price <span className="font-bold ml-1 text-lg">▼</span>
               </MenuItem>,
               <MenuItem key={2} value={2}>
                 Price <span className="font-bold ml-1 text-lg">▲</span>
               </MenuItem>,
-              
+
               <MenuItem key={3} value={3}>
                 Newest <span className="font-bold ml-1 text-lg">▼</span>
               </MenuItem>,
@@ -210,6 +213,10 @@ function AllSpaces() {
                   <p className="text-gray-600 mt-4">
                     Available: {data.is_available ? "Yes" : "No"}
                   </p>
+                  
+                  <button onClick={() => bookNow(data.id)}>Book Now</button>
+
+                  
                 </div>
               </div>
             </div>

@@ -43,6 +43,7 @@ const PremiumSelect = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem('currentPage')
     axios
       .get("http://127.0.0.1:8000/premium/packages/")
       .then((response) => {

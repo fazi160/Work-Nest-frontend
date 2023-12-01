@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Home,
@@ -14,10 +14,14 @@ import PropTypes from "prop-types";
 import jwtDecode from "jwt-decode";
 import { Icon } from "@iconify/react";
 import { useCustomerData } from "../../context/ContextCustomer";
+
 function SideNavbar({ onPageSelect }) {
-  const customerData = null
+  const userData = useCustomerData();
+ console.log(userData);
   const navigate = useNavigate();
-  
+  const [isPremium, setisPremium] = useState(false);
+
+
   const token = localStorage.getItem("token");
   if (!token) {
     navigate("/user/login");
@@ -26,9 +30,9 @@ function SideNavbar({ onPageSelect }) {
   const decode = jwtDecode(token);
 
   const handleItemClick = (text) => {
-    onPageSelect(text); // Notify the parent component about the selected page
+    onPageSelect(text);
   };
-  
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("currentPage");
@@ -40,10 +44,19 @@ function SideNavbar({ onPageSelect }) {
       navigate("/user/");
     }
   };
-  
-  if(decode.user_type==="customer"){
-    const customerData = useCustomerData();
-  }
+
+  useEffect(() => {
+    if (
+      userData &&
+      userData.premium_customer_data &&
+      userData.premium_expired === false
+    ) {
+      setisPremium(true);
+    } else {
+      setisPremium(false);
+    }
+  }, [userData]);
+console.log(isPremium);
   return (
     <div
       className="fixed transition-all duration-500 w-60 bg-gray-800 text-white"
@@ -56,17 +69,15 @@ function SideNavbar({ onPageSelect }) {
           onItemClick={() => handleItemClick("Dashboard")}
         />
 
-        {decode.user_type === "customer" &&
-          customerData &&
-          customerData.premium_expired && (
-            <ListItem
-              text="Premium Plans"
-              icon={<Icon icon="mdi:crown" style={{ fontSize: 32 }} />}
-              onItemClick={() => handleItemClick("Premium Plans")}
-            />
-          )}
         {decode.user_type === "customer" && (
           <>
+            {!isPremium ? (
+              <ListItem
+                text="Premium Plans"
+                icon={<Icon icon="mdi:crown" style={{ fontSize: 32 }} />}
+                onItemClick={() => handleItemClick("Premium Plans")}
+              />
+            ) : null}
             <ListItem
               text="Co-Working Space"
               icon={<ListIcon style={{ fontSize: 32 }} />}

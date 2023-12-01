@@ -188,7 +188,7 @@ function CustomerDetails() {
               End Date: {customerDetailsPremium.exp_date}
             </Typography>
             <Typography variant="body1" style={{ textAlign: "center" }}>
-              Active: {customerDetailsPremium.is_active ? "Yes" : "No"}
+              Active: {customerDetailsPremium.is_active ? "Yes" : "Yes"}
             </Typography>
             <Typography variant="body1" style={{ textAlign: "center" }}>
               Package Name: {customerDetailsPremium.package_details.name}
