@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Container, Link } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, Link, MenuItem as MuiMenuItem, Menu as MuiMenu } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import UserChat from '../UserChat';
@@ -12,10 +12,9 @@ const Logo = styled('img')({
   marginRight: '16px',
   width: '50px',
   height: '50px',
-  position: 'absolute', // Set the logo to absolute positioning
-  top: '10px', // Adjust the top positioning as needed
-  left: '-140px', // Adjust the left positioning as needed
-
+  position: 'absolute',
+  top: '10px',
+  left: '-140px',
 });
 
 const Menu = styled('ul')({
@@ -25,12 +24,25 @@ const Menu = styled('ul')({
   marginLeft: 'auto',
 });
 
-const MenuItem = styled('li')({
+const MenuItem = styled(MuiMenuItem)({
   margin: '0 16px',
+});
+
+const LogoutLink = styled(Link)({
+  cursor: 'pointer',
 });
 
 function UserNavbar() {
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -39,16 +51,29 @@ function UserNavbar() {
 
   const loginOrLogoutHandle = () => {
     const token = localStorage.getItem('token');
+
     if (token) {
-      return <Link component="button" onClick={handleLogout}>Logout</Link>;
-      
-      
+      return (
+        <>
+          <Link href="#" onClick={handleMenuOpen}>
+            Welcome, User
+          </Link>
+          <MuiMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+            <MenuItem>
+              <Link href="/user/profile">Profile</Link>
+            </MenuItem>
+            <MenuItem>
+              <LogoutLink component="button" onClick={handleLogout}>
+                Logout
+              </LogoutLink>
+            </MenuItem>
+          </MuiMenu>
+        </>
+      );
     } else {
       return <Link href="/user/login">Login</Link>;
     }
   };
-
-  
 
   return (
     <Navbar position="static">

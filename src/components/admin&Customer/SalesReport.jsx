@@ -3,7 +3,7 @@ import { Card, Typography, Button } from "@mui/material";
 import Modal from "react-modal";
 import jwtDecode from "jwt-decode";
 import PremiumSalesReport from "../admin/pages/PremiumSalesReport";
-import ConferenceHallSalesReport from "../Customer/Pages/salesReport/ConferenceHallSalesReport";
+import CustomerSalesReport from "../Customer/Pages/salesReport/CustomerSalesReport";
 
 const SalesReport = () => {
   const [userType, setUserType] = useState("");
@@ -24,7 +24,7 @@ const SalesReport = () => {
   return (
     <div style={{ marginLeft: "16rem", marginRight: "1.5rem" }}>
       <div>{userType === "admin" ? <PremiumSalesReport /> : null}</div>
-      <div>{userType === "customer" ? <ConferenceHallSalesReport /> : null}</div>
+      <div>{userType === "customer" ? <CustomerSalesReport /> : null}</div>
     </div>
   );
 };

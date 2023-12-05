@@ -8,9 +8,9 @@ import UserSignupPage from "../pages/User/UserSignupPage";
 import UserChatPage from "../pages/User/UserChatPage";
 import ZegoVideoCall from "../components/ZegoVideoCall";
 import AllSpaces from "../components/User/pages/AllSpaces";
-import SpaceDetailedView from "../components/User/pages/SpaceDetailedView";
+import SpaceDetailedView from "../components/User/pages/checkout/SpaceDetailedView";
 import UserDetailedViewPage from "../pages/User/UserDetailedViewPage";
-import Checkout from "../components/User/pages/Checkout";
+import Checkout from "../components/User/pages/checkout/Checkout";
 import Fail from "../components/User/pages/Payment/Fail"
 import Success from "../components/User/pages/Payment/Success"
 function UserRoutes() {

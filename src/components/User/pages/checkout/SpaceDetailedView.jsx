@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { User_url } from "../../../constants/constants";
+import { User_url } from "../../../../constants/constants";
 import { Calendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import BookingModal from "./BookingModal";
+import BookingModal from "../BookingModal";
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
+import CoworkCalanderView from "./CoworkCalanderView";
 
 function SpaceDetailedView({ props }) {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function SpaceDetailedView({ props }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [coWorkBookDates, setCoWorkBookedDates] = useState(null)
   const [spaceId, spaceType] = props;
 
   useEffect(() => {
@@ -34,14 +36,19 @@ function SpaceDetailedView({ props }) {
 
   useEffect(() => {
     // Fetch booked dates for the specific space
+
     axios
-      .get(`${User_url}/space/conference/${spaceId}/book/`)
+      .get(`${User_url}/space/${spaceType}/${spaceId}/book/`)
       .then((response) => {
+        if (spaceType === 'cowork'){
+            setCoWorkBookedDates(response.data)
+        }else{
+        // console.log(response);
         const bookedDatesArray = response.data.map(
           (booking) => new Date(booking.booking_date)
         );
         setBookedDates(bookedDatesArray);
-      })
+      }})
       .catch((error) => {
         console.log("Error fetching booked dates", error);
       });
@@ -65,8 +72,7 @@ function SpaceDetailedView({ props }) {
       navigate("/user/spacedetails/checkout", { state: { data: data } });
     }
   };
-  console.log(spaceDetails);
-
+ 
 
   return (
     <section className="overflow-hidden bg-white py-11 font-poppins dark:bg-gray-800">
@@ -150,73 +156,73 @@ function SpaceDetailedView({ props }) {
             </div>
           </div>
         </div>
+        {/* Updated Calendar Section */}
+        <div className="my-8 text-center flex flex-col items-center">
+          <div className="relative">
+            <p className="flex justify-center max-w-md text-gray-700 dark:text-gray-400">
+              Available Dates:
+            </p>
 
- 
-{/* Updated Calendar Section */}
-<div className="my-8 text-center flex flex-col items-center">
-  <div className="relative">
-    <p className="flex justify-center max-w-md text-gray-700 dark:text-gray-400">
-      Available Dates:
-    </p>
+            {spaceType === "conference" ? (
+              <Calendar
+                onChange={(date) => setSelectedDate(date)}
+                value={selectedDate}
+                tileClassName={({ date, view }) => {
+                  const isBooked = bookedDates.some(
+                    (bookedDate) =>
+                      date.toDateString() === bookedDate.toDateString()
+                  );
+                  const isPastDate = date < new Date();
 
-    <Calendar
-      onChange={(date) => setSelectedDate(date)}
-      value={selectedDate}
-      tileClassName={({ date, view }) => {
-        const isBooked = bookedDates.some(
-          (bookedDate) => date.toDateString() === bookedDate.toDateString()
-        );
-        const isPastDate = date < new Date();
+                  // Styles for booked dates
+                  const bookedStyle = {
+                    background: "red",
+                    color: "white",
+                    borderRadius: "50%",
+                  };
 
-        // Styles for booked dates
-        const bookedStyle = {
-          background: "red",
-          color: "white",
-          borderRadius: "50%",
-        };
+                  // Styles for bookable date
+                  const bookableStyle = {
+                    background: "green",
+                    color: "white",
+                    borderRadius: "50%",
+                  };
 
-        // Styles for bookable dates
-        const bookableStyle = {
-          background: "green",
-          color: "white",
-          borderRadius: "50%",
-        };
-
-        return `calendar-tile ${isBooked ? "booked" : ""} ${
-          isPastDate ? "past-date" : ""
-        }`;
-      }}
-      tileDisabled={({ date }) =>
-        bookedDates.some(
-          (bookedDate) => date.toDateString() === bookedDate.toDateString()
-        ) || date < new Date()
-      }
-    />
-  </div>
-  {/* Display selected date */}
-  {selectedDate && (
-    <div className="my-4">
-      <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-      <button
-        onClick={() => handleBooking(selectedDate)}
-        className="bg-blue-500 text-white p-2 rounded-md"
-      >
-        Book this date
-      </button>
-    </div>
-  )}
-</div>
-
-
-
-
+                  return `calendar-tile ${isBooked ? "booked" : ""} ${
+                    isPastDate ? "past-date" : ""
+                  }`;
+                }}
+                tileDisabled={({ date }) =>
+                  bookedDates.some(
+                    (bookedDate) =>
+                      date.toDateString() === bookedDate.toDateString()
+                  ) || date < new Date()
+                }
+              />
+            ) : (
+              <CoworkCalanderView data={coWorkBookDates} spaceDetails={spaceDetails}/>
+            )}
+          </div>
+          {/* Display selected date */}
+          {spaceType === "conference"
+            ? selectedDate && (
+                <div className="my-4">
+                  <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
+                  <button
+                    onClick={() => handleBooking(selectedDate)}
+                    className="bg-blue-500 text-white p-2 rounded-md"
+                  >
+                    Book this date
+                  </button>
+                </div>
+              )
+            : ""}
+        </div>
       </div>
       {/* Toast Container */}
       <ToastContainer position="top-right" autoClose={5000} />
     </section>
   );
-
-
 }
 
 export default SpaceDetailedView;

@@ -98,7 +98,7 @@ function AllSpaces() {
   const bookNow = (space) => {
     navigate('/user/spacedetails', {state:{space:space, type:type}})
   };
-
+console.log(data);
   return (
     <div>
       <UserNavbar />

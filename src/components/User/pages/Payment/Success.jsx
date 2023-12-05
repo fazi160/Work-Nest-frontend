@@ -1,45 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { User_url } from "../../../../constants/constants";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { data } from "autoprefixer";
+import { User_url } from "../../../../constants/constants";
+
 function SuccessfulPayment() {
   const queryParameters = new URLSearchParams(window.location.search);
   const userId = queryParameters.get("userId");
   const planId = queryParameters.get("planId");
-  const date = queryParameters.get("date")
+  const date = queryParameters.get("date");
+  const spaceType = queryParameters.get("type");
+  console.log(userId, planId, date, spaceType);
+  const isInitializedRef = useRef(false);
 
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
-  JSON.stringify({ userId, planId, date })
-  console.log(userId,planId,date);
+  useLayoutEffect(() => {
+    console.log("useLayoutEffect - Component mounted");
+    return () => {
+      console.log("useLayoutEffect - Component unmounted");
+    };
+  }, []);
 
   useEffect(() => {
-    const successUrl = `${User_url}/space/conference/booking/register/`;
-  
-    const fetchData = async () => {
-      try {
-        const response = await axios.post(successUrl, {
-          userId,
-          planId,
-          date,
-        });
-  
-        if (response.status === 201) {
-          setSuccess(true);
-        } else {
+    console.log("useEffect - Component rendered");
+
+    if (!isInitializedRef.current) {
+      console.log("useEffect - Running fetchData");
+      const fetchData = async () => {
+        try {
+          const response = await axios.post(`${User_url}/space/${spaceType}/booking/register/`, {
+            userId,
+            planId,
+            date,
+          });
+
+          if (response.status === 201) {
+            setSuccess(true);
+          } else {
+            setSuccess(false);
+          }
+        } catch (error) {
+          console.error("Error:", error);
           setSuccess(false);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error("Error:", error);
-        setSuccess(false);
-      } finally {
-        setLoading(false);
-      }
+      };
+
+      fetchData();
+      isInitializedRef.current = true;
+    }
+
+    return () => {
+      console.log("useEffect - Cleanup");
     };
-  
-    fetchData();
   }, [userId, planId, date]);
 
   return (

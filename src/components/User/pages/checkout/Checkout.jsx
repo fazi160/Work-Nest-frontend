@@ -2,11 +2,13 @@ import jwtDecode from "jwt-decode";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { User_url } from "../../../constants/constants";
-
+import { User_url } from "../../../../constants/constants";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Checkout() {
   const location = useLocation();
-
+  const navigate = useNavigate();
   // Access the state from the location object
   const { state } = location;
 
@@ -23,7 +25,7 @@ function Checkout() {
     );
   }
 
-  const { date, spaceDetails, BookingDate } = state.data;
+  const { date, spaceDetails } = state.data;
 
   // Format the date as "day/month/year"
   const formattedDate = date.toLocaleDateString("en-GB");
@@ -32,39 +34,44 @@ function Checkout() {
     try {
       // Check if a plan is selected
       if (!spaceDetails) {
-        console.error("Please select a premium plan.");
         return;
       }
-
-      // Get userId from local storage
-      const userId = localStorage.getItem("token");
-      const decode = jwtDecode(userId);
-
-      var data = {
-        planId: spaceDetails.id,
-        userId: decode.user_id,
-        name: spaceDetails.name,
-        currency: "INR",
-        unit_amount: spaceDetails.price * 100, // Convert to cents
-        quantity: 1,
-        mode: "payment",
-        date: formattedDate,
-      };
-
-      console.log("Complete data object:", data);
-
-      // Make a request to your backend to initiate the Stripe payment
-      const response = await axios.post(
-        `${User_url}/space/booking/payment/`,
-        data
-      );
-
-      // Redirect to the Stripe checkout session URL
-      window.location.href = response.data.message.url;
+  
+      const spaceType = spaceDetails.slots ? "cowork" : spaceDetails.Capacity ? "conference" : "";
+  
+      if (spaceType) {
+        // Get userId from local storage
+        const userId = localStorage.getItem("token");
+        const decode = jwtDecode(userId);
+  
+        const data = {
+          planId: spaceDetails.id,
+          userId: decode.user_id,
+          name: spaceDetails.name,
+          currency: "INR",
+          unit_amount: spaceDetails.price * 100, // Convert to cents
+          quantity: 1,
+          mode: "payment",
+          date: formattedDate,
+          spaceType: spaceType,
+        };
+  
+        console.log("Complete data object:", data);
+  
+        // Make a request to your backend to initiate the Stripe payment
+        const response = await axios.post(`${User_url}/space/booking/payment/`, data);
+  
+        // Redirect to the Stripe checkout session URL
+        window.location.href = response.data.message.url;
+      } else {
+        // Navigate to another page if spaceType is falsy
+        toast.error("can't find the space type please try again")
+      }
     } catch (error) {
       console.error("Error initiating payment:", error);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -97,6 +104,7 @@ function Checkout() {
           Proceed to Payment
         </button>
       </div>
+      <ToastContainer position="top-right" autoClose={5000} />
     </div>
   );
 }
