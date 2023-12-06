@@ -60,7 +60,7 @@ function UserNavbar() {
           </Link>
           <MuiMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
             <MenuItem>
-              <Link href="/user/profile">Profile</Link>
+              <Link href="/user/dashboard/">Dashboard</Link>
             </MenuItem>
             <MenuItem>
               <LogoutLink component="button" onClick={handleLogout}>
