@@ -1,16 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@mui/material/Divider";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
-import Fab from "@material-ui/core/Fab";
+
+
 import SendIcon from "@mui/icons-material/Send";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import axios from "axios";
@@ -20,51 +10,11 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { wsApiUrl } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 import { BaseUrl, reactUrl } from "../../../constants/constants";
+import { Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from "@mui/material";
 
-const useStyles = makeStyles((theme) => ({
-  chatSection: {
-    width: "100%",
-    height: "75vh",
-    border: "1px solid #e0e0e0",
-    borderRadius: "10px",
-    boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)",
-  },
-  borderRight500: {
-    borderRight: "1px solid #e0e0e0",
-  },
-  messageArea: {
-    height: "60vh",
-    overflowY: "auto",
-    borderTop: "none",
-    padding: theme.spacing(2),
-  },
-  topBar: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#f0f0f0",
-    padding: theme.spacing(2),
-  },
-  userAvatar: {
-    display: "flex",
-    alignItems: "center",
-  },
-  videoCallButton: {
-    backgroundColor: "#f0f0f0",
-  },
-  sendButton: {
-    marginLeft: theme.spacing(2),
-  },
-  chatContainer: {
-    padding: theme.spacing(2),
-  },
-  searchInput: {
-    width: "100%",
-  },
-}));
+
 
 function Chat() {
-  const classes = useStyles();
   const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const [senderdetails, setSenderDetails] = useState({});
@@ -227,8 +177,8 @@ function Chat() {
   return (
     <div style={{ marginLeft: "15rem" }}>
       <div>
-        <Grid container component={Paper} className={classes.chatSection}>
-          <Grid item xs={3} className={classes.borderRight500}>
+<Grid container component={Paper} style={{ width: "100%", height: "75vh", border: "1px solid #e0e0e0", borderRadius: "10px", boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.1)" }}>
+          <Grid item xs={3} style={{ borderRight: "1px solid #e0e0e0" }}>
             <List>
               <ListItem button key="RemySharp">
                 <ListItemIcon>
@@ -273,8 +223,8 @@ function Chat() {
           <Grid item xs={9}>
             <Grid container>
               <Grid item xs={12}>
-                <div className={classes.topBar}>
-                  <div className={classes.userAvatar}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: "#f0f0f0", padding: "16px" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <Avatar
                       alt="User"
                       // src="https://material-ui.com/static/images/avatar/2.jpg"
@@ -284,19 +234,14 @@ function Chat() {
                       {recipientdetails.email}
                     </Typography>
                   </div>
-                  <Fab
-                    color="primary"
-                    aria-label="video-call"
-                    className={classes.videoCallButton}
-                    onClick={handleVideoCallClick}
-                  >
+                  <Fab color="primary" aria-label="video-call" style={{ backgroundColor: "#f0f0f0" }} onClick={handleVideoCallClick}>
                     <VideoCallIcon />
                   </Fab>
                 </div>
               </Grid>
             </Grid>
 
-            <List className={classes.messageArea}>
+            <List style={{ height: "60vh", overflowY: "auto", borderTop: "none", padding: "16px" }}>
               {messages.map((message, index) => (
                 <ListItem
                   key={index}
@@ -336,7 +281,7 @@ function Chat() {
             <Grid container style={{ padding: "20px" }}>
               <Grid item xs={11}>
                 <TextField
-                  inputProps={{ ref: messageRef }}
+                  inputProps={{ ref: messageRef }} 
                   id="outlined-basic-email"
                   label="Type Something"
                   fullWidth
