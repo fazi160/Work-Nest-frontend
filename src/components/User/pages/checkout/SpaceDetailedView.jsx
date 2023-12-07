@@ -20,11 +20,12 @@ function SpaceDetailedView({ props }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [coWorkBookDates, setCoWorkBookedDates] = useState(null)
   const [spaceId, spaceType] = props;
+  console.log(spaceId,  "props are getting properly");
 
   useEffect(() => {
     // Fetch space details
     axios
-      .get(`${User_url}/space/${spaceType}/${spaceId}/`)
+      .get(`${User_url}/space/${spaceType}/${spaceId.id}/`)
       .then((response) => {
         setSpaceDetails(response.data);
         setLoadingSpaceDetails(false);
@@ -38,7 +39,7 @@ function SpaceDetailedView({ props }) {
     // Fetch booked dates for the specific space
 
     axios
-      .get(`${User_url}/space/${spaceType}/${spaceId}/book/`)
+      .get(`${User_url}/space/${spaceType}/${spaceId.id}/book/`)
       .then((response) => {
         if (spaceType === 'cowork'){
             setCoWorkBookedDates(response.data)

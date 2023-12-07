@@ -16,12 +16,8 @@ import { Icon } from "@iconify/react";
 import { useCustomerData } from "../../context/ContextCustomer";
 
 function SideNavbar({ onPageSelect }) {
-  const userData = useCustomerData();
- console.log(userData);
   const navigate = useNavigate();
   const [isPremium, setisPremium] = useState(false);
-
-
   const token = localStorage.getItem("token");
   if (!token) {
     navigate("/user/login");
@@ -45,18 +41,22 @@ function SideNavbar({ onPageSelect }) {
     }
   };
 
-  useEffect(() => {
-    if (
-      userData &&
-      userData.premium_customer_data &&
-      userData.premium_expired === false
-    ) {
-      setisPremium(true);
-    } else {
-      setisPremium(false);
-    }
-  }, [userData]);
-console.log(isPremium);
+  if (decode.user_type === "customer") {
+    const userData = useCustomerData();
+    useEffect(() => {
+      if (
+        userData &&
+        userData.premium_customer_data &&
+        userData.premium_expired === false
+      ) {
+        setisPremium(true);
+      } else {
+        setisPremium(false);
+      }
+    }, [userData]);
+    console.log(isPremium);
+  }
+
   return (
     <div
       className="fixed transition-all duration-500 w-60 bg-gray-800 text-white"
@@ -98,11 +98,7 @@ console.log(isPremium);
               icon={<ChatIcon style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("Chat")}
             />
-            {/* <ListItem
-              text="Premium Plans"
-              icon={<Icon icon="mdi:crown" style={{ fontSize: 32 }} />}
-              onItemClick={() => handleItemClick("Premium Plans")}
-            /> */}
+            
           </>
         )}
         {decode.user_type === "admin" && (
@@ -164,7 +160,7 @@ function ListItem({ text, icon, onItemClick }) {
 }
 
 SideNavbar.propTypes = {
-  onPageSelect: PropTypes.func.isRequired, // 'func' prop type, required
+  onPageSelect: PropTypes.func.isRequired, 
 };
 
 export default SideNavbar;

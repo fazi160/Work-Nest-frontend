@@ -1,9 +1,18 @@
 // based on the user type change data by decoding 'token'
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 
 function Dashboard() {
+  const [userType, setUserType] = useState(null);
+  const token = localStorage.getItem("token");
+  const decode = jwtDecode(token);
+  useEffect(()=>{
+    if (decode) {
+      setUserType(decode.user_type);
+    }
 
+  },[decode])
   const [polarChartRendered, setPolarChartRendered] = useState(false);
 
   const barChartOptions = {
