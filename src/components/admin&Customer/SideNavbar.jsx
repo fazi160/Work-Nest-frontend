@@ -98,7 +98,6 @@ function SideNavbar({ onPageSelect }) {
               icon={<ChatIcon style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("Chat")}
             />
-            
           </>
         )}
         {decode.user_type === "admin" && (
@@ -118,17 +117,17 @@ function SideNavbar({ onPageSelect }) {
               icon={<Person style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("Premium")}
             />
+            <ListItem
+              text="Notification"
+              icon={<Notifications style={{ fontSize: 32 }} />}
+              onItemClick={() => handleItemClick("Notification")}
+            />
           </>
         )}
         <ListItem
           text="Sales Report"
           icon={<Assessment style={{ fontSize: 32 }} />}
           onItemClick={() => handleItemClick("Sales Report")}
-        />
-        <ListItem
-          text="Notification"
-          icon={<Notifications style={{ fontSize: 32 }} />}
-          onItemClick={() => handleItemClick("Notification")}
         />
 
         <ListItem
@@ -160,7 +159,7 @@ function ListItem({ text, icon, onItemClick }) {
 }
 
 SideNavbar.propTypes = {
-  onPageSelect: PropTypes.func.isRequired, 
+  onPageSelect: PropTypes.func.isRequired,
 };
 
 export default SideNavbar;

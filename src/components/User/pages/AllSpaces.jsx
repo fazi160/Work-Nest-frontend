@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserNavbar from "./homepage/UserNavbar";
 import { useNavigate } from "react-router-dom";
-import { User_url } from "../../../constants/constants";
+import { BaseUrl } from "../../../constants/constants";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
@@ -55,7 +55,7 @@ function AllSpaces() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const apiUrl = `${User_url}/space/${typeInString}/`;
+      const apiUrl = `${BaseUrl}/space/${typeInString}/`;
 
       try {
         const response = await axios.get(apiUrl);
@@ -113,15 +113,17 @@ function AllSpaces() {
     navigate("/user/spacedetails", { state: { space: space, type: type } });
   };
 
-
   const filteredData = data.filter((space) => {
-    if (selectedOptions.length === 0 || selectedOptions.includes(JSON.parse(space.location).district)) {
+    if (
+      selectedOptions.length === 0 ||
+      selectedOptions.includes(JSON.parse(space.location).district)
+    ) {
       return true; // Include the space if no options are selected or if the district is selected
     } else {
       return false; // Exclude the space if options are selected and the district is not in the selectedOptions
     }
   });
-  
+
   console.log("heloo", filteredData);
   return (
     <div>
@@ -206,11 +208,11 @@ function AllSpaces() {
         <div className="w-5/6 p-4">
           {filteredData.map((space) => (
             <div className="flex justify-center" key={space.id}>
-              <div className="w-1/2 p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex">
+              <div className="w-[55rem] p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex">
                 <img
                   src={space.image}
                   alt={space.name}
-                  className="w-48 h-48 object-cover rounded-lg mr-4"
+                  className="w-[25rem] h-[25rem] object-cover rounded-lg mr-4"
                 />
                 <div className="w-96">
                   <h2
@@ -222,7 +224,7 @@ function AllSpaces() {
                   >
                     {space.name}
                   </h2>
-                  <p className="text-gray-600 mt-4">Price: ${space.price}</p>
+                  <p className="text-gray-600 mt-4">Price: ₹ {space.price}</p>
                   <p className="text-gray-600">
                     {typeInString === "conference" ? "Capacity" : "Slots"}:{" "}
                     {typeInString === "conference"
@@ -239,8 +241,15 @@ function AllSpaces() {
                   <p className="text-gray-600 mt-4">
                     Available: {space.is_available ? "Yes" : "No"}
                   </p>
-
-                  <button onClick={() => bookNow(space)}>Book Now</button>
+                  <div className="px-20 mt-4">
+                  <button
+                    type="button"
+                    class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                    onClick={() => bookNow(space)}
+                  >
+                    Book Now
+                  </button>
+                  </div>
                 </div>
               </div>
             </div>

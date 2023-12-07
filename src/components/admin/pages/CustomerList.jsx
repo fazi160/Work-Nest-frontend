@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Card, Typography, Button } from "@material-tailwind/react";
+import { BaseUrl } from "../../../constants/constants";
 import axios from "axios";
 
 function CustomerList() {
@@ -10,7 +11,7 @@ function CustomerList() {
 
   useEffect(() => {
     // Define your Django API endpoint
-    const apiUrl = "http://127.0.0.1:8000/auth/customerlist/";
+    const apiUrl = `${BaseUrl}/auth/customerlist/`;
 
     // Fetch user data from your Django API using Axios
     axios
@@ -27,7 +28,7 @@ function CustomerList() {
 
   const handleBlockUnblock = (id, is_active) => {
     // Implement the logic to block or unblock the user based on is_active status
-    const apiUrl = `http://127.0.0.1:8000/auth/usermanagent/${id}/`;
+    const apiUrl = `${BaseUrl}/auth/usermanagent/${id}/`;
     axios
       .put(apiUrl, { is_active: !is_active })
       .then((response) => {

@@ -13,6 +13,7 @@ import {
   Paper,
   Container,
 } from "@mui/material";
+import { BaseUrl } from "../../../constants/constants";
 
 function PremiumAdmin() {
   const [packages, setPackages] = useState([]);
@@ -32,7 +33,7 @@ function PremiumAdmin() {
   const fetchPremiumPackages = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/premium/packages/"
+        `${BaseUrl}/premium/packages/`
       );
       setPackages(response.data.results);
       console.log(response.data.results, "got");
@@ -56,7 +57,7 @@ function PremiumAdmin() {
   const handleCreate = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/premium/packages/",
+        `${BaseUrl}/premium/packages/`,
         formData
       );
       setPackages([...packages, response.data]);
@@ -69,7 +70,7 @@ function PremiumAdmin() {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://127.0.0.1:8000/premium/packages/${formData.id}/`,
+        `${BaseUrl}/premium/packages/${formData.id}/`,
         formData
       );
       fetchPremiumPackages();
@@ -81,7 +82,7 @@ function PremiumAdmin() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/premium/packages/${id}/`);
+      await axios.delete(`${BaseUrl}/premium/packages/${id}/`);
       setPackages(packages.filter((data) => data.id !== id));
     } catch (error) {
       console.error("Error deleting premium data:", error);

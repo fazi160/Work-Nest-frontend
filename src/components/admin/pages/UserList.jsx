@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, Typography, Button } from "@material-tailwind/react";
 import axios from "axios";
-
+import { BaseUrl } from "../../../constants/constants";
 function UserList() {
   const [userList, setUserList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const apiUrl = "http://127.0.0.1:8000/auth/userslist/";
+    const apiUrl = `${BaseUrl}/auth/userslist/`;
 
     axios
       .get(apiUrl)
@@ -30,7 +30,7 @@ function UserList() {
 
   const handleBlockUnblock = (id, is_active) => {
     // Implement the logic to block or unblock the user based on is_active status
-    const apiUrl = `http://127.0.0.1:8000/auth/usermanagent/${id}/`;
+    const apiUrl = `${BaseUrl}/auth/usermanagent/${id}/`;
     axios
       .put(apiUrl, { is_active: !is_active })
       .then((response) => {

@@ -14,6 +14,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import TablePagination from "@mui/material/TablePagination";
+import { BaseUrl } from "../../../constants/constants";
 
 Modal.setAppElement("#root");
 
@@ -100,7 +101,7 @@ function CustomerCowork() {
   
   
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/space/cowork-spaces/${userId}/`;
+    const apiUrl = `${BaseUrl}/space/cowork-spaces/${userId}/`;
     Axios.get(apiUrl)
       .then((response) => {
         const modifiedData = cleanLocation(response.data.results);
@@ -140,7 +141,7 @@ function CustomerCowork() {
     e.preventDefault();
   
     try {
-      const apiUrl = `http://127.0.0.1:8000/space/cowork-spaces/${userId}/`;
+      const apiUrl = `${BaseUrl}/space/cowork-spaces/${userId}/`;
   
       // Parse slots and price as integers
       const spaceData = {
@@ -204,7 +205,7 @@ function CustomerCowork() {
     e.preventDefault();
 
     try {
-      const apiUrl = `http://127.0.0.1:8000/space/cowork-spaces/${userId}/${formData.id}/`;
+      const apiUrl = `${BaseUrl}/space/cowork-spaces/${userId}/${formData.id}/`;
 
       // Fetch the old data, including the image URL
       const oldData = await axios.get(apiUrl);
@@ -281,7 +282,7 @@ function CustomerCowork() {
 
   const handleDelete = async (id) => {
     try {
-      const apiUrl = `http://127.0.0.1:8000/space/cowork-spaces/${userId}/${id}/`;
+      const apiUrl = `${BaseUrl}/space/cowork-spaces/${userId}/${id}/`;
       const response = await Axios.delete(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,

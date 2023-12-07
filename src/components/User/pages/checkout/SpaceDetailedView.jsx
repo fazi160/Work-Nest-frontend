@@ -1,12 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { User_url } from "../../../../constants/constants";
+import { BaseUrl } from "../../../../constants/constants";
 import { Calendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import BookingModal from "../BookingModal";
-import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import CoworkCalanderView from "./CoworkCalanderView";
 
@@ -18,14 +16,14 @@ function SpaceDetailedView({ props }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [coWorkBookDates, setCoWorkBookedDates] = useState(null)
+  const [coWorkBookDates, setCoWorkBookedDates] = useState(null);
   const [spaceId, spaceType] = props;
-  console.log(spaceId,  "props are getting properly");
+  console.log(spaceId, "props are getting properly");
 
   useEffect(() => {
     // Fetch space details
     axios
-      .get(`${User_url}/space/${spaceType}/${spaceId.id}/`)
+      .get(`${BaseUrl}/space/${spaceType}/${spaceId.id}/`)
       .then((response) => {
         setSpaceDetails(response.data);
         setLoadingSpaceDetails(false);
@@ -39,17 +37,18 @@ function SpaceDetailedView({ props }) {
     // Fetch booked dates for the specific space
 
     axios
-      .get(`${User_url}/space/${spaceType}/${spaceId.id}/book/`)
+      .get(`${BaseUrl}/space/${spaceType}/${spaceId.id}/book/`)
       .then((response) => {
-        if (spaceType === 'cowork'){
-            setCoWorkBookedDates(response.data)
-        }else{
-        // console.log(response);
-        const bookedDatesArray = response.data.map(
-          (booking) => new Date(booking.booking_date)
-        );
-        setBookedDates(bookedDatesArray);
-      }})
+        if (spaceType === "cowork") {
+          setCoWorkBookedDates(response.data);
+        } else {
+          // console.log(response);
+          const bookedDatesArray = response.data.map(
+            (booking) => new Date(booking.booking_date)
+          );
+          setBookedDates(bookedDatesArray);
+        }
+      })
       .catch((error) => {
         console.log("Error fetching booked dates", error);
       });
@@ -73,7 +72,6 @@ function SpaceDetailedView({ props }) {
       navigate("/user/spacedetails/checkout", { state: { data: data } });
     }
   };
- 
 
   return (
     <section className="overflow-hidden bg-white py-11 font-poppins dark:bg-gray-800">
@@ -88,7 +86,7 @@ function SpaceDetailedView({ props }) {
                   <img
                     src={spaceDetails.image}
                     alt={spaceDetails.name}
-                    className="object-cover w-full lg:h-full"
+                    className="object-cover ml-16 w-[32rem] lg:h-[32rem]"
                   />
                 ) : (
                   <p>No image available</p>
@@ -116,7 +114,7 @@ function SpaceDetailedView({ props }) {
                   </span>
                 </p>
 
-                <p className="max-w-md text-gray-700 dark:text-gray-400">
+                <p className="max-w-md text-gray-700 dark:text-gray-400 mt-4 text-2xl">
                   {loadingSpaceDetails
                     ? "Loading..."
                     : spaceType === "conference"
@@ -128,14 +126,14 @@ function SpaceDetailedView({ props }) {
                     ? spaceDetails.Capacity
                     : spaceDetails.slots}
                 </p>
-                <p className="max-w-md text-gray-700 dark:text-gray-400">
+                <p className="max-w-md text-gray-700 dark:text-gray-400 mt-5 text-2xl">
                   {loadingSpaceDetails
                     ? "Loading..."
                     : spaceDetails && spaceDetails.description}
                 </p>
 
                 {/* Displaying location data with conditional checks */}
-                <p className="text-gray-600 mt-4">
+                <p className="text-gray-600 mt-10 text-2xl">
                   Location:
                   {spaceDetails.location
                     ? (() => {
@@ -201,7 +199,10 @@ function SpaceDetailedView({ props }) {
                 }
               />
             ) : (
-              <CoworkCalanderView data={coWorkBookDates} spaceDetails={spaceDetails}/>
+              <CoworkCalanderView
+                data={coWorkBookDates}
+                spaceDetails={spaceDetails}
+              />
             )}
           </div>
           {/* Display selected date */}

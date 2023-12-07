@@ -3,7 +3,7 @@ import axios from "axios";
 import { useCustomerData } from "../../../../context/ContextCustomer";
 import jwtDecode from "jwt-decode";
 import { Card, Typography, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-
+import { BaseUrl } from "../../../../constants/constants";
 
 function CustomerSalesReport() {
     const customerData = useCustomerData();
@@ -14,7 +14,7 @@ function CustomerSalesReport() {
     const decode = jwtDecode(token);
   
     useEffect(() => {
-      const apiUrl = `http://127.0.0.1:8000/space/${reportType}/salesreport/`;
+      const apiUrl = `${BaseUrl}/space/${reportType}/salesreport/`;
       const requestData = { params: { user_id: decode.user_id } };
   
       axios

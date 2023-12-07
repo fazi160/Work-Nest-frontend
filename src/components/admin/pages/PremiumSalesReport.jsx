@@ -3,13 +3,13 @@ import axios from "axios";
 import { Card, Typography, Button } from "@mui/material";
 import Modal from "react-modal";
 import jwtDecode from "jwt-decode";
-import { User_url } from "../../../constants/constants";
+import { BaseUrl } from "../../../constants/constants";
 function PremiumSalesReport() {
   const [premiumSalesReport, setPremiumSalesReport] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
   useEffect(() => {
-    axios.get(`${User_url}/premium/premiumsales/`).then((response) => {
+    axios.get(`${BaseUrl}/premium/premiumsales/`).then((response) => {
       setPremiumSalesReport(response.data.results);
     });
   }, []);

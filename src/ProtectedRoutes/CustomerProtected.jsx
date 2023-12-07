@@ -7,6 +7,7 @@ import AdminHomePage from '../pages/Admin/AdminHomePage';
 import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { CustomerDataProvider } from '../context/ContextCustomer'; // Replace with the actual path
+import { BaseUrl } from '../constants/constants';
 
 function CustomerProtected() {
   const token = localStorage.getItem('token');
@@ -16,7 +17,7 @@ function CustomerProtected() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = `http://127.0.0.1:8000/auth/userdetail/${userId}/`;
+        const apiUrl = `${BaseUrl}/auth/userdetail/${userId}/`;
         const response = await Axios.get(apiUrl);
         // Assuming the customer data is available in response.data.customer_data
         // Modify this based on your actual API response structure

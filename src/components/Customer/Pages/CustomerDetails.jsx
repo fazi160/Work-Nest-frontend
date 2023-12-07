@@ -9,7 +9,7 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-
+import { BaseUrl } from "../../../constants/constants";
 import { useCustomerData } from "../../../context/ContextCustomer";
 
 function CustomerDetails() {
@@ -49,7 +49,7 @@ function CustomerDetails() {
     };
 
     Axios.patch(
-      `http://127.0.0.1:8000/auth/customerdetails/${customerDetails.id}/`,
+      `${BaseUrl}/auth/customerdetails/${customerDetails.id}/`,
       data
     )
       .then((response) => {

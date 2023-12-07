@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { User_url } from "../../../../constants/constants";
+import { BaseUrl } from "../../../../constants/constants";
 
 function SuccessfulPayment() {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -29,7 +29,7 @@ function SuccessfulPayment() {
       console.log("useEffect - Running fetchData");
       const fetchData = async () => {
         try {
-          const response = await axios.post(`${User_url}/space/${spaceType}/booking/register/`, {
+          const response = await axios.post(`${BaseUrl}/space/${spaceType}/booking/register/`, {
             userId,
             planId,
             date,

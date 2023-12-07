@@ -2,7 +2,7 @@ import jwtDecode from "jwt-decode";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { User_url } from "../../../../constants/constants";
+import { BaseUrl } from "../../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,7 +59,7 @@ function Checkout() {
         console.log("Complete data object:", data);
   
         // Make a request to your backend to initiate the Stripe payment
-        const response = await axios.post(`${User_url}/space/booking/payment/`, data);
+        const response = await axios.post(`${BaseUrl}/space/booking/payment/`, data);
   
         // Redirect to the Stripe checkout session URL
         window.location.href = response.data.message.url;

@@ -15,7 +15,7 @@ import { Modal } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@material-tailwind/react";
 import WebSocketInstance from "./WebSocketInstance";
-import { User_url } from "../../constants/constants";
+import { BaseUrl } from "../../constants/constants";
 import { request } from "websocket";
 import { Box } from "@mui/material";
 import { data } from "autoprefixer";
@@ -35,7 +35,7 @@ function Notification() {
   let apiUrl = "";
 
   if (userType === "admin") {
-    apiUrl = "http://127.0.0.1:8000/notification/admin_notification/";
+    apiUrl = `${BaseUrl}/notification/admin_notification/`;
   }
   // Add conditions for other user types if needed
 
@@ -86,7 +86,7 @@ function Notification() {
   useEffect(() => {
     console.log(detailedDataType, id, "fdsaffdsdafad");
     if (detailedDataType && id) {
-      const detailsApiUrl = `${User_url}/notification/detailview/${detailedDataType}/${id}/`;
+      const detailsApiUrl = `${BaseUrl}/notification/detailview/${detailedDataType}/${id}/`;
       console.log(detailsApiUrl);
 
       axios
@@ -117,7 +117,7 @@ function Notification() {
   const sortedNotifications = notifications.slice().sort((a, b) => b.id - a.id);
 
   const blockRequest = (type, id) => {
-    const blockUrl = `${User_url}/notification/blockunblock/${type}/${id}/`;
+    const blockUrl = `${BaseUrl}/notification/blockunblock/${type}/${id}/`;
 
     // Update the blocked status in the state immediately (optimistic update)
     setBlockedNotifications((prevBlockedNotifications) => ({
@@ -166,7 +166,7 @@ function Notification() {
 const renderUserBlockUnblockButton = (id)=>{
     console.log(id);
     
-    const blockUrl = `${User_url}/notification/blockunblock/user/${id}/`;
+    const blockUrl = `${BaseUrl}/notification/blockunblock/user/${id}/`;
 
     axios
     .patch(blockUrl)

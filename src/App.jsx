@@ -5,6 +5,7 @@ import CustomerRoutes from "./routes/Customer";
 import UserRoutes from "./routes/User";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import axios from "axios";
+import { wsApiUrl } from "./constants/constants";
 
 function App() {
   const [notifications, setNotifications] = useState([]);
@@ -13,7 +14,7 @@ function App() {
   useEffect(() => {
 
   
-    const wsUrl = "ws://127.0.0.1:8000/ws/notification/";
+    const wsUrl = `${wsApiUrl}/ws/notification/`;
   
     const connectWebSocket = () => {
       const client = new W3CWebSocket(wsUrl);

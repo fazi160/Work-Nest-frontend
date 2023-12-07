@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import axios from "axios";
-import { User_url } from "../../../constants/constants";
+import { BaseUrl } from "../../../constants/constants";
 
 function AdminDashboard() {
   const [userCount, setuserCount] = useState(null);
@@ -11,7 +11,7 @@ function AdminDashboard() {
   const [premiumPlanSales, setPremiumPlanSales] = useState(null);
 
   useEffect(() => {
-    const baseUrl = `${User_url}/dashboard/admin/`;
+    const baseUrl = `${BaseUrl}/dashboard/admin/`;
 
     axios
       .get(`${baseUrl}usercount/customer/`)
@@ -110,7 +110,7 @@ function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Users</h2>
-              <p>
+              <p className="text-xl">
                 Active Users:{" "}
                 {userCount && userCount.users && userCount.users.length >= 2
                   ? userCount.users[1]
@@ -121,17 +121,17 @@ function AdminDashboard() {
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Premium Revenue</h2>
 
-              <p>Total Sales: {revenues?.data[0]?.total_price || "N/A"}</p>
+              <p className="text-xl">Total Sales: {revenues?.data[0]?.total_price || "N/A"}</p>
             </div>
 
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Co-work Space Revenue</h2>
-              <p>Total Sales: {revenues?.data[1]?.cowork_revenue || "N/A"}</p>
+              <p className="text-xl">Total Sales: {revenues?.data[1]?.cowork_revenue || "N/A"}</p>
             </div>
 
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Conference Hall Revenue</h2>
-              <p>
+              <p className="text-xl">
                 Total Sales: {revenues?.data[2]?.conference_revenue || "N/A"}{" "}
               </p>
             </div>
@@ -143,7 +143,7 @@ function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Customers</h2>
-              <p>
+              <p className="text-xl">
                 Active Customers:{" "}
                 {userCount && userCount.users && userCount.users.length >= 2
                   ? userCount.users[0]
@@ -153,7 +153,7 @@ function AdminDashboard() {
 
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Co-work Space</h2>
-              <p>
+              <p className="text-xl">
                 Total Co-work spaces:{" "}
                 {revenues?.data[3]?.cowork_space_count || "N/A"}
               </p>
@@ -161,7 +161,7 @@ function AdminDashboard() {
 
             <div className="p-4 bg-white rounded-lg shadow-md text-center">
               <h2 className="text-xl font-semibold">Conference Halls</h2>
-              <p>
+              <p className="text-xl">
                 Total Conference Halls:{" "}
                 {revenues?.data[4]?.conference_space_count || "N/A"}
               </p>

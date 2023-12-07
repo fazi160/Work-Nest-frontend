@@ -16,7 +16,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { userAxiosInstant } from "../../../utils/axiosUtils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-import { wsApiUrl } from "../../../constants/constants";
+import { BaseUrl, reactUrl, wsApiUrl } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -86,7 +86,7 @@ function UserChat() {
         console.log("Navigating to /customer/videocall with data:", data);
 
         const messageData = {
-          message: `http://localhost:5173/customer/videocall?roomId=${senderdetails.id}&receiverId=${recipientdetails.id}`,
+          message: `${reactUrl}/customer/videocall?roomId=${senderdetails.id}&receiverId=${recipientdetails.id}`,
           senderUsername: senderdetails.email,
           receiverUsername: recipientdetails.email,
         };
@@ -177,7 +177,7 @@ function UserChat() {
     const decode = jwtDecode(token);
     console.log(decode);
     setSenderDetails({ id: decode.user_id, email: decode.email });
-    const apiUrl = "http://127.0.0.1:8000/chat/customerlist/";
+    const apiUrl = `${BaseUrl}/chat/customerlist/`;
     axios.get(apiUrl).then((response) => {
       setData(response.data.results);
     });

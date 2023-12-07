@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { User_url } from "../../../../constants/constants";
+import { BaseUrl } from "../../../../constants/constants";
 
 function SuccessfulPayment() {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -11,7 +11,7 @@ function SuccessfulPayment() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const successUrl = `${User_url}/premium/paymentsuccess/`;
+    const successUrl = `${BaseUrl}/premium/paymentsuccess/`;
 
     const fetchData = async () => {
       try {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import axios from "axios";
-import { User_url } from "../../../constants/constants";
+import { BaseUrl } from "../../../constants/constants";
 import bannerImage from "../../../assets/PremiumTimeLeft.jpg";
 import { useCustomerData } from "../../../context/ContextCustomer";
 function CustomerDashboard({ user_id }) {
@@ -12,7 +12,7 @@ function CustomerDashboard({ user_id }) {
   const [coWorkSales, setCoWorkSales] = useState(null);
   const [countdown, setCountdown] = useState(null);
   useEffect(() => {
-    const baseUrl = `${User_url}/dashboard/customer/`;
+    const baseUrl = `${BaseUrl}/dashboard/customer/`;
 
     axios
       .get(`${baseUrl}counts/${user_id}/`)
@@ -142,7 +142,7 @@ function CustomerDashboard({ user_id }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="p-4 bg-white rounded-lg shadow-md text-center">
             <h2 className="text-xl font-semibold">Total Conference Halls</h2>
-            <p>
+            <p className="text-xl">
               Total:{" "}
               {counts && counts.data && counts.data.length > 0
                 ? counts.data[0]
@@ -151,7 +151,7 @@ function CustomerDashboard({ user_id }) {
           </div>
           <div className="p-4 bg-white rounded-lg shadow-md text-center">
             <h2 className="text-xl font-semibold">Total Co-work Spaces</h2>
-            <p>
+            <p className="text-xl">
               Total:{" "}
               {counts && counts.data && counts.data.length > 0
                 ? counts.data[1]
@@ -162,7 +162,7 @@ function CustomerDashboard({ user_id }) {
             <h2 className="text-xl font-semibold">
               Total Conference Halls Bookings
             </h2>
-            <p>
+            <p className="text-xl">
               Total:{" "}
               {counts && counts.data && counts.data.length > 0
                 ? counts.data[2]
@@ -173,7 +173,7 @@ function CustomerDashboard({ user_id }) {
             <h2 className="text-xl font-semibold">
               Total Co-work Spaces Bookings
             </h2>
-            <p>
+            <p className="text-xl">
               Total:{" "}
               {counts && counts.data && counts.data.length > 0
                 ? counts.data[3]

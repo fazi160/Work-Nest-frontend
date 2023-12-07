@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Email, Phone, Person, Edit, Save, Add } from "@mui/icons-material";
 import UserPurchaseReport from "./UserPurchaseReport";
+import { BaseUrl } from "../../../constants/constants";
 
 function UserProfile() {
   const [userData, setUserData] = useState(null);
@@ -33,7 +34,7 @@ function UserProfile() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/auth/user/details/${decode.user_id}/`
+          `${BaseUrl}/auth/user/details/${decode.user_id}/`
         );
         setUserData(response.data.results[0]); // Assuming results is an array
         setShowAddButton(response.data.results.length === 0);
@@ -66,7 +67,7 @@ function UserProfile() {
   const handleConfirmSave = () => {
     axios
       .patch(
-        `http://127.0.0.1:8000/auth/user/details/${decode.user_id}/`,
+        `${BaseUrl}/auth/user/details/${decode.user_id}/`,
         updatedData
       )
       .then((response) => {
@@ -93,7 +94,7 @@ function UserProfile() {
     };
 
     axios
-      .post(`http://127.0.0.1:8000/auth/user/details/`, defaultData)
+      .post(`${BaseUrl}/auth/user/details/`, defaultData)
       .then((response) => {
         setUserData(response.data.results[0]); // Assuming results is an array
         setShowAddButton(false);

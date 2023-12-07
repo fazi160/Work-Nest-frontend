@@ -16,7 +16,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import TablePagination from "@mui/material/TablePagination";
-
+import { BaseUrl } from "../../../constants/constants";
 Modal.setAppElement("#root");
 
 function CustomerConference() {
@@ -106,7 +106,7 @@ function CustomerConference() {
   }
 
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/`;
+    const apiUrl = `${BaseUrl}/space/conference-halls/${userId}/`;
     Axios.get(apiUrl)
       .then((response) => {
         const modifiedData = cleanLocation(response.data.results);
@@ -143,7 +143,7 @@ function CustomerConference() {
     e.preventDefault();
 
     try {
-      const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/`;
+      const apiUrl = `${BaseUrl}/space/conference-halls/${userId}/`;
 
       const spaceData = {
         name: formData.name,
@@ -202,7 +202,7 @@ function CustomerConference() {
     e.preventDefault();
 
     try {
-      const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/${formData.id}/`;
+      const apiUrl = `${BaseUrl}/space/conference-halls/${userId}/${formData.id}/`;
 
       // Fetch the old data, including the image URL
       const oldData = await axios.get(apiUrl);
@@ -284,7 +284,7 @@ function CustomerConference() {
 
   const handleDelete = async (id) => {
     try {
-      const apiUrl = `http://127.0.0.1:8000/space/conference-halls/${userId}/${id}/`;
+      const apiUrl = `${BaseUrl}/space/conference-halls/${userId}/${id}/`;
       const response = await Axios.delete(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,

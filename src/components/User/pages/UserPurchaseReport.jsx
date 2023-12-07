@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import axios from "axios";
 import { Card, Typography, FormControl } from "@mui/material";
+import { BaseUrl } from "../../../constants/constants";
 function UserPurchaseReport({ userId }) {
   console.log("UserPurchaseReport has called");
   // const userId = match.params.userId;
@@ -13,7 +14,7 @@ function UserPurchaseReport({ userId }) {
   
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/space/user/purchase/${userId}/`)
+      .get(`${BaseUrl}/space/user/purchase/${userId}/`)
       .then((response) => {
         console.log(response);
         const sortedConferenceHallBookings =

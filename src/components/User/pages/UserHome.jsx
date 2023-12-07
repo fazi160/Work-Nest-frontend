@@ -18,13 +18,16 @@ import ChairIcon from '@mui/icons-material/Chair';
 import KitchenIcon from '@mui/icons-material/Kitchen';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import Footer from "./homepage/Footer";
-
+import { useNavigate } from "react-router-dom";
 const bannerStyles = "w-full h-96 object-cover"; // Adjust the height here
-const companyInfoStyles = "text-center py-5";
+const companyInfoStyles = "text-center py-8"; // Adjust the padding here
+const buttonStyles = "bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-6 rounded"; // Adjust the padding and font size here
 
 function UserHome() {
   const [currentBanner, setCurrentBanner] = useState(1);
   const [showChat, setShowChat] = useState(false);
+  const navigate = useNavigate()
+
   useEffect(() => {
     // Automatically switch banners every 3 seconds
     const interval = setInterval(() => {
@@ -35,10 +38,11 @@ function UserHome() {
   }, []);
     // Function to toggle the chat visibility
     const toggleChat = () => {
-      setShowChat(!showChat);
+      navigate('user/chat')
     };
   return (
     <>
+    
       <UserNavbar />
       <div className="mt-1">
         <img
@@ -55,8 +59,9 @@ function UserHome() {
           className={bannerStyles}
         />
       </div>
+      
       <div className={companyInfoStyles}>
-        <h2 className="text-5xl font-bold">Work Nest</h2>
+        <h2 className="text-6xl font-bold">Work Nest</h2>
         <br />
         <p className="text-lg mx-auto max-w-lg">
           Situated across prime locations throughout India, Work Nest offers
@@ -68,12 +73,12 @@ function UserHome() {
           experience with Work Nest.
         </p>
         <br />
-        <button className="bg-gray-200 hover-bg-gray-300 text-black font-bold py-2 px-4 rounded" onClick={toggleChat}>
+        <button className={buttonStyles} onClick={toggleChat}>
           Open Chat
         </button>
       </div>
       <br />
-      <p className="flex justify-center text-3xl font-bold">Conference Halls</p>
+      <p className="flex justify-center text-4xl font-bold">Conference Halls</p>
       <SpaceView prop="conference" numNewest={3} />
       <div className="flex justify-center">
         <Link to='/user/conferencehalls'>

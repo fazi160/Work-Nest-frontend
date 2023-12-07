@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { User_url } from "../../../constants/constants";
+import { BaseUrl,reactUrl } from "../../../constants/constants";
 import jwtDecode from "jwt-decode";
 import backgroundImage from "../../../assets/premium_background.jpg";
 
@@ -25,15 +25,15 @@ const PremiumSelect = () => {
         unit_amount: selectedPlan.price * 100, // Convert to cents
         quantity: 1,
         mode: "payment",
-        success_url: "http://localhost:5173/customer/success=true",
-        cancel_url: "http://localhost:5173/customer/canceled=true",
+        success_url: `${reactUrl}/customer/success=true`,
+        cancel_url: `${reactUrl}/customer/canceled=true`,
         // Add any additional data you need
       };
 
       console.log("Complete data object:", data); // Log the complete data object
 
       // Make a request to your backend to initiate the Stripe payment
-      const response = await axios.post(`${User_url}/premium/payment/`, data);
+      const response = await axios.post(`${BaseUrl}/premium/payment/`, data);
 
       // Redirect to the Stripe checkout session URL
       window.location.href = response.data.message.url;
@@ -45,7 +45,7 @@ const PremiumSelect = () => {
   useEffect(() => {
     localStorage.removeItem('currentPage')
     axios
-      .get("http://127.0.0.1:8000/premium/packages/")
+      .get(`${BaseUrl}/premium/packages/`)
       .then((response) => {
         const sortedPackages = response.data.results.sort(
           (a, b) => a.price - b.price
