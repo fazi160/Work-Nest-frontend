@@ -8,6 +8,7 @@ import axios from "axios";
 import { wsApiUrl } from "./constants/constants";
 
 function App() {
+  console.log("app.jsx is working  fjsakjdfjkjakfda");
   // const [notifications, setNotifications] = useState([]);
   // const [socket, setSocket] = useState(null);
 
