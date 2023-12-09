@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminRouter from "./routes/admin";
 import CustomerRoutes from "./routes/Customer";
 import UserRoutes from "./routes/User";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import axios from "axios";
 import { wsApiUrl } from "./constants/constants";
+import UserHomePage from "./pages/User/UserHomePage";
 
 function App() {
   console.log("app.jsx is working  fjsakjdfjkjakfda");
@@ -85,11 +86,12 @@ function App() {
 
   return (
     <div>
-      <h1>It's working</h1>
-      <nav><Link to='/admin'>Admin route</Link></nav>
+     
       <Router>
         <Routes>
-          <Route path="/*" element={<UserRoutes />} />
+          <Route path="/" element={<UserRoutes />} />
+          
+           {/* <Route path="/" element={<UserHomePage />} /> */}
           <Route path="/admin/*" element={<AdminRouter />} />
           <Route path="/customer/*" element={<CustomerRoutes />} />
           <Route path="/user/*" element={<UserRoutes />} />
