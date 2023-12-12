@@ -27,7 +27,7 @@ function UserHome() {
   const [currentBanner, setCurrentBanner] = useState(1);
   const [showChat, setShowChat] = useState(false);
   const navigate = useNavigate()
-
+  console.log("redeploy");
   useEffect(() => {
     // Automatically switch banners every 3 seconds
     const interval = setInterval(() => {
