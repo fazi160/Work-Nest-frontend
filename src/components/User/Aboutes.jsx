@@ -1,7 +1,10 @@
-import React from "react";
+import React from 'react'
 
-function About() {
+function Aboutes() {
   return (
+    <div>
+      
+
     <div className="ml-16">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-center mb-8 text-3xl font-bold">About Us</h2>
@@ -31,7 +34,11 @@ function About() {
         </ul>
       </div>
     </div>
-  );
+    </div>
+  )
 }
 
-export default About;
+export default Aboutes
+
+
+
