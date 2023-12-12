@@ -4,7 +4,6 @@ import { BaseUrl } from "../../../../constants/constants";
 
 // to show the data's for conference and coWorking space
 
-
 // ... (existing code)
 
 function SpaceCard({ data, category }) {
@@ -17,9 +16,11 @@ function SpaceCard({ data, category }) {
           className="w-[25rem] h-[25rem] object-cover rounded-lg mr-4"
         />
         <div className="w-2/3">
-          <h2 className={`text-5xl font-semibold ${
-            category === "conference" ? "text-black" : "text-black"
-          }`}>
+          <h2
+            className={`text-5xl font-semibold ${
+              category === "conference" ? "text-black" : "text-black"
+            }`}
+          >
             {data.name}
           </h2>
           <p className="text-lg mt-4">Price: ₹{data.price}</p>
@@ -28,9 +29,21 @@ function SpaceCard({ data, category }) {
             {category === "conference" ? data.Capacity : data.slots}
           </p>
           <p className="text-lg mt-4">Description: {data.description}</p>
+
           <p className="text-lg mt-4">
-            Location: {JSON.parse(data.location).district},{" "}
-            {JSON.parse(data.location).city}
+            {data.location
+              ? (() => {
+                  try {
+                    const locationObject = JSON.parse(data.location);
+                    return `${
+                      locationObject.district || "District Not Available"
+                    }, ${locationObject.city || "City Not Available"}`;
+                  } catch (error) {
+                    console.error("Error parsing location:", error);
+                    return "Invalid location data";
+                  }
+                })()
+              : "Location data not available"}
           </p>
           <p className="text-lg mt-4">
             Available: {data.is_available ? "Yes" : "No"}
@@ -41,15 +54,7 @@ function SpaceCard({ data, category }) {
   );
 }
 
-
 // ... (existing code)
-
-
-
-
-
-
-
 
 function SpaceView({ prop, numNewest }) {
   const [data, setData] = useState([]);
@@ -57,7 +62,10 @@ function SpaceView({ prop, numNewest }) {
 
   useEffect(() => {
     const apiUrl = `${BaseUrl}/space/${category}/`;
+    console.log(apiUrl);
+
     axios.get(apiUrl).then((response) => {
+      console.log(response.data, "data from backend");
       const sortedData = response.data.results.sort((a, b) => b.id - a.id);
       if (numNewest > 0) {
         const newestData = sortedData.slice(0, numNewest);

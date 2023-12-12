@@ -1,35 +1,43 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Container, Link, MenuItem as MuiMenuItem, Menu as MuiMenu } from '@mui/material';
-import { styled } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
-import UserChat from '../UserChat';
+import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Container,
+  Link,
+  MenuItem as MuiMenuItem,
+  Menu as MuiMenu,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { useNavigate } from "react-router-dom";
+import UserChat from "../UserChat";
 
 const Navbar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: 'black',
+  backgroundColor: "black",
 }));
 
-const Logo = styled('img')({
-  marginRight: '16px',
-  width: '50px',
-  height: '50px',
-  position: 'absolute',
-  top: '10px',
-  left: '-140px',
+const Logo = styled("img")({
+  marginRight: "16px",
+  width: "50px",
+  height: "50px",
+  position: "absolute",
+  top: "10px",
+  left: "-140px",
 });
 
-const Menu = styled('ul')({
-  display: 'flex',
-  listStyle: 'none',
+const Menu = styled("ul")({
+  display: "flex",
+  listStyle: "none",
   padding: 0,
-  marginLeft: 'auto',
+  marginLeft: "auto",
 });
 
 const MenuItem = styled(MuiMenuItem)({
-  margin: '0 16px',
+  margin: "0 16px",
 });
 
 const LogoutLink = styled(Link)({
-  cursor: 'pointer',
+  cursor: "pointer",
 });
 
 function UserNavbar() {
@@ -45,12 +53,12 @@ function UserNavbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/user/login');
+    localStorage.removeItem("token");
+    navigate("/user/login");
   };
 
   const loginOrLogoutHandle = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     if (token) {
       return (
@@ -58,7 +66,11 @@ function UserNavbar() {
           <Link href="#" onClick={handleMenuOpen}>
             Welcome, User
           </Link>
-          <MuiMenu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+          <MuiMenu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
             <MenuItem>
               <Link href="/user/dashboard/">Dashboard</Link>
             </MenuItem>
@@ -86,7 +98,7 @@ function UserNavbar() {
               <Link href="/">Home</Link>
             </MenuItem>
             <MenuItem>
-              <Link href="/about">About</Link>
+              <Link href="/user/about">About</Link>
             </MenuItem>
             <MenuItem>
               <Link href="/user/chat">Chat</Link>

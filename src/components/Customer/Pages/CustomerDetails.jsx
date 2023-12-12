@@ -8,26 +8,33 @@ import {
   Container,
   Grid,
   TextField,
+  Modal,
 } from "@mui/material";
 import { BaseUrl } from "../../../constants/constants";
 import { useCustomerData } from "../../../context/ContextCustomer";
 
 function CustomerDetails() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedContact, setEditedContact] = useState("");
-  const [editedDescription, setEditedDescription] = useState("");
-  const [customerDetails, setCustomerDetails] = useState("");
-  const [customerDetailsPremium, setCustomerDetailsPremium] = useState("");
-
   const customerData = useCustomerData();
   const token = localStorage.getItem("token");
   const decode = jwtDecode(token);
   console.log(customerData);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContact, setEditedContact] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
+  const [customerDetail, setCustomerDetail] = useState("");
+  const [customerDetailsPremium, setCustomerDetailsPremium] = useState("");
+  const [isCreate, setIsCreate] = useState(false);
+  const [newCustomer, setNewCustomer] = useState({
+    user: decode.user_id,
+    company_name: "",
+    contact: "",
+    description: "",
+  });
 
   useEffect(() => {
     // Initialize state variables with customer data
     if (customerData) {
-      setCustomerDetails(customerData.customer_data);
+      setCustomerDetail(customerData.customer_data);
       if (!customerData.premium_expired) {
         setCustomerDetailsPremium(customerData.premium_customer_data);
       } else {
@@ -48,16 +55,32 @@ function CustomerDetails() {
       description: editedDescription,
     };
 
-    Axios.patch(
-      `${BaseUrl}/auth/customerdetails/${customerDetails.id}/`,
-      data
-    )
+    Axios.patch(`${BaseUrl}/auth/customerdetails/${customerDetail.id}/`, data)
       .then((response) => {
-        setCustomerDetails(response.data); // Update customerDetails state
+        setCustomerDetail(response.data); // Update customerDetails state
         setIsEditing(false);
       })
       .catch((error) => {
         console.error("Error saving data:", error);
+      });
+  };
+
+  const handleCreateClick = () => {
+    setIsCreate(true);
+  };
+
+  const handleCreateClose = () => {
+    setIsCreate(false);
+  };
+
+  const handleCreateSave = () => {
+    Axios.post(`${BaseUrl}/auth/customerdetails/`, newCustomer)
+      .then((response) => {
+        setCustomerDetail(response.data);
+        setIsCreate(false);
+      })
+      .catch((error) => {
+        console.error("Error creating customer detail:", error);
       });
   };
 
@@ -71,29 +94,27 @@ function CustomerDetails() {
             marginTop: "50px",
             marginBottom: "20px",
             fontWeight: "bold",
-            textAlign: "center", // Center align text
+            textAlign: "center",
           }}
         >
           Customer Details
         </Typography>
 
-        {customerDetails ? (
+        {customerDetail ? (
           <Paper
             elevation={3}
             style={{
               padding: "20px",
-              margin: "20px auto", // Center the card horizontally
+              margin: "20px auto",
               borderRadius: "10px",
               background: "#f4f4f4",
-              maxWidth: "1200px", // Optionally set a max width for the card
-              maxHeight:"600px",
-              textAlign: "center", // Center align text within the card
+              maxWidth: "1200px",
+              maxHeight: "600px",
+              textAlign: "center",
             }}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} style={{ margin: "0 auto" }}>
-                {" "}
-                {/* Center the grid item */}
                 <Typography
                   variant="h6"
                   component="h2"
@@ -102,7 +123,7 @@ function CustomerDetails() {
                   Email: {decode.email}
                 </Typography>
                 <Typography variant="body1" style={{ marginBottom: "10px" }}>
-                  Company Name: {customerDetails.company_name}
+                  Company Name: {customerDetail.company_name}
                 </Typography>
                 {isEditing ? (
                   <div>
@@ -124,17 +145,31 @@ function CustomerDetails() {
                 ) : (
                   <div>
                     <Typography variant="body1">
-                      Contact: {customerDetails.contact}
+                      Contact: {customerDetail.contact}
                     </Typography>
                     <Typography variant="body1">
-                      Description: {customerDetails.description}
+                      Description: {customerDetail.description}
                     </Typography>
                   </div>
                 )}
               </Grid>
             </Grid>
 
-            {isEditing ? (
+            {!customerDetail.company_name && !isEditing && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCreateClick}
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#2196f3",
+                }}
+              >
+                Create
+              </Button>
+            )}
+
+            {customerDetail.company_name && isEditing && (
               <Button
                 variant="contained"
                 color="primary"
@@ -146,7 +181,9 @@ function CustomerDetails() {
               >
                 Save
               </Button>
-            ) : (
+            )}
+
+            {customerDetail.company_name && !isEditing && (
               <Button
                 variant="contained"
                 color="primary"
@@ -206,6 +243,67 @@ function CustomerDetails() {
           </Paper>
         ) : (
           <p>Loading premium details...</p>
+        )}
+
+        {isCreate && (
+          <Modal open={isCreate} onClose={handleCreateClose}>
+            <div>
+              <h2>Create Customer Detail</h2>
+              <TextField
+                label="Company Name"
+                fullWidth
+                value={newCustomer.company_name}
+                onChange={(e) =>
+                  setNewCustomer({
+                    ...newCustomer,
+                    company_name: e.target.value,
+                  })
+                }
+              />
+              <TextField
+                label="Contact"
+                fullWidth
+                value={newCustomer.contact}
+                onChange={(e) =>
+                  setNewCustomer({ ...newCustomer, contact: e.target.value })
+                }
+              />
+              <TextField
+                label="Description"
+                fullWidth
+                multiline
+                rows={4}
+                value={newCustomer.description}
+                onChange={(e) =>
+                  setNewCustomer({
+                    ...newCustomer,
+                    description: e.target.value,
+                  })
+                }
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCreateSave}
+                style={{
+                  marginTop: "20px",
+                  backgroundColor: "#4caf50",
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleCreateClose}
+                style={{
+                  marginTop: "20px",
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Modal>
         )}
       </Container>
     </div>

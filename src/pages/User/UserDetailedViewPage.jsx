@@ -8,7 +8,7 @@ function UserDetailedViewPage() {
     const location = useLocation();
     const SpaceType = location.state ? location.state.type : null;
     const SpaceId = location.state ? location.state.space : null;
-    console.log(SpaceType, SpaceId, "fsdafsdafds");
+
 
     
   return (

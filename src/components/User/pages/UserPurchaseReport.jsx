@@ -5,7 +5,7 @@ import { Card, Typography, FormControl } from "@mui/material";
 import { BaseUrl } from "../../../constants/constants";
 function UserPurchaseReport({ userId }) {
   console.log("UserPurchaseReport has called");
-  // const userId = match.params.userId;
+
   const [bookingData, setBookingData] = React.useState(null);
 
   const sortByDate = (a, b) => {
@@ -53,7 +53,22 @@ function UserPurchaseReport({ userId }) {
                   <td>{booking.hall_detail.name}</td>
                   <td>{booking.price}</td>
                   <td>{booking.booking_date}</td>
-                  <td>{JSON.parse(booking.hall_detail.location).city}</td>
+                  <td>
+                  {booking.hall_detail.location
+                    ? (() => {
+                        try {
+                          const locationObject = JSON.parse(
+                            booking.hall_detail.location
+                          );
+                          return `${
+                            locationObject.district || "District Not Available"
+                          }, ${locationObject.city || "City Not Available"}`;
+                        } catch (error) {
+                          console.error("Error parsing location:", error);
+                          return "Invalid location data";
+                        }
+                      })()
+                    : "Location data not available"}</td>
                 </tr>
               ))}
               {bookingData.cowork_space_bookings.map((booking) => (
@@ -61,7 +76,22 @@ function UserPurchaseReport({ userId }) {
                   <td>{booking.space_details.name}</td>
                   <td>{booking.price}</td>
                   <td>{booking.booking_date}</td>
-                  <td>{JSON.parse(booking.space_details.location).city}</td>
+                  <td>
+                  {booking.space_details.location
+                    ? (() => {
+                        try {
+                          const locationObject = JSON.parse(
+                            booking.space_details.location
+                          );
+                          return `${
+                            locationObject.district || "District Not Available"
+                          }, ${locationObject.city || "City Not Available"}`;
+                        } catch (error) {
+                          console.error("Error parsing location:", error);
+                          return "Invalid location data";
+                        }
+                      })()
+                    : "Location data not available"}</td>
                 </tr>
               ))}
             </tbody>

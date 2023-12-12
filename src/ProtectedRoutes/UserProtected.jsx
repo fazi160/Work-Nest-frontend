@@ -1,37 +1,38 @@
-import jwtDecode from 'jwt-decode'
-import React from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
-import CustomerHomePage from '../pages/Customer/CustomerHomePage'
-import AdminHomePage from '../pages/Admin/AdminHomePage'
+import jwtDecode from 'jwt-decode';
+import React, { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import CustomerHomePage from '../pages/Customer/CustomerHomePage';
+import AdminHomePage from '../pages/Admin/AdminHomePage';
 
 function UserProtected() {
-    const token = localStorage.getItem('token')
-    const navigate = useNavigate()
-    if (token) {
-        const decode = jwtDecode(token)
-        if (decode.user_type === 'user') {
-            return <Outlet/>
-        } else if (decode.user_type === 'customer') {
-            // if (!decode.is_completed) {                                  once the is_completed field to validate the customer done use this and delete the older return <Cus.../>
-            //     // return <CustomerCreation/>                                        
-            //     console.log(decode, "to be fixed ")
-            // } else {
-            //     return <Outlet/>
-            // }
-            return <CustomerHomePage/>
-        }else if (decode.user_type === 'admin'){
-            return <AdminHomePage/>
-        }else {
-            // return <UnknownHomePage/>                                      use this once this page is created
-           
-            console.log(decode, "the else case of Customer Protected")
-            navigate('user/login')
-        }
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      // Redirect to login if there is no token
+      navigate('/user/login');
+    }
+  }, [token, navigate]);
+
+  if (token) {
+    const decode = jwtDecode(token);
+
+    if (decode.user_type === 'user') {
+      console.log("userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+      return <Outlet />;
+    } else if (decode.user_type === 'customer') {
+      return <CustomerHomePage />;
+    } else if (decode.user_type === 'admin') {
+      return <AdminHomePage />;
     } else {
-        // return <UnknownHomePage/>                                      use this once this page is created
-        console.log("the else case of Customer Protected if this was null it means no data there to decode")
-        navigate('user/login')
-   }
+      // Handle unknown user type (optional)
+      console.log(decode, 'Unknown user type in Customer Protected');
+    }
+  }
+
+  // This part will not be reached if there's no token
+  return null;
 }
 
-export default UserProtected
+export default UserProtected;

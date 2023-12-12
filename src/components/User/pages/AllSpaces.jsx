@@ -124,7 +124,6 @@ function AllSpaces() {
     }
   });
 
-  console.log("heloo", filteredData);
   return (
     <div>
       <UserNavbar />
@@ -187,20 +186,22 @@ function AllSpaces() {
       </div>
 
       <hr className="mx-auto border-t-4 border-black-500" />
-      <div className="flex">
-        <div className="w-2/7 p-4 border-r-4">
-          <h2 className="text-lg font-bold mb-4">Filter By District</h2>
+      <div className="flex text-xl">
+        <div className="w-7/7 p-4 border-r-4 text-xl">
+          <h2 className="text-xl font-bold mb-4">Filter By District</h2>
 
           {initialOptions.map((option) => (
-            <div key={option} className="mb-2">
+            <div key={option} className="mb-2 flex items-center">
               <input
                 type="checkbox"
                 id={option}
                 checked={selectedOptions.includes(option)}
                 onChange={() => handleCheckboxChange(option)}
-                className="mr-2"
+                className="mr-2 h-5 w-5 transform scale-100" // Adjusted height, width, and scale
               />
-              <label htmlFor={option}>{option}</label>
+              <label htmlFor={option} className="text-xl ml-2">
+                {option}
+              </label>
             </div>
           ))}
         </div>
@@ -234,21 +235,34 @@ function AllSpaces() {
                   <p className="text-gray-600 mt-4">
                     Description: {space.description}
                   </p>
+
                   <p className="text-gray-600 mt-4">
-                    Location: {JSON.parse(space.location).district},{" "}
-                    {JSON.parse(space.location).city}
+                    {space.location
+                      ? (() => {
+                          try {
+                            const locationObject = JSON.parse(space.location);
+                            return `${
+                              locationObject.district ||
+                              "District Not Available"
+                            }, ${locationObject.city || "City Not Available"}`;
+                          } catch (error) {
+                            console.error("Error parsing location:", error);
+                            return "Invalid location data";
+                          }
+                        })()
+                      : "Location data not available"}
                   </p>
                   <p className="text-gray-600 mt-4">
                     Available: {space.is_available ? "Yes" : "No"}
                   </p>
                   <div className="px-20 mt-4">
-                  <button
-                    type="button"
-                    class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                    onClick={() => bookNow(space)}
-                  >
-                    Book Now
-                  </button>
+                    <button
+                      type="button"
+                      class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      onClick={() => bookNow(space)}
+                    >
+                      Book Now
+                    </button>
                   </div>
                 </div>
               </div>

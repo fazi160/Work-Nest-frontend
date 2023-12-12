@@ -14,6 +14,7 @@ import Checkout from "../components/User/pages/checkout/Checkout";
 import Fail from "../components/User/pages/Payment/Fail";
 import Success from "../components/User/pages/Payment/Success";
 import UserProfilePage from "../pages/User/UserProfilePage";
+import AboutPage from "../pages/User/AboutPage";
 function UserRoutes() {
   return (
     <div>
@@ -21,6 +22,8 @@ function UserRoutes() {
         <Route path="/conferencehalls" element={<AllSpaces />} />
         <Route path="/coworkspaces" element={<AllSpaces />} />
         <Route path="/spacedetails" element={<UserDetailedViewPage />} />
+        <Route path="/" element={<UserHomePage />} />
+        <Route path="/about" element={<AboutPage />} />
 
         <Route element={<PrivateRoutes />}>
           <Route path="/signup" element={<UserSignupPage />} />
@@ -28,7 +31,6 @@ function UserRoutes() {
         </Route>
 
         <Route element={<UserProtected />}>
-          <Route path="/" element={<UserHomePage />} />
           <Route path="/chat" element={<UserChatPage />} />
           <Route path="/videocall" element={<ZegoVideoCall />} />
           <Route path="spacedetails/checkout" element={<Checkout />} />

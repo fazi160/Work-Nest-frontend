@@ -96,9 +96,9 @@ function Chat() {
           setMessages(response.data);
         }
       });
-    // const client = new W3CWebSocket(
-    //   `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
-    // );
+    const client = new W3CWebSocket(
+      `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
+    );
     setClientState(client);
     client.onopen = () => {
       console.log("WebSocket Client Connected");
