@@ -63,47 +63,47 @@ function UserChat() {
     scrollToBottom();
   }, [messages]);
 
-  const setUpChat = () => {
-    userAxiosInstant
-      .get(
-        `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setMessages(response.data);
-        }
-      });
+  // const setUpChat = () => {
+  //   userAxiosInstant
+  //     .get(
+  //       `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
+  //     )
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         setMessages(response.data);
+  //       }
+  //     });
 
-    // const client = new W3CWebSocket(
-    //   `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
-    // );
-    // setClientState(client);
+  //   // const client = new W3CWebSocket(
+  //   //   `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
+  //   // );
+  //   // setClientState(client);
 
-    client.onopen = () => {
-      console.log("WebSocket Client Connected");
-    };
+  //   client.onopen = () => {
+  //     console.log("WebSocket Client Connected");
+  //   };
 
-    client.onmessage = (message) => {
-      const dataFromServer = JSON.parse(message.data);
-      if (dataFromServer) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            message: dataFromServer.message,
-            sender_username: dataFromServer.senderUsername,
-          },
-        ]);
-      }
-    };
+  //   client.onmessage = (message) => {
+  //     const dataFromServer = JSON.parse(message.data);
+  //     if (dataFromServer) {
+  //       setMessages((prevMessages) => [
+  //         ...prevMessages,
+  //         {
+  //           message: dataFromServer.message,
+  //           sender_username: dataFromServer.senderUsername,
+  //         },
+  //       ]);
+  //     }
+  //   };
 
-    client.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
+  //   client.onclose = () => {
+  //     console.log("WebSocket disconnected");
+  //   };
 
-    return () => {
-      client.close();
-    };
-  };
+  //   return () => {
+  //     client.close();
+  //   };
+  // };
 
   useEffect(() => {
     if (senderdetails.id && recipientdetails.id) {
