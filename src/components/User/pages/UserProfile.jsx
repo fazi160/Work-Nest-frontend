@@ -36,8 +36,12 @@ function UserProfile() {
         const response = await axios.get(
           `${BaseUrl}/auth/user/details/${decode.user_id}/`
         );
-        setUserData(response.data.results[0]); // Assuming results is an array
-        setShowAddButton(response.data.results.length === 0);
+        if (response.data.results.length > 0) {
+          setUserData(response.data.results[0]); // Assuming results is an array
+          setShowAddButton(false);
+        } else {
+          setShowAddButton(true);
+        }
       } catch (error) {
         setError(
           error.message || "An error occurred while fetching user data."
@@ -53,10 +57,10 @@ function UserProfile() {
   const handleEditClick = () => {
     setEditing(true);
     setUpdatedData({
-      first_name: userData?.first_name,
-      last_name: userData?.last_name,
-      occupation: userData?.occupation,
-      contact: userData?.contact,
+      first_name: userData?.first_name || "",
+      last_name: userData?.last_name || "",
+      occupation: userData?.occupation || "",
+      contact: userData?.contact || "",
     });
   };
 
@@ -65,11 +69,13 @@ function UserProfile() {
   };
 
   const handleConfirmSave = () => {
-    axios
-      .patch(
-        `${BaseUrl}/auth/user/details/${decode.user_id}/`,
-        updatedData
-      )
+    const apiUrl = editing
+      ? `${BaseUrl}/auth/user/details/${userData.id}/`
+      : `${BaseUrl}/auth/user/userdata/create/`;
+
+    const method = editing ? "patch" : "post";
+
+    axios[method](apiUrl, updatedData)
       .then((response) => {
         setUserData(response.data.results[0]); // Assuming results is an array
         setEditing(false);
@@ -94,7 +100,7 @@ function UserProfile() {
     };
 
     axios
-      .post(`${BaseUrl}/auth/user/details/`, defaultData)
+      .post(`${BaseUrl}/auth/user/userdata/create/`, defaultData)
       .then((response) => {
         setUserData(response.data.results[0]); // Assuming results is an array
         setShowAddButton(false);
@@ -275,11 +281,9 @@ function UserProfile() {
         </CardContent>
       </Card>
 
-      <br />
-      <br />
-      <br />
-
-      <UserPurchaseReport userId={decode.user_id} />
+      <div className="fixed bottom-16 left-0 w-full bg-white p-4">
+        <UserPurchaseReport userId={decode.user_id} />
+      </div>
     </>
   );
 }
