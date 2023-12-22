@@ -21,11 +21,13 @@ function AllSpaces() {
     "Kollam",
     "Pathanamthitta",
     "Kottayam",
+    "Idukki",
     "Alappuzha",
     "Ernakulam",
     "Thrissur",
     "Palakkad",
     "Malappuram",
+    "Kozhikode",
     "Wayanad",
     "Kannur",
     "Kasaragod",
@@ -67,7 +69,7 @@ function AllSpaces() {
     };
 
     fetchData();
-  }, [typeInString, sortType]);
+    }, [typeInString, sortType]);
 
   const sortData = (updatedData) => {
     const sortedData = [...updatedData];
@@ -128,14 +130,17 @@ function AllSpaces() {
     <div>
       <UserNavbar />
 
-      <div className="text-center mt-8">
-        <h1 className="text-4xl font-bold mb-4">
+<div className="flex items-center justify-center py-2 w-full">
+
+  
+      <div className="flex justify-end text-center w-2/3">
+        <h1 className="text-4xl font-bold font-serif">
           {type === "cowork" ? "CO-WORKING SPACES" : "CONFERENCE HALLS"}
         </h1>
       </div>
 
-      <div className="flex justify-end mr-5">
-        <FormControl className="w-48">
+      <div className="flex justify-end mr-5 w-1/3">
+        <FormControl className="w-44">
           <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -183,7 +188,8 @@ function AllSpaces() {
             ]}
           </Select>
         </FormControl>
-      </div>
+      
+      </div></div>
 
       <hr className="mx-auto border-t-4 border-black-500" />
       <div className="flex text-xl">

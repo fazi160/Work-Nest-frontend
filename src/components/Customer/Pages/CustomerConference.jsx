@@ -17,9 +17,13 @@ import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 import TablePagination from "@mui/material/TablePagination";
 import { BaseUrl } from "../../../constants/constants";
+import { useCustomerData } from "../../../context/ContextCustomer";
 Modal.setAppElement("#root");
 
 function CustomerConference() {
+  const customerData = useCustomerData();
+  console.log(customerData, "const customerData = useCustomerData();");
+
   const token = localStorage.getItem("token");
   const decode = jwtDecode(token);
   const userId = decode.user_id;
@@ -50,8 +54,21 @@ function CustomerConference() {
   const [imageURL, setImageURL] = useState(null);
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10); // You can set your desired number of rows per page
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [isPremiumValid, setIsPremiumValid] = useState(false);
 
+  useEffect(() => {
+    const isPremium = customerData && customerData.premium_customer_data;
+    const expirationDate =
+      customerData && customerData.premium_customer_data.exp_date;
+
+    const isPremiumValidCheck =
+      isPremium && expirationDate && new Date(expirationDate) > new Date();
+
+    setIsPremiumValid(isPremiumValidCheck);
+  }, [customerData]);
+
+ 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     console.log(file, "the image file");
