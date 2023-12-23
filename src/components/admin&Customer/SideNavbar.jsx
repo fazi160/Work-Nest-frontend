@@ -93,11 +93,11 @@ function SideNavbar({ onPageSelect }) {
               icon={<PersonIcon style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("User Info")}
             />
-            <ListItem
+            {/* <ListItem
               text="Chat"
               icon={<ChatIcon style={{ fontSize: 32 }} />}
               onItemClick={() => handleItemClick("Chat")}
-            />
+            /> */}
           </>
         )}
         {decode.user_type === "admin" && (
