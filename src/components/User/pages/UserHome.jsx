@@ -19,6 +19,7 @@ import KitchenIcon from '@mui/icons-material/Kitchen';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import Footer from "./homepage/Footer";
 import { useNavigate } from "react-router-dom";
+
 const bannerStyles = "w-full h-96 object-cover"; // Adjust the height here
 const companyInfoStyles = "text-center py-8"; // Adjust the padding here
 const buttonStyles = "bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-6 rounded"; // Adjust the padding and font size here
@@ -42,7 +43,7 @@ function UserHome() {
     };
   return (
     <>
-    
+ 
       <UserNavbar />
       <div className="mt-1">
         <img

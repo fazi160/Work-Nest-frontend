@@ -71,41 +71,6 @@ function AllSpaces() {
     fetchData();
   }, [typeInString, sortType]);
 
-  const sortData = (updatedData) => {
-    const sortedData = [...updatedData];
-
-    switch (sortType) {
-      case 1:
-        sortedData.sort((a, b) => a.price - b.price);
-        break;
-      case 2:
-        sortedData.sort((a, b) => b.price - a.price);
-        break;
-      case 3:
-        sortedData.sort(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
-        break;
-      case 4:
-        sortedData.sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
-        break;
-      case 5:
-        sortedData.sort((a, b) => a.Capacity - b.Capacity);
-        break;
-      case 6:
-        sortedData.sort((a, b) => b.Capacity - a.Capacity);
-        break;
-      default:
-        sortedData.sort(
-          (a, b) => new Date(a.created_at) - new Date(b.created_at)
-        );
-        break;
-    }
-
-    setData(sortedData);
-  };
 
   const handleChange = (event) => {
     setSortType(event.target.value);
