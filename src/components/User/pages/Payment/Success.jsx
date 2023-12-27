@@ -90,11 +90,11 @@ function SuccessfulPayment() {
               textAnchor="middle"
               fontSize="20"
             >
-              {loading ? "⌛" : success ? "✅" : "❌"}
+              {loading ? <PaymentLoading /> : success ? "✅" : "❌"}
             </text>
           </svg>
           <div className="text-center">
-            {showLoadingComponent && <PaymentLoading />}
+            
             {!showLoadingComponent && !loading && success && (
               <>
                 <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
