@@ -101,7 +101,7 @@ function SuccessfulPayment() {
                   Payment Done!
                 </h3>
                 <p className="text-gray-600 my-2">
-                  Thank you for doing business with us.
+                  Thank you for doing business with us .
                 </p>
                 <p> Have a great day! </p>
                 <div className="py-10 text-center">
