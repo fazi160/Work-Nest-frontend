@@ -69,7 +69,7 @@ function AllSpaces() {
     };
 
     fetchData();
-    }, [typeInString, sortType]);
+  }, [typeInString, sortType]);
 
   const sortData = (updatedData) => {
     const sortedData = [...updatedData];
@@ -130,66 +130,64 @@ function AllSpaces() {
     <div>
       <UserNavbar />
 
-<div className="flex items-center justify-center py-2 w-full">
+      <div className="flex items-center justify-center py-2 w-full">
+        <div className="flex justify-end text-center w-2/3">
+          <h1 className="text-4xl font-bold font-serif">
+            {type === "cowork" ? "CO-WORKING SPACES" : "CONFERENCE HALLS"}
+          </h1>
+        </div>
 
-  
-      <div className="flex justify-end text-center w-2/3">
-        <h1 className="text-4xl font-bold font-serif">
-          {type === "cowork" ? "CO-WORKING SPACES" : "CONFERENCE HALLS"}
-        </h1>
+        <div className="flex justify-end mr-5 w-1/3">
+          <FormControl className="w-44">
+            <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={sortType}
+              label="Sort By"
+              onChange={handleChange}
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "right",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "right",
+                },
+                getContentAnchorEl: null,
+              }}
+            >
+              {[
+                <MenuItem key={1} value={1}>
+                  Price <span className="font-bold ml-1 text-lg">▼</span>
+                </MenuItem>,
+                <MenuItem key={2} value={2}>
+                  Price <span className="font-bold ml-1 text-lg">▲</span>
+                </MenuItem>,
+                <MenuItem key={3} value={3}>
+                  Newest <span className="font-bold ml-1 text-lg">▼</span>
+                </MenuItem>,
+                <MenuItem key={4} value={4}>
+                  Newest <span className="font-bold ml-1 text-lg">▲</span>
+                </MenuItem>,
+                ...(typeInString === "conference"
+                  ? [
+                      <MenuItem key={5} value={5}>
+                        Hall size{" "}
+                        <span className="font-bold ml-1 text-lg">▼</span>
+                      </MenuItem>,
+                      <MenuItem key={6} value={6}>
+                        Hall size{" "}
+                        <span className="font-bold ml-1 text-lg">▲</span>
+                      </MenuItem>,
+                    ]
+                  : []),
+              ]}
+            </Select>
+          </FormControl>
+        </div>
       </div>
-
-      <div className="flex justify-end mr-5 w-1/3">
-        <FormControl className="w-44">
-          <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={sortType}
-            label="Sort By"
-            onChange={handleChange}
-            MenuProps={{
-              anchorOrigin: {
-                vertical: "bottom",
-                horizontal: "right",
-              },
-              transformOrigin: {
-                vertical: "top",
-                horizontal: "right",
-              },
-              getContentAnchorEl: null,
-            }}
-          >
-            {[
-              <MenuItem key={1} value={1}>
-                Price <span className="font-bold ml-1 text-lg">▼</span>
-              </MenuItem>,
-              <MenuItem key={2} value={2}>
-                Price <span className="font-bold ml-1 text-lg">▲</span>
-              </MenuItem>,
-              <MenuItem key={3} value={3}>
-                Newest <span className="font-bold ml-1 text-lg">▼</span>
-              </MenuItem>,
-              <MenuItem key={4} value={4}>
-                Newest <span className="font-bold ml-1 text-lg">▲</span>
-              </MenuItem>,
-              ...(typeInString === "conference"
-                ? [
-                    <MenuItem key={5} value={5}>
-                      Hall size{" "}
-                      <span className="font-bold ml-1 text-lg">▼</span>
-                    </MenuItem>,
-                    <MenuItem key={6} value={6}>
-                      Hall size{" "}
-                      <span className="font-bold ml-1 text-lg">▲</span>
-                    </MenuItem>,
-                  ]
-                : []),
-            ]}
-          </Select>
-        </FormControl>
-      
-      </div></div>
 
       <hr className="mx-auto border-t-4 border-black-500" />
       <div className="flex text-xl">

@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BaseUrl } from "../../../../constants/constants";
-
-// to show the data's for conference and coWorking space
-
-// ... (existing code)
+import { useNavigate } from "react-router-dom";
 
 function SpaceCard({ data, category }) {
+  const navigate = useNavigate();
+  const bookNow = (space) => {
+    console.log(space, category, "bokokokokokokokokokkokokokokokokokokokokok");
+    navigate("/user/spacedetails", { state: { space: space, type: category } });
+  };
   return (
     <div className="flex justify-center mb-8">
       <div className="w-[55rem] p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex">
@@ -45,16 +47,20 @@ function SpaceCard({ data, category }) {
                 })()
               : "Location data not available"}
           </p>
-          <p className="text-lg mt-4">
-            Available: {data.is_available ? "Yes" : "No"}
-          </p>
+          <div className="px-20 mt-10">
+            <button
+              type="button"
+              class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              onClick={() => bookNow(data)}
+            >
+              Book Now
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-// ... (existing code)
 
 function SpaceView({ prop, numNewest }) {
   const [data, setData] = useState([]);
