@@ -95,7 +95,7 @@ function SuccessfulPayment() {
           </svg>
           <div className="text-center">
             
-            {success && (
+            {!loading && success && (
               <>
                 <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
                   Payment Done!
@@ -113,7 +113,7 @@ function SuccessfulPayment() {
                 </div>
               </>
             )}
-            {!success && (
+            {!loading && !success && (
               <>
                 <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">
                   Payment Failed
