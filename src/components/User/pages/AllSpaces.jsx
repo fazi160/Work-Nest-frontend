@@ -115,17 +115,44 @@ function AllSpaces() {
     navigate("/user/spacedetails", { state: { space: space, type: type } });
   };
 
-  const filteredData = data.filter((space) => {
-    if (
-      selectedOptions.length === 0 ||
-      selectedOptions.includes(JSON.parse(space.location).district)
-    ) {
-      return true; // Include the space if no options are selected or if the district is selected
-    } else {
-      return false; // Exclude the space if options are selected and the district is not in the selectedOptions
-    }
-  });
+  // const filteredData = data.filter((space) => {
 
+  //   if (
+  //     selectedOptions.length === 0 ||
+  //     selectedOptions.includes(JSON.parse(space.location).district)
+  //   ) {
+  //     return true; // Include the space if no options are selected or if the district is selected
+  //   } else {
+  //     return false; // Exclude the space if options are selected and the district is not in the selectedOptions
+  //   }
+  // });
+
+  const filteredData = data
+    .filter(
+      (space) =>
+        selectedOptions.length === 0 ||
+        selectedOptions.includes(JSON.parse(space.location).district)
+    )
+    .sort((a, b) => {
+      switch (sortType) {
+        case 1:
+          return a.price - b.price;
+        case 2:
+          return b.price - a.price;
+        case 3:
+          return new Date(a.created_at) - new Date(b.created_at);
+        case 4:
+          return new Date(b.created_at) - new Date(a.created_at);
+        case 5:
+          return a.Capacity - b.Capacity;
+        case 6:
+          return b.Capacity - a.Capacity;
+        default:
+          return new Date(a.created_at) - new Date(b.created_at);
+      }
+    });
+
+  console.log(filteredData, "filteredData");
   return (
     <div>
       <UserNavbar />
