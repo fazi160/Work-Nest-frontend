@@ -13,12 +13,28 @@ function UserSignup() {
   const passInputRef = useRef(null);
   const confirmPassInputRef = useRef(null);
 
+  const PasswordValidation = () => {
+    const strongPasswordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+
+    if (user.password.trim().length < 8) {
+      passInputRef.current.focus();
+      toast.error('Password should be at least 8 characters long');
+      return false;
+    } else if (!strongPasswordRegex.test(user.password.trim())) {
+      passInputRef.current.focus();
+      toast.error('Password should be strong (e.g., pass@123)');
+      return false;
+    }
+
+    return true;
+  };
+
   const Validation = () => {
     if (user.email.trim() === '') {
       toast.error('Email field cannot be empty');
       return false;
     } else if (!isValidEmail(user.email.trim())) {
-      setUser({ email: '', password: '', confirmPassword: '' });
       emailInputRef.current.focus();
       toast.error('Invalid email format');
       return false;
@@ -30,7 +46,10 @@ function UserSignup() {
       confirmPassInputRef.current.focus();
       toast.error('Passwords do not match');
       return false;
+    } else if (!PasswordValidation()) {
+      return false;
     }
+
     return true;
   };
 
