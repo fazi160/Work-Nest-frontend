@@ -8,6 +8,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Drawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
+import Footer from "./homepage/Footer";
 
 function AllSpaces() {
   const navigate = useNavigate();
@@ -15,6 +18,7 @@ function AllSpaces() {
   const [data, setData] = useState([]);
   const [sortType, setSortType] = useState(3);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const initialOptions = [
     "Thiruvananthapuram",
@@ -71,7 +75,6 @@ function AllSpaces() {
     fetchData();
   }, [typeInString, sortType]);
 
-
   const handleChange = (event) => {
     setSortType(event.target.value);
   };
@@ -79,18 +82,6 @@ function AllSpaces() {
   const bookNow = (space) => {
     navigate("/user/spacedetails", { state: { space: space, type: type } });
   };
-
-  // const filteredData = data.filter((space) => {
-
-  //   if (
-  //     selectedOptions.length === 0 ||
-  //     selectedOptions.includes(JSON.parse(space.location).district)
-  //   ) {
-  //     return true; // Include the space if no options are selected or if the district is selected
-  //   } else {
-  //     return false; // Exclude the space if options are selected and the district is not in the selectedOptions
-  //   }
-  // });
 
   const filteredData = data
     .filter(
@@ -117,20 +108,30 @@ function AllSpaces() {
       }
     });
 
-  console.log(filteredData, "filteredData");
   return (
     <div>
       <UserNavbar />
 
-      <div className="flex items-center justify-center py-2 w-full">
-        <div className="flex justify-end text-center w-2/3">
-          <h1 className="text-4xl font-bold font-serif">
+      <div className="flex items-center justify-between py-2 w-full">
+        <div className="flex justify-start text-center w-2/3">
+          
+          <div className="ml-2 text-3xl lg:flex items-center">
+            <MenuIcon
+              className="cursor-pointer text-5xl "
+              onClick={() => setIsDrawerOpen(true)}
+            />
+            <span className="hidden lg:block text-xl lg:mr-8 xl:mr-80">
+              Filter
+            </span>
+          </div>
+
+          <h1 className="sm:text-3xl md:text-4xl lg:text-5xl font-bold font-serif me-1.5">
             {type === "cowork" ? "CO-WORKING SPACES" : "CONFERENCE HALLS"}
           </h1>
         </div>
 
-        <div className="flex justify-end mr-5 w-1/3">
-          <FormControl className="w-44">
+        <div className="flex justify-end mr-5 w-4/12">
+          <FormControl className="w-full md:w-44">
             <InputLabel id="demo-simple-select-label">Sort By</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -141,11 +142,11 @@ function AllSpaces() {
               MenuProps={{
                 anchorOrigin: {
                   vertical: "bottom",
-                  horizontal: "right",
+                  horizontal: "left", // Change to left for mobile view
                 },
                 transformOrigin: {
                   vertical: "top",
-                  horizontal: "right",
+                  horizontal: "left", // Change to left for mobile view
                 },
                 getContentAnchorEl: null,
               }}
@@ -181,11 +182,13 @@ function AllSpaces() {
         </div>
       </div>
 
-      <hr className="mx-auto border-t-4 border-black-500" />
-      <div className="flex text-xl">
-        <div className="w-7/7 p-4 border-r-4 text-xl">
+      <Drawer
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      >
+        <div className="p-4">
           <h2 className="text-xl font-bold mb-4">Filter By District</h2>
-
           {initialOptions.map((option) => (
             <div key={option} className="mb-2 flex items-center">
               <input
@@ -193,7 +196,7 @@ function AllSpaces() {
                 id={option}
                 checked={selectedOptions.includes(option)}
                 onChange={() => handleCheckboxChange(option)}
-                className="mr-2 h-5 w-5 transform scale-100" // Adjusted height, width, and scale
+                className="mr-2 h-5 w-5 transform scale-100"
               />
               <label htmlFor={option} className="text-xl ml-2">
                 {option}
@@ -201,19 +204,22 @@ function AllSpaces() {
             </div>
           ))}
         </div>
+      </Drawer>
 
-        <div className="w-5/6 p-4">
+      <hr className="mx-auto border-t-4 border-black-500" />
+      <div className="flex text-xl">
+        <div className="w-full p-4 border-r-4 text-xl">
           {filteredData.map((space) => (
             <div className="flex justify-center" key={space.id}>
-              <div className="w-[55rem] p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex">
+              <div className="w-full md:w-[30rem] lg:w-[60rem] p-4 md:p-6 lg:p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex flex-col md:flex-row">
                 <img
                   src={space.image}
                   alt={space.name}
-                  className="w-[25rem] h-[25rem] object-cover rounded-lg mr-4"
+                  className="w-full md:w-[25rem] lg:w-[30rem] h-[20rem] md:h-[25rem] object-cover rounded-lg mb-4 md:mr-4 md:mb-0"
                 />
-                <div className="w-96">
+                <div className="flex-grow md:w-2/3">
                   <h2
-                    className={`text-4xl font-semibold ${
+                    className={`text-2xl md:text-4xl lg:text-5xl font-semibold ${
                       typeInString === "conference"
                         ? "text-black"
                         : "text-black"
@@ -221,18 +227,20 @@ function AllSpaces() {
                   >
                     {space.name}
                   </h2>
-                  <p className="text-gray-600 mt-4">Price: ₹ {space.price}</p>
-                  <p className="text-gray-600">
+                  <p className="text-base md:text-lg mt-2 md:mt-4">
+                    Price: ₹{space.price}
+                  </p>
+                  <p className="text-base md:text-lg">
                     {typeInString === "conference" ? "Capacity" : "Slots"}:{" "}
                     {typeInString === "conference"
                       ? space.Capacity
                       : space.slots}
                   </p>
-                  <p className="text-gray-600 mt-4">
+                  <p className="text-base md:text-lg mt-2 md:mt-4">
                     Description: {space.description}
                   </p>
 
-                  <p className="text-gray-600 mt-4">
+                  <p className="text-base md:text-lg mt-2 md:mt-4">
                     {space.location
                       ? (() => {
                           try {
@@ -248,13 +256,10 @@ function AllSpaces() {
                         })()
                       : "Location data not available"}
                   </p>
-                  <p className="text-gray-600 mt-4">
-                    Available: {space.is_available ? "Yes" : "No"}
-                  </p>
-                  <div className="px-20 mt-4">
+                  <div className="mt-6">
                     <button
                       type="button"
-                      class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      className="py-2.5 px-5 text-base md:text-lg font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                       onClick={() => bookNow(space)}
                     >
                       Book Now
@@ -266,6 +271,7 @@ function AllSpaces() {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
