@@ -11,23 +11,24 @@ import SpaceView from "./homepage/SpaceView";
 import WifiIcon from "@mui/icons-material/Wifi";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 import CoffeeMakerIcon from "@mui/icons-material/CoffeeMaker";
-import PersonIcon from '@mui/icons-material/Person';
-import DeskIcon from '@mui/icons-material/Desk';
-import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
-import ChairIcon from '@mui/icons-material/Chair';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import PersonIcon from "@mui/icons-material/Person";
+import DeskIcon from "@mui/icons-material/Desk";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import ChairIcon from "@mui/icons-material/Chair";
+import KitchenIcon from "@mui/icons-material/Kitchen";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import Footer from "./homepage/Footer";
 import { useNavigate } from "react-router-dom";
 
 const bannerStyles = "w-full h-96 object-cover"; // Adjust the height here
 const companyInfoStyles = "text-center py-8"; // Adjust the padding here
-const buttonStyles = "bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-6 rounded"; // Adjust the padding and font size here
+const buttonStyles =
+  "bg-gray-200 hover:bg-gray-300 text-black font-bold py-3 px-6 rounded"; // Adjust the padding and font size here
 
 function UserHome() {
   const [currentBanner, setCurrentBanner] = useState(1);
   const [showChat, setShowChat] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   console.log("redeploy");
   useEffect(() => {
     // Automatically switch banners every 3 seconds
@@ -37,13 +38,12 @@ function UserHome() {
 
     return () => clearInterval(interval); // Clear the interval on component unmount
   }, []);
-    // Function to toggle the chat visibility
-    const toggleChat = () => {
-      navigate('user/chat')
-    };
+  // Function to toggle the chat visibility
+  const toggleChat = () => {
+    navigate("user/chat");
+  };
   return (
     <>
- 
       <UserNavbar />
       <div className="mt-1">
         <img
@@ -60,7 +60,7 @@ function UserHome() {
           className={bannerStyles}
         />
       </div>
-      
+
       <div className={companyInfoStyles}>
         <h2 className="text-6xl font-bold">Work Nest</h2>
         <br />
@@ -82,10 +82,10 @@ function UserHome() {
       <p className="flex justify-center text-4xl font-bold">Conference Halls</p>
       <SpaceView prop="conference" numNewest={3} />
       <div className="flex justify-center">
-        <Link to='/user/conferencehalls'>
-        <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded" >
-          See more...
-        </button>
+        <Link to="/user/conferencehalls">
+          <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
+            See more...
+          </button>
         </Link>
       </div>
       <br />
@@ -95,71 +95,52 @@ function UserHome() {
       </p>
       <SpaceView prop="coWork" numNewest={3} />
       <div className="flex justify-center">
-      <Link to='/user/coworkspaces'>
-        <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
-          See more...
-        </button>
+        <Link to="/user/coworkspaces">
+          <button className=" bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
+            See more...
+          </button>
         </Link>
       </div>
-      <br />
-      <br />
-      <br />
-      <p className="flex justify-center text-3xl font-bold">Amenities</p>
-      <p className="text-lg-center mx-auto max-w-lg">
+
+      <p className="flex justify-center text-3xl font-bold mt-10">Amenities</p>
+      <p className="text-center mx-auto max-w-lg mt-2">
         All of our workspaces and memberships come with all-inclusive business
         amenities so you can work your way
       </p>
-      <br />
-      <div className="flex justify-center">
-        <div className="bg-D2D2D2 p-4 m-4 rounded-md shadow-md">
-          <div className="flex justify-center items-center">
-            <p className="font-bold">Essentials</p>
-          </div>
-          <WifiIcon className="mr-2"/>
+
+      <div className="flex flex-wrap justify-center mt-5">
+        <div className="flex flex-col bg-D2D2D2 p-4 m-4 rounded-md shadow-md text-center">
+          <div className="font-bold mb-2">Essentials</div>
+          <WifiIcon className="mx-auto mb-2" />
           Super Fast WiFi <br />
-          <br />
-          <LocalPrintshopIcon className="mr-2"/>
+          <LocalPrintshopIcon className="mx-auto mb-2" />
           Print / Scan / Copy <br />
-          <br />
-          <CoffeeMakerIcon className="mr-2" />
-          Free Coffee and Tea <br />
-          <br />
+          <CoffeeMakerIcon className="mx-auto mb-2" />
+          Free Coffee and Tea
         </div>
 
-
-        <div className="bg-D2D2D2 p-4 m-4 rounded-md shadow-md">
-          <div className="flex justify-center items-center">
-            <p className="font-bold">Support</p>
-          </div>
-          <PersonIcon className="mr-2"/>
+        <div className="flex flex-col bg-D2D2D2 p-4 m-4 rounded-md shadow-md text-center">
+          <div className="font-bold mb-2">Support</div>
+          <PersonIcon className="mx-auto mb-2" />
           Office Managers <br />
-          <br />
-          <DeskIcon className="mr-2"/>
+          <DeskIcon className="mx-auto mb-2" />
           Hosted Reception <br />
-          <br />
-          <CleaningServicesIcon className="mr-2"/>
-          Professional Cleaning <br />
-          <br />
+          <CleaningServicesIcon className="mx-auto mb-2" />
+          Professional Cleaning
         </div>
 
-
-        <div className="bg-D2D2D2 p-4 m-4 rounded-md shadow-md">
-          <div className="flex justify-center items-center">
-            <p className="font-bold">Spaces</p>
-          </div>
-          <ChairIcon className="mr-2"/>
+        <div className="flex flex-col bg-D2D2D2 p-4 m-4 rounded-md shadow-md text-center">
+          <div className="font-bold mb-2">Spaces</div>
+          <ChairIcon className="mx-auto mb-2" />
           Lounge & Lobby Areas <br />
-          <br />
-          <KitchenIcon className="mr-2"/>
+          <KitchenIcon className="mx-auto mb-2" />
           Kitchen & Dining Areas <br />
-          <br />
-          <MeetingRoomIcon className="mr-2"/>
-          Private Phone Booths <br />
-          <br />
+          <MeetingRoomIcon className="mx-auto mb-2" />
+          Private Phone Booths
         </div>
-        <br />
       </div>
-      <Footer/>
+
+      <Footer />
     </>
   );
 }

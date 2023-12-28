@@ -5,34 +5,42 @@ import { useNavigate } from "react-router-dom";
 
 function SpaceCard({ data, category }) {
   const navigate = useNavigate();
+
   const bookNow = (space) => {
-    console.log(space, category, "bokokokokokokokokokkokokokokokokokokokokok");
-    navigate("/user/spacedetails", { state: { space: space, type: category } });
+
+    navigate("/user/spacedetails", {
+      state: { space: space, type: category },
+    });
   };
+
   return (
     <div className="flex justify-center mb-8">
-      <div className="w-[55rem] p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex">
+      <div className="w-full md:w-[30rem] lg:w-[60rem] p-4 md:p-6 lg:p-8 border rounded-lg shadow-md hover:shadow-lg bg-white hover:bg-gray-100 my-8 flex flex-col md:flex-row">
         <img
           src={data.image}
           alt={data.name}
-          className="w-[25rem] h-[25rem] object-cover rounded-lg mr-4"
+          className="w-full md:w-[25rem] lg:w-[30rem] h-[20rem] md:h-[25rem] object-cover rounded-lg mb-4 md:mr-4 md:mb-0"
         />
-        <div className="w-2/3">
+        <div className="flex-grow md:w-2/3">
           <h2
-            className={`text-5xl font-semibold ${
+            className={`text-2xl md:text-4xl lg:text-5xl font-semibold ${
               category === "conference" ? "text-black" : "text-black"
             }`}
           >
             {data.name}
           </h2>
-          <p className="text-lg mt-4">Price: ₹{data.price}</p>
-          <p className="text-lg">
+          <p className="text-base md:text-lg mt-2 md:mt-4">
+            Price: ₹{data.price}
+          </p>
+          <p className="text-base md:text-lg">
             {category === "conference" ? "Capacity" : "Slots"}:{" "}
             {category === "conference" ? data.Capacity : data.slots}
           </p>
-          <p className="text-lg mt-4">Description: {data.description}</p>
+          <p className="text-base md:text-lg mt-2 md:mt-4">
+            Description: {data.description}
+          </p>
 
-          <p className="text-lg mt-4">
+          <p className="text-base md:text-lg mt-2 md:mt-4">
             {data.location
               ? (() => {
                   try {
@@ -47,10 +55,10 @@ function SpaceCard({ data, category }) {
                 })()
               : "Location data not available"}
           </p>
-          <div className="px-20 mt-10">
+          <div className="mt-6">
             <button
               type="button"
-              class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              className="py-2.5 px-5 text-base md:text-lg font-medium text-gray-900 focus:outline-none bg-black rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
               onClick={() => bookNow(data)}
             >
               Book Now
@@ -61,6 +69,9 @@ function SpaceCard({ data, category }) {
     </div>
   );
 }
+
+
+
 
 function SpaceView({ prop, numNewest }) {
   const [data, setData] = useState([]);
