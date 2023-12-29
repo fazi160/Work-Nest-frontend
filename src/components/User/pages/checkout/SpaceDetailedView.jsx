@@ -86,12 +86,13 @@ function SpaceDetailedView({ props }) {
                   <img
                     src={spaceDetails.image}
                     alt={spaceDetails.name}
-                    className="object-cover ml-16 w-[32rem] lg:h-[32rem]"
+                    className="object-cover mx-auto w-[32rem] lg:h-[32rem]"
                   />
                 ) : (
                   <p>No image available</p>
                 )}
               </div>
+
               <div className="flex-wrap hidden md:flex">
                 {/* Your additional images go here */}
               </div>
