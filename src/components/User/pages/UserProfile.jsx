@@ -26,6 +26,7 @@ function UserProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const token = localStorage.getItem("token");
   const decode = jwtDecode(token);
@@ -37,7 +38,8 @@ function UserProfile() {
           `${BaseUrl}/auth/user/details/${decode.user_id}/`
         );
         if (response.data.results.length > 0) {
-          setUserData(response.data.results[0]); // Assuming results is an array
+          setUserData(response.data.results[0]);
+          console.log(userData, "user Data");
           setShowAddButton(false);
         } else {
           setShowAddButton(true);
@@ -69,17 +71,18 @@ function UserProfile() {
   };
 
   const handleConfirmSave = () => {
+    console.log("handleConfirmSave handleConfirmSave handleConfirmSave");
     const apiUrl = editing
       ? `${BaseUrl}/auth/user/details/${userData.id}/`
       : `${BaseUrl}/auth/user/userdata/create/`;
 
-    const method = editing ? "patch" : "post";
-
-    axios[method](apiUrl, updatedData)
+    axios
+      .patch(apiUrl, updatedData)
       .then((response) => {
-        setUserData(response.data.results[0]); // Assuming results is an array
-        setEditing(false);
-        setShowAddButton(false);
+        const updatedUserData = response.data;
+        setUserData(updatedUserData);
+        // setEditing(false);
+        // setShowAddButton(false);
       })
       .catch((error) => {
         setError(error.message || "An error occurred while saving user data.");
@@ -90,21 +93,25 @@ function UserProfile() {
   };
 
   const handleAddClick = () => {
-    // Logic to handle adding user data
+    setShowAddForm(true);
+  };
+
+  const handleAddFormSubmit = (e) => {
+    e.preventDefault();
     const defaultData = {
       user: decode.user_id,
-      first_name: "",
-      last_name: "",
-      occupation: "",
-      contact: "",
+      ...updatedData,
     };
 
     axios
       .post(`${BaseUrl}/auth/user/userdata/create/`, defaultData)
       .then((response) => {
-        setUserData(response.data.results[0]); // Assuming results is an array
+        console.log(response);
+        const createdUserData = <response className="data"></response>;
+        setUserData(response.data);
         setShowAddButton(false);
-        setEditing(true);
+        setEditing(false);
+        setShowAddForm(false);
       })
       .catch((error) => {
         setError(error.message || "An error occurred while adding user data.");
@@ -281,9 +288,61 @@ function UserProfile() {
         </CardContent>
       </Card>
 
-      <div className="fixed bottom-16 left-0 w-full bg-white p-4">
+      {showAddForm && (
+        <form
+          onSubmit={handleAddFormSubmit}
+          className="fixed bottom-16 left-0 w-full bg-white p-4"
+        >
+          <TextField
+            label="First Name"
+            variant="outlined"
+            fullWidth
+            className="mb-2"
+            name="first_name"
+            value={updatedData.first_name}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Last Name"
+            variant="outlined"
+            fullWidth
+            className="mb-2"
+            name="last_name"
+            value={updatedData.last_name}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Occupation"
+            variant="outlined"
+            fullWidth
+            className="mb-2"
+            name="occupation"
+            value={updatedData.occupation}
+            onChange={handleChange}
+          />
+          <TextField
+            label="Contact"
+            variant="outlined"
+            fullWidth
+            className="mb-2"
+            name="contact"
+            value={updatedData.contact}
+            onChange={handleChange}
+          />
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            className="mt-4"
+          >
+            Create
+          </Button>
+        </form>
+      )}
+
+      {/* <div className="fixed bottom-16 left-0 w-full bg-white p-4">
         <UserPurchaseReport userId={decode.user_id} />
-      </div>
+      </div> */}
     </>
   );
 }
