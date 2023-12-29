@@ -1,12 +1,16 @@
-import React, { useState, useRef } from 'react';
-import backgroundImage from '../../../assets/login.jpg';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useRef } from "react";
+import backgroundImage from "../../../assets/login.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CustomerRegister() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ email: '', password: '', confirmPassword: '' });
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [submitting, setSubmitting] = useState(false); // Track if the form is submitting
 
   // Refs for input fields
@@ -15,16 +19,16 @@ function CustomerRegister() {
   const confirmPassInputRef = useRef(null);
 
   const PasswordValidation = () => {
-    const strongPasswordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-
+    const strongPasswordRegex =
+      /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
     if (user.password.trim().length < 8) {
       passInputRef.current.focus();
-      toast.error('Password should be at least 8 characters long');
+      toast.error("Password should be at least 8 characters long");
       return false;
     } else if (!strongPasswordRegex.test(user.password.trim())) {
       passInputRef.current.focus();
-      toast.error('Password should be strong (e.g., pass@123)');
+      toast.error("Password should be strong (e.g., pass@123)");
       return false;
     }
 
@@ -32,20 +36,20 @@ function CustomerRegister() {
   };
 
   const Validation = () => {
-    if (user.email.trim() === '') {
-      toast.error('Email field cannot be empty');
+    if (user.email.trim() === "") {
+      toast.error("Email field cannot be empty");
       return false;
     } else if (!isValidEmail(user.email.trim())) {
       emailInputRef.current.focus();
-      toast.error('Invalid email format');
+      toast.error("Invalid email format");
       return false;
-    } else if (user.password.trim() === '') {
+    } else if (user.password.trim() === "") {
       passInputRef.current.focus();
-      toast.error('Password should not be empty');
+      toast.error("Password should not be empty");
       return false;
     } else if (user.password !== user.confirmPassword) {
       confirmPassInputRef.current.focus();
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return false;
     } else if (!PasswordValidation()) {
       return false;
@@ -73,18 +77,21 @@ function CustomerRegister() {
         );
 
         setUser({
-          email: '',
-          password: '',
-          confirmPassword: '',
+          email: "",
+          password: "",
+          confirmPassword: "",
         });
 
         // Display success message
-        toast.success('Please check your email to confirm.');
-        navigate('/customer/login/');
+        toast.success("Please check your email to confirm.");
+
+        setTimeout(() => {
+          navigate("/customer/login/");
+        }, 3000);
       } catch (error) {
         setSubmitting(false); // Reset to non-submitting state
         if (error.response && error.response.data) {
-          toast.error('Signup Failed');
+          toast.error("Signup Failed");
         }
       }
     }
@@ -92,9 +99,9 @@ function CustomerRegister() {
 
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    minHeight: '100vh',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
   };
 
   return (
@@ -106,7 +113,10 @@ function CustomerRegister() {
             <ToastContainer />
             <form onSubmit={FormHandlerSignup}>
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Email
                 </label>
                 <input
@@ -117,11 +127,16 @@ function CustomerRegister() {
                   name="email"
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                   placeholder="Email"
-                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                  onChange={(e) =>
+                    setUser({ ...user, [e.target.name]: e.target.value })
+                  }
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <input
@@ -131,11 +146,16 @@ function CustomerRegister() {
                   name="password"
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                   placeholder="Password"
-                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                  onChange={(e) =>
+                    setUser({ ...user, [e.target.name]: e.target.value })
+                  }
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Confirm Password
                 </label>
                 <input
@@ -145,18 +165,19 @@ function CustomerRegister() {
                   name="confirmPassword"
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                   placeholder="Confirm Password"
-                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                  onChange={(e) =>
+                    setUser({ ...user, [e.target.name]: e.target.value })
+                  }
                 />
               </div>
               <div className="text-center">
-              <button
-                type="submit"
-                className="bg-black text-white py-2 px-4 w-full rounded focus:outline-none hover:bg-gray-800"
-                disabled={submitting}
-              >
-                {submitting ? 'Signing Up...' : 'Sign Up'}
-              </button>
-
+                <button
+                  type="submit"
+                  className="bg-black text-white py-2 px-4 w-full rounded focus:outline-none hover:bg-gray-800"
+                  disabled={submitting}
+                >
+                  {submitting ? "Signing Up..." : "Sign Up"}
+                </button>
               </div>
             </form>
           </div>

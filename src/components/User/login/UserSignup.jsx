@@ -1,12 +1,16 @@
-import React, { useState, useRef } from 'react';
-import backgroundImage from '../../../assets/login.jpg';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useRef } from "react";
+import backgroundImage from "../../../assets/login.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 function UserSignup() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ email: '', password: '', confirmPassword: '' });
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [submitting, setSubmitting] = useState(false);
 
   const emailInputRef = useRef(null);
@@ -14,16 +18,16 @@ function UserSignup() {
   const confirmPassInputRef = useRef(null);
 
   const PasswordValidation = () => {
-    const strongPasswordRegex = /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-
+    const strongPasswordRegex =
+      /^(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
     if (user.password.trim().length < 8) {
       passInputRef.current.focus();
-      toast.error('Password should be at least 8 characters long');
+      toast.error("Password should be at least 8 characters long");
       return false;
     } else if (!strongPasswordRegex.test(user.password.trim())) {
       passInputRef.current.focus();
-      toast.error('Password should be strong (e.g., pass@123)');
+      toast.error("Password should be strong (e.g., pass@123)");
       return false;
     }
 
@@ -31,20 +35,20 @@ function UserSignup() {
   };
 
   const Validation = () => {
-    if (user.email.trim() === '') {
-      toast.error('Email field cannot be empty');
+    if (user.email.trim() === "") {
+      toast.error("Email field cannot be empty");
       return false;
     } else if (!isValidEmail(user.email.trim())) {
       emailInputRef.current.focus();
-      toast.error('Invalid email format');
+      toast.error("Invalid email format");
       return false;
-    } else if (user.password.trim() === '') {
+    } else if (user.password.trim() === "") {
       passInputRef.current.focus();
-      toast.error('Password should not be empty');
+      toast.error("Password should not be empty");
       return false;
     } else if (user.password !== user.confirmPassword) {
       confirmPassInputRef.current.focus();
-      toast.error('Passwords do not match');
+      toast.error("Passwords do not match");
       return false;
     } else if (!PasswordValidation()) {
       return false;
@@ -72,17 +76,19 @@ function UserSignup() {
         );
 
         setUser({
-          email: '',
-          password: '',
-          confirmPassword: '',
+          email: "",
+          password: "",
+          confirmPassword: "",
         });
 
-        toast.success('Please check your email to confirm.');
-        navigate('/user/login/');
+        toast.success("Please check your email to confirm.");
+        setTimeout(() => {
+          navigate("/user/login/");
+        }, 3000);
       } catch (error) {
         setSubmitting(false);
         if (error.response && error.response.data) {
-          toast.error('Signup Failed');
+          toast.error("Signup Failed");
         }
       }
     }
@@ -90,9 +96,9 @@ function UserSignup() {
 
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    minHeight: '100vh',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh",
   };
 
   return (
@@ -101,7 +107,9 @@ function UserSignup() {
         <div className="w-96">
           <div className="bg-white shadow-md rounded p-8">
             <div className="mb-4">
-              <h3 className="text-center text-2xl font-semibold">User Signup</h3>
+              <h3 className="text-center text-2xl font-semibold">
+                User Signup
+              </h3>
             </div>
             <ToastContainer />
             <form onSubmit={FormHandlerSignup}>
@@ -117,7 +125,9 @@ function UserSignup() {
                   name="email"
                   className="w-full py-2 px-3 border rounded"
                   placeholder="Email"
-                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                  onChange={(e) =>
+                    setUser({ ...user, [e.target.name]: e.target.value })
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -131,7 +141,9 @@ function UserSignup() {
                   name="password"
                   className="w-full py-2 px-3 border rounded"
                   placeholder="Password"
-                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                  onChange={(e) =>
+                    setUser({ ...user, [e.target.name]: e.target.value })
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -145,16 +157,21 @@ function UserSignup() {
                   name="confirmPassword"
                   className="w-full py-2 px-3 border rounded"
                   placeholder="Confirm Password"
-                  onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
+                  onChange={(e) =>
+                    setUser({ ...user, [e.target.name]: e.target.value })
+                  }
                 />
               </div>
               <div className="text-center">
-                <button type="submit" className="bg-black text-white py-2 px-4 w-1/2 rounded">
-                  {submitting ? 'Signing Up...' : 'Sign Up'}
+                <button
+                  type="submit"
+                  className="bg-black text-white py-2 px-4 w-1/2 rounded"
+                >
+                  {submitting ? "Signing Up..." : "Sign Up"}
                 </button>
               </div>
               <p className="text-center mt-3">
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <Link to="/user/login" className="text-blue-500">
                   Sign In
                 </Link>
