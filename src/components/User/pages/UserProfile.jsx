@@ -72,9 +72,8 @@ function UserProfile() {
 
   const handleConfirmSave = () => {
     console.log("handleConfirmSave handleConfirmSave handleConfirmSave");
-    const apiUrl = editing
-      ? `${BaseUrl}/auth/user/details/${userData.id}/`
-      : `${BaseUrl}/auth/user/userdata/create/`;
+    const apiUrl = `${BaseUrl}/auth/user/details/${userData.id}/`
+
 
     axios
       .patch(apiUrl, updatedData)
@@ -340,9 +339,10 @@ function UserProfile() {
         </form>
       )}
 
-      {/* <div className="fixed bottom-16 left-0 w-full bg-white p-4">
+      <div className="fixed bottom-16 left-0 w-full bg-white p-4">
         <UserPurchaseReport userId={decode.user_id} />
-      </div> */}
+      </div>
+
     </>
   );
 }

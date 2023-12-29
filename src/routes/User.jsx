@@ -24,6 +24,7 @@ function UserRoutes() {
         <Route path="/spacedetails" element={<UserDetailedViewPage />} />
         <Route path="/" element={<UserHomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/videocall" element={<ZegoVideoCall />} />
 
         <Route element={<PrivateRoutes />}>
           <Route path="/signup" element={<UserSignupPage />} />
@@ -32,7 +33,6 @@ function UserRoutes() {
 
         <Route element={<UserProtected />}>
           <Route path="/chat" element={<UserChatPage />} />
-          <Route path="/videocall" element={<ZegoVideoCall />} />
           <Route path="spacedetails/checkout" element={<Checkout />} />
           <Route path="spacedetails/payment/canceled" element={<Fail />} />
           <Route path="dashboard/" element={<UserProfilePage />} />
