@@ -71,7 +71,7 @@ function UserLogin() {
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: (codeResponse) => {
       setgUser(codeResponse);
-      console.log(guser);
+ 
     },
     onError: (error) => console.log("Login Failed:", error),
   });
@@ -89,7 +89,7 @@ function UserLogin() {
             },
           }
         );
-          console.log(response);
+          
         const existingUser = await UserGoogleSignup(response.data);
 
         if (existingUser.data) {

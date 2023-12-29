@@ -42,7 +42,7 @@ function SpaceDetailedView({ props }) {
         if (spaceType === "cowork") {
           setCoWorkBookedDates(response.data);
         } else {
-          // console.log(response);
+       
           const bookedDatesArray = response.data.map(
             (booking) => new Date(booking.booking_date)
           );

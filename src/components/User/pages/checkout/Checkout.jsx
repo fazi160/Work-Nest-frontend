@@ -56,7 +56,7 @@ function Checkout() {
           spaceType: spaceType,
         };
   
-        console.log("Complete data object:", data);
+        
   
         // Make a request to your backend to initiate the Stripe payment
         const response = await axios.post(`${BaseUrl}/space/booking/payment/`, data);

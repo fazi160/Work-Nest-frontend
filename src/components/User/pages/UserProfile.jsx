@@ -13,6 +13,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Modal,
+  Backdrop,
+  Fade,
 } from "@mui/material";
 import { Email, Phone, Person, Edit, Save, Add } from "@mui/icons-material";
 import UserPurchaseReport from "./UserPurchaseReport";
@@ -39,7 +42,6 @@ function UserProfile() {
         );
         if (response.data.results.length > 0) {
           setUserData(response.data.results[0]);
-          console.log(userData, "user Data");
           setShowAddButton(false);
         } else {
           setShowAddButton(true);
@@ -71,17 +73,14 @@ function UserProfile() {
   };
 
   const handleConfirmSave = () => {
-    console.log("handleConfirmSave handleConfirmSave handleConfirmSave");
-    const apiUrl = `${BaseUrl}/auth/user/details/${userData.id}/`
-
+    const apiUrl = `${BaseUrl}/auth/user/userdata/${userData.id}/`;
 
     axios
       .patch(apiUrl, updatedData)
       .then((response) => {
         const updatedUserData = response.data;
         setUserData(updatedUserData);
-        // setEditing(false);
-        // setShowAddButton(false);
+        setEditing(false);
       })
       .catch((error) => {
         setError(error.message || "An error occurred while saving user data.");
@@ -105,9 +104,8 @@ function UserProfile() {
     axios
       .post(`${BaseUrl}/auth/user/userdata/create/`, defaultData)
       .then((response) => {
-        console.log(response);
-        const createdUserData = <response className="data"></response>;
-        setUserData(response.data);
+        const createdUserData = response.data;
+        setUserData(createdUserData);
         setShowAddButton(false);
         setEditing(false);
         setShowAddForm(false);
@@ -126,6 +124,10 @@ function UserProfile() {
 
   const handleCloseError = () => {
     setError(null);
+  };
+
+  const handleCloseAddForm = () => {
+    setShowAddForm(false);
   };
 
   return (
@@ -288,61 +290,74 @@ function UserProfile() {
       </Card>
 
       {showAddForm && (
-        <form
-          onSubmit={handleAddFormSubmit}
-          className="fixed bottom-16 left-0 w-full bg-white p-4"
+        <Modal
+          open={showAddForm}
+          onClose={handleCloseAddForm}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
         >
-          <TextField
-            label="First Name"
-            variant="outlined"
-            fullWidth
-            className="mb-2"
-            name="first_name"
-            value={updatedData.first_name}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Last Name"
-            variant="outlined"
-            fullWidth
-            className="mb-2"
-            name="last_name"
-            value={updatedData.last_name}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Occupation"
-            variant="outlined"
-            fullWidth
-            className="mb-2"
-            name="occupation"
-            value={updatedData.occupation}
-            onChange={handleChange}
-          />
-          <TextField
-            label="Contact"
-            variant="outlined"
-            fullWidth
-            className="mb-2"
-            name="contact"
-            value={updatedData.contact}
-            onChange={handleChange}
-          />
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            className="mt-4"
-          >
-            Create
-          </Button>
-        </form>
+          <Fade in={showAddForm}>
+            <form
+              onSubmit={handleAddFormSubmit}
+              className="flex flex-col gap-5 w-1/3 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-10 rounded-md shadow-md"
+            >
+              <TextField
+                label="First Name"
+                variant="outlined"
+                fullWidth
+                className="mb-4 mt-2"
+                name="first_name"
+                value={updatedData.first_name}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Last Name"
+                variant="outlined"
+                fullWidth
+                className="mb-4"
+                name="last_name"
+                value={updatedData.last_name}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Occupation"
+                variant="outlined"
+                fullWidth
+                className="mb-4"
+                name="occupation"
+                value={updatedData.occupation}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Contact"
+                variant="outlined"
+                fullWidth
+                className="mb-4"
+                name="contact"
+                value={updatedData.contact}
+                onChange={handleChange}
+              />
+              <div className="flex align-middle justify-center mt-5">
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  className=" mt-4"
+                >
+                  Create
+                </Button>
+              </div>
+            </form>
+          </Fade>
+        </Modal>
       )}
 
       <div className="fixed bottom-16 left-0 w-full bg-white p-4">
         <UserPurchaseReport userId={decode.user_id} />
       </div>
-
     </>
   );
 }

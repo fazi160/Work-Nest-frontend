@@ -10,7 +10,7 @@ function SuccessfulPayment() {
   const planId = queryParameters.get("planId");
   const date = queryParameters.get("date");
   const spaceType = queryParameters.get("type");
-  console.log(userId, planId, date, spaceType);
+  
   const isInitializedRef = useRef(false);
 
   const [loading, setLoading] = useState(true);

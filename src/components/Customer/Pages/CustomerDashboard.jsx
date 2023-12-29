@@ -51,15 +51,22 @@ function CustomerDashboard({ user_id }) {
         // Calculate time difference in milliseconds
         const timeDiff = expDate - currentDate;
 
-        // Convert milliseconds to days, hours, minutes, and seconds
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        if (timeDiff > 0) {
+          // Convert milliseconds to days, hours, minutes, and seconds
+          const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (timeDiff % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-        setCountdown({ days, hours, minutes, seconds });
+          setCountdown({ days, hours, minutes, seconds });
+        } else {
+          // Set countdown to null if time has expired
+          setCountdown(null);
+        }
       };
 
       // Calculate initial countdown
