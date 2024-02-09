@@ -7,7 +7,19 @@ import { userAxiosInstant } from "../../../utils/axiosUtils";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { BaseUrl, reactUrl, wsApiUrl } from "../../../constants/constants";
 import { useNavigate } from "react-router-dom";
-import { Paper, Grid, Divider, TextField, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, Fab } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  Divider,
+  TextField,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+  Fab,
+} from "@mui/material";
 
 function UserChat() {
   const navigate = useNavigate();
@@ -64,16 +76,6 @@ function UserChat() {
   }, [messages]);
 
   const setUpChat = () => {
-    userAxiosInstant
-      .get(
-        `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          setMessages(response.data);
-        }
-      });
-
     const client = new W3CWebSocket(
       `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
     );
@@ -107,6 +109,15 @@ function UserChat() {
 
   useEffect(() => {
     if (senderdetails.id && recipientdetails.id) {
+      userAxiosInstant
+        .get(
+          `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            setMessages(response.data);
+          }
+        });
       setUpChat();
     }
   }, [senderdetails, recipientdetails]);
@@ -275,10 +286,7 @@ function UserChat() {
             ))}
           </List>
 
-          <Grid
-            container
-            style={{ margin: ".9rem" }}
-          >
+          <Grid container style={{ margin: ".9rem" }}>
             <Grid item xs={11}>
               <TextField
                 inputProps={{ ref: messageRef }}
