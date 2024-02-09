@@ -36,10 +36,10 @@ function ZegoVideo() {
     receiverId = recipientdetails.id.toString();
   }
 
-  // const handleClosingButtonClick = () => {
-  //   // Add logic to handle closing action, for example, navigating back to the chat page
-  //   navigate("/user/chat");
-  // };
+  const handleClosingButtonClick = () => {
+    // Add logic to handle closing action, for example, navigating back to the chat page
+    navigate("/user/chat");
+  };
 
   const myMeeting = async (element) => {
     // generate Kit Token

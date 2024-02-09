@@ -86,44 +86,44 @@ function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  // const setUpChat = () => {
-  //   userAxiosInstant
-  //     .get(
-  //       `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
-  //     )
-  //     .then((response) => {
-  //       if (response.status == 200) {
-  //         setMessages(response.data);
-  //       }
-  //     });
-  //   const client = new W3CWebSocket(
-  //     `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
-  //   );
-  //   setClientState(client);
-  //   client.onopen = () => {
-  //     console.log("WebSocket Client Connected");
-  //   };
-  //   client.onmessage = (message) => {
-  //     const dataFromServer = JSON.parse(message.data);
-  //     if (dataFromServer) {
-  //       setMessages((prevMessages) => [
-  //         ...prevMessages,
-  //         {
-  //           message: dataFromServer.message,
-  //           sender_username: dataFromServer.senderUsername,
-  //         },
-  //       ]);
-  //     }
-  //   };
+  const setUpChat = () => {
+    userAxiosInstant
+      .get(
+        `chat/user-previous-chats/${senderdetails.id}/${recipientdetails.id}/`
+      )
+      .then((response) => {
+        if (response.status == 200) {
+          setMessages(response.data);
+        }
+      });
+    const client = new W3CWebSocket(
+      `${wsApiUrl}/ws/chat/${senderdetails.id}/?${recipientdetails.id}`
+    );
+    setClientState(client);
+    client.onopen = () => {
+      console.log("WebSocket Client Connected");
+    };
+    client.onmessage = (message) => {
+      const dataFromServer = JSON.parse(message.data);
+      if (dataFromServer) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            message: dataFromServer.message,
+            sender_username: dataFromServer.senderUsername,
+          },
+        ]);
+      }
+    };
 
-  //   client.onclose = () => {
-  //     console.log("Websocket disconnected", event.reason);
-  //   };
+    client.onclose = () => {
+      console.log("Websocket disconnected", event.reason);
+    };
 
-  //   return () => {
-  //     client.close();
-  //   };
-  // };
+    return () => {
+      client.close();
+    };
+  };
 
   const scrollToLastMessage = () => {
     if (lastMessageRef.current) {
