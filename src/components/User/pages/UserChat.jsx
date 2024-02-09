@@ -120,7 +120,7 @@ function UserChat() {
         });
       setUpChat();
     }
-  }, [senderdetails,messages, recipientdetails]);
+  }, [senderdetails, recipientdetails]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
