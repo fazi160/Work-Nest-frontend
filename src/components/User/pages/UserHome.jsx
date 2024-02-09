@@ -74,9 +74,9 @@ function UserHome() {
           experience with Work Nest.
         </p>
         <br />
-        {/* <button className={buttonStyles} onClick={toggleChat}>
+        <button className={buttonStyles} onClick={toggleChat}>
           Open Chat
-        </button> */}
+        </button>
       </div>
       <br />
       <p className="flex justify-center text-4xl font-bold">Conference Halls</p>
